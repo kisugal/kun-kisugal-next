@@ -1,0 +1,18 @@
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+. postinstall$ pnpx prisma generate
+. postinstall: Prisma schema loaded from prisma/schema.prisma.
+. postinstall: Error: Prisma schema validation - (get-config wasm)
+. postinstall: Error code: P1012
+. postinstall: error: The datasource property `url` is no longer supported in schema files. Move connection URLs for Migrate to `prisma.config.ts` and pass either `adapter` for a direct database connection or `accelerateUrl` for Accelerate to the `PrismaClient` constructor. See https://pris.ly/d/config-datasource and https://pris.ly/d/prisma7-client-config
+. postinstall:   -->  prisma/schema.prisma:7
+. postinstall:    | 
+. postinstall:  6 |   provider = "postgresql"
+. postinstall:  7 |   url      = env("KUN_DATABASE_URL")
+. postinstall:    | 
+. postinstall: Validation Error Count: 1
+. postinstall: [Context: getConfig]
+. postinstall: Prisma CLI Version : 7.2.0
+. postinstall: Failed
+ ELIFECYCLE  Command failed with exit code 1.

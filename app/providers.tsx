@@ -1,0 +1,27 @@
+'use client'
+
+import { AppProgressProvider as ProgressProvider } from '@bprogress/next'
+import { HeroUIProvider } from '@heroui/react'
+import { ThemeProvider } from 'next-themes'
+import { useRouter } from 'next/navigation'
+
+export const Providers = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter()
+
+  return (
+    <ProgressProvider
+      shallowRouting
+      color="#f791a9"
+      height="4px"
+      options={{ showSpinner: false }}
+    >
+      <HeroUIProvider
+        navigate={router.push}
+        validationBehavior="native"
+        disableRipple={false}
+      >
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
+      </HeroUIProvider>
+    </ProgressProvider>
+  )
+}

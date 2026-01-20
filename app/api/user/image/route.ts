@@ -1,0 +1,62 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { kunParseFormData } from '~/app/api/utils/parseQuery'
+import { verifyHeaderCookie } from '~/middleware/_verifyHeaderCookie'
+import { prisma } from '~/prisma/index'
+import { uploadIntroductionImage } from './_upload'
+import { imageSchema } from '~/validations/edit'
+
+export const uploadImage = async (uid: number, image: ArrayBuffer) => {
+  const user = await prisma.user.findUnique({
+    where: { id: uid },
+    select: {
+      daily_image_count: true,
+      role: true
+    }
+  })
+  if (!user) {
+    return '用户未找到'
+  }
+  // 管理员（role >= 2）不受限制
+  if (user.role < 2 && user.daily_image_count >= 50) {
+    return '您今日上传的图片已达到 50 张限额'
+  }
+
+  const newFileName = `${uid}-${Date.now()}`
+
+  const res = await uploadIntroductionImage(newFileName, image, uid)
+  if (typeof res === 'string') {
+    return res
+  }
+
+  await prisma.user.update({
+    where: { id: uid },
+    data: { daily_image_count: { increment: 1 } }
+  })
+
+  const imageLink = `${process.env.KUN_VISUAL_NOVEL_IMAGE_BED_URL}/user/image/${uid}/${newFileName}.avif`
+  return { imageLink }
+}
+
+export const POST = async (req: NextRequest) => {
+  try {
+    const input = await kunParseFormData(req, imageSchema)
+    if (typeof input === 'string') {
+      return NextResponse.json({ error: input }, { status: 400 })
+    }
+    const payload = await verifyHeaderCookie(req)
+    if (!payload) {
+      return NextResponse.json({ error: '用户未登录' }, { status: 401 })
+    }
+
+    const image = await new Response(input.image)?.arrayBuffer()
+
+    const res = await uploadImage(payload.uid, image)
+    if (typeof res === 'string') {
+      return NextResponse.json({ error: res }, { status: 400 })
+    }
+    return NextResponse.json(res)
+  } catch (error) {
+    console.error('图片上传错误:', error)
+    return NextResponse.json({ error: '图片上传失败，请稍后重试' }, { status: 500 })
+  }
+}

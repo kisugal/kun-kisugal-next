@@ -1,0 +1,8 @@
+{
+  "enabled": true,
+  "excludedDomains": [
+    "touchgal.us",
+    "kungal.com"
+  ],
+  "delaySeconds": 5
+}
