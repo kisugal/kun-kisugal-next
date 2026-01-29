@@ -56,13 +56,16 @@ export const GET = async (req: NextRequest) => {
     const orderBy: any = {}
     orderBy[sortField] = sortOrder
 
-    // 查询数据库
+    // 查询数据库 - 置顶话题始终排在最前面
     const [topics, total] = await Promise.all([
       prisma.topic.findMany({
         where,
         skip,
         take: limit,
-        orderBy,
+        orderBy: [
+          { is_pinned: 'desc' },  // 置顶话题优先
+          orderBy
+        ],
         select: {
           id: true,
           title: true,

@@ -1,6 +1,5 @@
 'use client'
 
-import DOMPurify from 'isomorphic-dompurify'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Button } from '@heroui/react'
 import { KunUser } from '~/components/kun/floating-card/KunUser'
@@ -34,6 +33,7 @@ export const ResourceDownload = ({ resource }: Props) => {
 
   const getResourceNoteHtml = async () => {
     const html = await markdownToHtml(resource.note)
+    const DOMPurify = (await import('dompurify')).default
     const safeHtml = DOMPurify.sanitize(html)
     setNote(safeHtml)
   }

@@ -96,8 +96,8 @@ export const createGalgame = async (
         }
 
         if (cgs.length > 0) {
-          const cgMd = cgs.map(url => `![](${url})`).join('\n\n');
-          finalIntro += `\n\n## 游戏截图\n\n<div class="game-screenshots">\n\n${cgMd}\n\n</div>`;
+          const cgMd = cgs.map(url => `![](${url})`).join('\n');
+          finalIntro += `\n\n## 游戏截图\n<div class="game-screenshots">\n\n${cgMd}\n\n</div>`;
         }
 
         if (input.gameLinks) {

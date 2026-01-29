@@ -1,6 +1,5 @@
 'use client'
 
-import DOMPurify from 'isomorphic-dompurify'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Button, User } from '@heroui/react'
 import { ChevronDown, ChevronUp, Download } from 'lucide-react'
@@ -34,6 +33,7 @@ export const KunResourceDownload = ({ resource }: Props) => {
 
   const getResourceNoteHtml = async () => {
     const html = await markdownToHtml(resource.note)
+    const DOMPurify = (await import('dompurify')).default
     const safeHtml = DOMPurify.sanitize(html)
     setNote(safeHtml)
   }

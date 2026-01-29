@@ -114,14 +114,26 @@
   @apply rounded-lg shadow-md my-8 border border-default-200;
 }
 
-/* 游戏截图网格布局 - 三个一排 */
-.kun-prose h2:has(+ p img)+p,
-.kun-prose h2+p:has(img) {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4;
+/* 游戏截图容器 - 三列网格布局 */
+.kun-prose .game-screenshots {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 my-6;
 }
 
-.kun-prose h2+p img {
+.kun-prose .game-screenshots img {
   @apply my-0 w-full h-auto object-cover;
+}
+
+.kun-prose .game-screenshots p {
+  @apply my-0 contents;
+}
+
+/* 包含多个图片的段落 - 自动变成网格布局 */
+.kun-prose p:has(img:nth-child(2)) {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 my-6;
+}
+
+.kun-prose p:has(img:nth-child(2)) img {
+  @apply my-0 w-full h-auto object-cover rounded-lg shadow-md border border-default-200;
 }
 
 .kun-prose figure {
@@ -149,17 +161,4 @@
 /* Mark text */
 .kun-prose mark {
   @apply bg-warning-100 text-warning-800 px-1 rounded;
-}
-
-/* 游戏截图网格布局 - 三个一排 */
-.kun-prose .game-screenshots {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6;
-}
-
-.kun-prose .game-screenshots p {
-  @apply my-0;
-}
-
-.kun-prose .game-screenshots img {
-  @apply my-0 w-full h-auto object-cover aspect-video;
 }
