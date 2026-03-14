@@ -1,3 +1,6 @@
+ignoredBuiltDependencies:
+  - puppeteer
+
 onlyBuiltDependencies:
   - '@heroui/shared-utils'
   - '@parcel/watcher'

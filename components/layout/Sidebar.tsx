@@ -36,10 +36,10 @@ import { useMemo } from 'react'
 // 固定的推荐内容
 const getRecommendations = () => {
   return [
-    { name: '星空下的约定', description: '', href: '#', icon: HeartIcon },
-    { name: '樱花物语', description: '', href: '#', icon: HeartIcon },
-    { name: '夏日回忆', description: '', href: '#', icon: HeartIcon },
-    { name: '月光奏鸣曲', description: '', href: '#', icon: HeartIcon }
+    { name: '五彩斑斓的世界', description: '', href: '#', icon: HeartIcon },
+    { name: '星辰恋曲的白色永恒', description: '', href: '#', icon: HeartIcon },
+    { name: '星空的记忆', description: '', href: '#', icon: HeartIcon },
+    { name: '樱花、萌放', description: '', href: '#', icon: HeartIcon }
   ]
 }
 
@@ -139,7 +139,7 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
             <div className="text-xs text-pink-700 dark:text-pink-300">
               <div className="font-medium mb-1">网站已进入♡全面涩涩模式♡</div>
               <div className="text-pink-600 dark:text-pink-400">
-                网站已启用 NSFW, 杂鱼~♡ 杂鱼~♡, 请注意您周围没有人
+                网站已启用 NSFW, 杂鱼~♡ 杂鱼~♡, 请检查四周有无其他人喔~
               </div>
             </div>
           </div>

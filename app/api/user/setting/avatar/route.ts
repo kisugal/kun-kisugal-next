@@ -7,12 +7,16 @@ import { uploadUserAvatar } from '../_upload'
 
 export const updateUserAvatar = async (uid: number, avatar: ArrayBuffer) => {
   const user = await prisma.user.findUnique({
-    where: { id: uid }
+    where: { id: uid },
+    select: {
+      daily_image_count: true,
+      role: true
+    }
   })
   if (!user) {
     return '用户未找到'
   }
-  if (user.daily_image_count >= 50) {
+  if (user.role < 2 && user.daily_image_count >= 50) {
     return '您今日上传的图片已达到 50 张限额'
   }
 

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '~/utils/cn'
 import { kunMoyuMoe } from '~/config/moyu-moe'
 import {
@@ -18,7 +18,7 @@ import {
     X
 } from 'lucide-react'
 import { Button } from '@heroui/button'
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 interface MobileSidebarProps {
     isOpen: boolean
@@ -28,9 +28,7 @@ interface MobileSidebarProps {
 const navSections = [
     {
         title: null,
-        items: [
-            { name: '首页', href: '/', icon: Home },
-        ],
+        items: [{ name: '首页', href: '/', icon: Home }]
     },
     {
         title: '游戏信息',
@@ -38,32 +36,34 @@ const navSections = [
             { name: 'Galgame', href: '/galgame', icon: Gamepad2 },
             { name: '补丁和存档', href: '/resource', icon: FileText },
             { name: '开发商', href: '/companies', icon: Building },
-            { name: '游戏标签', href: '/tag', icon: Tags },
-        ],
+            { name: '游戏标签', href: '/tag', icon: Tags }
+        ]
     },
     {
         title: '社区交流',
         items: [
             { name: '社区评论', href: '/comment', icon: MessagesSquare },
-            { name: '社区话题', href: '/topic', icon: Hash },
-        ],
+            { name: '社区话题', href: '/topic', icon: Hash }
+        ]
     },
     {
         title: '其他',
         items: [
             { name: '友情链接', href: '/friend-link', icon: HeartMinus },
-            { name: '待办事项', href: '/todo', icon: ClipboardList },
-        ],
-    },
+            { name: '待办事项', href: '/todo', icon: ClipboardList }
+        ]
+    }
 ]
 
 const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
     const pathname = usePathname()
+    const router = useRouter()
+    const [shouldRender, setShouldRender] = useState(isOpen)
 
-    // 禁止背景滚动
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden'
+            setShouldRender(true)
         } else {
             document.body.style.overflow = ''
         }
@@ -72,14 +72,28 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
         }
     }, [isOpen])
 
-    if (!isOpen) return null
+    const handleTransitionEnd = (e: React.TransitionEvent) => {
+        // 只处理侧边栏本身的 transform 动画结束
+        if (e.propertyName !== 'transform') return
+
+        if (!isOpen) {
+            setShouldRender(false)
+        }
+    }
+
+    // 点击链接时关闭侧边栏
+    const handleLinkClick = () => {
+        onClose()
+    }
+
+    if (!shouldRender) return null
 
     return (
         <>
             {/* 背景遮罩 */}
             <div
                 className={cn(
-                    'fixed inset-0 bg-black/50 z-40 transition-opacity duration-200',
+                    'fixed inset-0 bg-black/50 z-40 transition-opacity duration-300',
                     isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 )}
                 onClick={onClose}
@@ -89,17 +103,18 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
             <div
                 className={cn(
                     'fixed top-0 left-0 bottom-0 w-[280px] bg-background z-50',
-                    'transform transition-transform duration-200 ease-out',
+                    'transform transition-transform duration-300 ease-out',
                     'shadow-xl',
                     isOpen ? 'translate-x-0' : '-translate-x-full'
                 )}
+                onTransitionEnd={handleTransitionEnd}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-divider">
                     <Link
                         href="/"
                         className="flex items-center gap-3"
-                        onClick={onClose}
+                        onClick={handleLinkClick}
                     >
                         <Image
                             src="/favicon.webp"
@@ -116,12 +131,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                             <p className="text-xs text-default-500">探索精彩游戏世界</p>
                         </div>
                     </Link>
-                    <Button
-                        isIconOnly
-                        variant="light"
-                        size="sm"
-                        onPress={onClose}
-                    >
+                    <Button isIconOnly variant="light" size="sm" onPress={onClose}>
                         <X className="w-5 h-5" />
                     </Button>
                 </div>
@@ -140,7 +150,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                                     <li key={item.href}>
                                         <Link
                                             href={item.href}
-                                            onClick={onClose}
+                                            onClick={handleLinkClick}
                                             className={cn(
                                                 'flex items-center gap-3 px-4 py-3 mx-2 rounded-lg',
                                                 'transition-colors duration-150',
@@ -170,5 +180,4 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
     )
 }
 
-// 使用 memo 优化性能
 export const MobileSidebar = memo(MobileSidebarComponent)

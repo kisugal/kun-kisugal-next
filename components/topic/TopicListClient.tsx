@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useTransition } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useState, useEffect, useTransition, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card, CardBody, CardHeader, Select, SelectItem, Tabs, Tab, Skeleton } from '@heroui/react'
 import { Filter } from 'lucide-react'
 import { TopicList } from './TopicList'
@@ -49,30 +49,55 @@ const orderOptions = [
 interface Props {
     initialTopics?: TopicCard[]
     initialTotal?: number
-    initialPage?: number
-    initialSortField?: string
-    initialSortOrder?: string
-    initialTab?: TabType
+}
+
+const STORAGE_KEY = 'topic_list_state'
+
+interface SavedState {
+    page: number
+    sortField: string
+    sortOrder: string
+    tab: TabType
 }
 
 export const TopicListClient = ({
     initialTopics = [],
-    initialTotal = 0,
-    initialPage = 1,
-    initialSortField = 'created',
-    initialSortOrder = 'desc',
-    initialTab = 'official'
+    initialTotal = 0
 }: Props) => {
     const router = useRouter()
-    const searchParams = useSearchParams()
+
     const [topics, setTopics] = useState<TopicCard[]>(initialTopics)
     const [isPending, startTransition] = useTransition()
     const [total, setTotal] = useState(initialTotal)
-    const [currentPage, setCurrentPage] = useState(initialPage)
-    const [sortField, setSortField] = useState(initialSortField)
-    const [sortOrder, setSortOrder] = useState(initialSortOrder)
-    const [activeTab, setActiveTab] = useState<TabType>(initialTab)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [sortField, setSortField] = useState('created')
+    const [sortOrder, setSortOrder] = useState('desc')
+    const [activeTab, setActiveTab] = useState<TabType>('official')
+    const [isInitialized, setIsInitialized] = useState(false)
     const limit = 10
+
+    // 保存状态到 sessionStorage
+    const saveState = useCallback((page: number, sort: string, order: string, tab: TabType) => {
+        if (typeof window !== 'undefined') {
+            const state: SavedState = { page, sortField: sort, sortOrder: order, tab }
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+        }
+    }, [])
+
+    // 从 sessionStorage 读取状态
+    const loadState = useCallback((): SavedState | null => {
+        if (typeof window !== 'undefined') {
+            const saved = sessionStorage.getItem(STORAGE_KEY)
+            if (saved) {
+                try {
+                    return JSON.parse(saved)
+                } catch {
+                    return null
+                }
+            }
+        }
+        return null
+    }, [])
 
     const fetchTopics = async (
         page: number = 1,
@@ -103,20 +128,9 @@ export const TopicListClient = ({
         })
     }
 
-    const updateURL = (page: number, sort: string, order: string, tab: TabType) => {
-        const params = new URLSearchParams()
-        if (page > 1) params.set('page', page.toString())
-        if (sort !== 'created') params.set('sortField', sort)
-        if (order !== 'desc') params.set('sortOrder', order)
-        if (tab !== 'official') params.set('tab', tab)
-
-        const newURL = params.toString() ? `/?${params.toString()}` : '/'
-        router.replace(newURL, { scroll: false })
-    }
-
     const handlePageChange = (page: number) => {
         setCurrentPage(page)
-        updateURL(page, sortField, sortOrder, activeTab)
+        saveState(page, sortField, sortOrder, activeTab)
         fetchTopics(page, sortField, sortOrder, activeTab)
     }
 
@@ -124,7 +138,7 @@ export const TopicListClient = ({
         setSortField(field)
         setSortOrder(order)
         setCurrentPage(1)
-        updateURL(1, field, order, activeTab)
+        saveState(1, field, order, activeTab)
         fetchTopics(1, field, order, activeTab)
     }
 
@@ -132,28 +146,26 @@ export const TopicListClient = ({
         const tab = key as TabType
         setActiveTab(tab)
         setCurrentPage(1)
-        updateURL(1, sortField, sortOrder, tab)
+        saveState(1, sortField, sortOrder, tab)
         fetchTopics(1, sortField, sortOrder, tab)
     }
 
     useEffect(() => {
-        // 如果有初始数据，不需要再次获取
-        if (initialTopics.length > 0) {
-            return
+        // 从 sessionStorage 恢复状态
+        const savedState = loadState()
+
+        if (savedState) {
+            setCurrentPage(savedState.page)
+            setSortField(savedState.sortField)
+            setSortOrder(savedState.sortOrder)
+            setActiveTab(savedState.tab)
+            fetchTopics(savedState.page, savedState.sortField, savedState.sortOrder, savedState.tab)
+        } else {
+            // 没有保存的状态，加载默认数据
+            fetchTopics(1, 'created', 'desc', 'official')
         }
 
-        // 从URL参数初始化状态
-        const page = parseInt(searchParams.get('page') || '1')
-        const sort = searchParams.get('sortField') || 'created'
-        const order = searchParams.get('sortOrder') || 'desc'
-        const tab = (searchParams.get('tab') || 'official') as TabType
-
-        setCurrentPage(page)
-        setSortField(sort)
-        setSortOrder(order)
-        setActiveTab(tab)
-
-        fetchTopics(page, sort, order, tab)
+        setIsInitialized(true)
     }, [])
 
     const totalPages = Math.ceil(total / limit)
