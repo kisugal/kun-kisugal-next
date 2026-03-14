@@ -72,7 +72,7 @@ export const TopicListClient = ({
     const [currentPage, setCurrentPage] = useState(1)
     const [sortField, setSortField] = useState('created')
     const [sortOrder, setSortOrder] = useState('desc')
-    const [activeTab, setActiveTab] = useState<TabType>('official')
+    const [activeTab, setActiveTab] = useState<TabType>('following')
     const [isInitialized, setIsInitialized] = useState(false)
     const limit = 10
 
