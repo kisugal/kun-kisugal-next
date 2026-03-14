@@ -4,11 +4,17 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownTrigger
+  DropdownTrigger,
+  Button,
+  Tooltip
 } from '@heroui/react'
 import { useSettingStore } from '~/store/settingStore'
-import { Ban, CircleSlash, ShieldCheck } from 'lucide-react'
-import type { JSX } from 'react'
+import { Ban, ShieldCheck, CircleSlash } from 'lucide-react'
+import {
+  KUN_CONTENT_LIMIT_LABEL,
+  KUN_CONTENT_LIMIT_MAP
+} from '~/constants/top-bar'
+import { useMemo, type JSX } from 'react'
 
 const themeIconMap: Record<string, JSX.Element> = {
   sfw: <ShieldCheck className="size-5" />,
@@ -20,16 +26,33 @@ export const NSFWSwitcher = () => {
   const settings = useSettingStore((state) => state.data)
   const setData = useSettingStore((state) => state.setData)
 
-  const themeIcon = themeIconMap[settings.kunNsfwEnable] || themeIconMap['all']
+  const isDanger = useMemo(() => {
+    if (!settings.kunNsfwEnable) {
+      return false
+    }
+    if (settings.kunNsfwEnable === 'sfw') {
+      return false
+    }
+    return true
+  }, [setData])
 
   return (
-    <Dropdown className="min-w-0">
-      <DropdownTrigger>
-        <div className="flex justify-between">
-          <span>网站内容显示</span>
-          <span className="text-default-700">{themeIcon}</span>
+    <Dropdown placement="bottom-end" className="min-w-0">
+      <Tooltip disableAnimation showArrow closeDelay={0} content="内容显示切换">
+        <div className="flex">
+          <DropdownTrigger>
+            <Button
+              size="sm"
+              variant="flat"
+              aria-label="内容限制"
+              className="text-default-500"
+              color={isDanger ? 'danger' : 'success'}
+            >
+              {KUN_CONTENT_LIMIT_LABEL[settings.kunNsfwEnable]}
+            </Button>
+          </DropdownTrigger>
         </div>
-      </DropdownTrigger>
+      </Tooltip>
 
       <DropdownMenu
         disallowEmptySelection
@@ -47,9 +70,7 @@ export const NSFWSwitcher = () => {
             key={key}
             className="text-default-700"
           >
-            {key === 'sfw' && '仅显示 SFW (内容安全) 的文章'}
-            {key === 'nsfw' && '仅显示 NSFW (可能含有 R18) 的文章'}
-            {key === 'all' && '同时显示 SFW 和 NSFW 的文章'}
+            {KUN_CONTENT_LIMIT_MAP[key]}
           </DropdownItem>
         ))}
       </DropdownMenu>
