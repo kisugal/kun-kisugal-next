@@ -160,7 +160,6 @@ export const UserDropdown = () => {
             key="nsfw_toggle"
             startContent={<ArrowLeftRight className="size-4" />}
           >
-            <NSFWSwitcher />
           </DropdownItem>
           <DropdownItem
             key="logout"

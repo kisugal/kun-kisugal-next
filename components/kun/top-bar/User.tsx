@@ -83,6 +83,9 @@ export const KunTopBarUser = () => {
             </NavbarContent>
           )}
 
+          
+          <NSFWSwitcher />
+
           <KunSearch />
 
           <Tooltip
