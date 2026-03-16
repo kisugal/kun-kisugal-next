@@ -2,62 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '~/prisma/index'
 import { verifyHeaderCookie } from '~/middleware/_verifyHeaderCookie'
 import { updateTopicSchema } from '~/validations/topic'
+import { renderMarkdownToHtml } from '~/app/api/utils/render/renderMarkdownToHtml'
+import { getTopic } from './getTopic'
 import type { Topic } from '~/types/api/topic'
-
-// 获取话题详情
-export const getTopic = async (id: number, userId?: number, incrementView: boolean = true) => {
-  const topic = await prisma.topic.findUnique({
-    where: { id, status: 0 },
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          avatar: true
-        }
-      },
-      _count: {
-        select: {
-          topic_likes: true
-        }
-      },
-      ...(userId && {
-        topic_likes: {
-          where: { user_id: userId },
-          select: { id: true }
-        }
-      })
-    }
-  })
-
-  if (!topic) {
-    return null
-  }
-
-  // 根据参数决定是否增加浏览量
-  if (incrementView) {
-    await prisma.topic.update({
-      where: { id },
-      data: { view_count: { increment: 1 } }
-    })
-  }
-
-  const result: Topic = {
-    id: topic.id,
-    title: topic.title,
-    content: topic.content,
-    status: topic.status,
-    is_pinned: topic.is_pinned,
-    view_count: incrementView ? topic.view_count + 1 : topic.view_count,
-    like_count: topic._count.topic_likes,
-    user: topic.user,
-    created: topic.created,
-    updated: topic.updated,
-    isLiked: userId ? topic.topic_likes.length > 0 : false
-  }
-
-  return result
-}
 
 export const GET = async (
   req: NextRequest,
@@ -169,6 +116,7 @@ export const PUT = async (
       id: updatedTopic.id,
       title: updatedTopic.title,
       content: updatedTopic.content,
+      contentHtml: await renderMarkdownToHtml(updatedTopic.content),
       status: updatedTopic.status,
       is_pinned: updatedTopic.is_pinned,
       view_count: updatedTopic.view_count,

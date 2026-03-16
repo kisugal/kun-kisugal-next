@@ -1,6 +1,8 @@
 export interface TopicComment {
   id: number
   content: string
+  contentHtml?: string
+  parentContentHtml?: string
   like_count: number
   isLiked: boolean
   user: {
@@ -56,5 +58,10 @@ export interface GetTopicCommentsRequest {
 
 export interface GetTopicCommentsResponse {
   comments: TopicComment[]
-  total: number
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+  }
 }

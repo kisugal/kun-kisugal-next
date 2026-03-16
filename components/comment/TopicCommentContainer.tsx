@@ -9,7 +9,10 @@ import { KunEditor } from '~/components/kun/milkdown/Editor'
 import { KunLoading } from '~/components/kun/Loading'
 import { useUserStore } from '~/store/userStore'
 import toast from 'react-hot-toast'
-import type { TopicComment } from '~/types/api/topic-comment'
+import type {
+  GetTopicCommentsResponse,
+  TopicComment
+} from '~/types/api/topic-comment'
 
 interface Props {
   topicId: number
@@ -33,19 +36,19 @@ export const TopicCommentContainer = ({
   const fetchComments = async () => {
     setLoading(true)
     try {
-      const response = await kunFetchGet<{
-        comments: TopicComment[]
-        total: number
-      }>('/api/topic/comment', {
+      const response = await kunFetchGet<GetTopicCommentsResponse>(
+        '/api/topic/comment',
+        {
         topicId,
         sortField: 'created',
         sortOrder: 'desc',
         page: 1,
         limit: 50
-      })
+        }
+      )
 
       setComments(response.comments)
-      setTotal(response.total)
+      setTotal(response.pagination.total)
       setIsCommentsCollapsed(response.comments.length >= 3)
     } catch (error) {
       toast.error('获取评论失败')
@@ -84,10 +87,10 @@ export const TopicCommentContainer = ({
   }
 
   useEffect(() => {
-    if (initialComments.length === 0) {
-      fetchComments()
-    }
-  }, [topicId])
+    setComments(initialComments)
+    setTotal(initialTotal)
+    setIsCommentsCollapsed(initialComments.length >= 3)
+  }, [initialComments, initialTotal])
 
   return (
     <div className="space-y-6">

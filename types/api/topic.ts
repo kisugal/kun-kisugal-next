@@ -2,6 +2,7 @@ export interface Topic {
   id: number
   title: string
   content: string
+  contentHtml?: string
   status: number
   is_pinned: boolean
   view_count: number

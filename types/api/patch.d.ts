@@ -58,6 +58,7 @@ export interface PatchResource {
   type: string[]
   language: string[]
   note: string
+  noteHtml?: string
   hash: string
   content: string
   code: string

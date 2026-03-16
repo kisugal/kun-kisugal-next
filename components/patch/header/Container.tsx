@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useRewritePatchStore } from '~/store/rewriteStore'
 import { PatchHeaderTabs } from './Tabs'
 import { PatchHeaderInfo } from './Info'
-import { KunAutoImageViewer } from '~/components/kun/image-viewer/AutoImageViewer'
 import { KunNull } from '~/components/kun/Null'
 import type { Patch, PatchIntroduction } from '~/types/api/patch'
 
@@ -42,8 +41,6 @@ export const PatchHeaderContainer = ({
         <KunNull message="请登录后查看 NSFW 游戏" />
       ) : (
         <>
-          <KunAutoImageViewer />
-
           <PatchHeaderInfo
             patch={patch}
             handleClickDownloadNav={() => setSelected('resources')}
