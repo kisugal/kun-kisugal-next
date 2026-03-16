@@ -12,6 +12,7 @@ import { Info } from './Info'
 import { PatchTag } from './Tag'
 import dynamic from 'next/dynamic'
 import { useMounted } from '~/hooks/useMounted'
+import { KunAutoImageViewer } from '~/components/kun/image-viewer/AutoImageViewer'
 import { KunLink } from '~/components/kun/milkdown/plugins/components/link/KunLink'
 import { KunExternalLink } from '~/components/kun/external-link/ExternalLink'
 import { kunUpdatePatchViewsActions } from '~/app/(main)/[id]/actions'
@@ -107,6 +108,7 @@ export const IntroductionTab = ({ intro, patchId, uniqueId, uid, companies }: Pr
           }}
           className="kun-prose max-w-none"
         />
+        <KunAutoImageViewer scopeRef={contentRef} />
 
         {companies && companies.length > 0 && (
           <>

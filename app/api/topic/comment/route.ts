@@ -2,17 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '~/prisma/index'
 import { verifyHeaderCookie } from '~/middleware/_verifyHeaderCookie'
+import {
+  getTopicComments,
+  getTopicCommentsSchema
+} from './getTopicComments'
 import type { TopicComment } from '~/types/api/topic-comment'
 import { createMessage } from '~/app/api/utils/message'
-
-// 获取评论列表的请求体验证
-const getCommentsSchema = z.object({
-  topicId: z.string().transform(Number),
-  sortField: z.enum(['created', 'like_count']).default('created'),
-  sortOrder: z.enum(['asc', 'desc']).default('desc'),
-  page: z.string().transform(Number).default('1'),
-  limit: z.string().transform(Number).default('50')
-})
 
 // 创建评论的请求体验证
 const createCommentSchema = z.object({
@@ -46,7 +41,7 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ message: '缺少话题ID' }, { status: 400 })
     }
 
-    const validatedData = getCommentsSchema.parse({
+    const validatedData = getTopicCommentsSchema.parse({
       topicId,
       sortField,
       sortOrder,
@@ -54,148 +49,10 @@ export const GET = async (req: NextRequest) => {
       limit
     })
 
-    // 获取用户ID（如果已登录）
     const payload = await verifyHeaderCookie(req)
-    const userId = payload?.uid
+    const response = await getTopicComments(validatedData, payload?.uid)
 
-    // 构建排序条件
-    const orderBy = {
-      [validatedData.sortField]: validatedData.sortOrder
-    }
-
-    // 获取所有评论（包括回复）
-    const allComments = await prisma.topic_comment.findMany({
-      where: {
-        topic_id: validatedData.topicId
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true
-          }
-        },
-        parent: {
-          select: {
-            id: true,
-            content: true,
-            created: true,
-            user: {
-              select: {
-                id: true,
-                name: true,
-                avatar: true
-              }
-            }
-          }
-        },
-        like_by: userId ? {
-          where: { user_id: userId },
-          select: { id: true }
-        } : false
-      },
-      orderBy: { created: 'asc' }
-    })
-
-    // 构建评论树结构
-    const commentMap = new Map()
-    const topLevelComments: any[] = []
-
-    // 第一遍遍历：创建所有评论的映射
-    allComments.forEach((comment: any) => {
-      commentMap.set(comment.id, {
-        ...comment,
-        replies: []
-      })
-    })
-
-    // 第二遍遍历：构建树结构
-    allComments.forEach((comment: any) => {
-      if (comment.parent_id === null) {
-        topLevelComments.push(commentMap.get(comment.id))
-      } else {
-        const parent = commentMap.get(comment.parent_id)
-        if (parent) {
-          parent.replies.push(commentMap.get(comment.id))
-        }
-      }
-    })
-
-    // 应用排序
-    const sortComments = (comments: any[]) => {
-      return comments.sort((a, b) => {
-        if (validatedData.sortField === 'created') {
-          const aTime = new Date(a.created).getTime()
-          const bTime = new Date(b.created).getTime()
-          return validatedData.sortOrder === 'desc' ? bTime - aTime : aTime - bTime
-        } else {
-          return validatedData.sortOrder === 'desc' ? b.like_count - a.like_count : a.like_count - b.like_count
-        }
-      })
-    }
-
-    // 递归排序所有层级的回复
-    const sortAllReplies = (comments: any[]) => {
-      comments.forEach((comment: any) => {
-        if (comment.replies && comment.replies.length > 0) {
-          comment.replies = sortComments(comment.replies)
-          sortAllReplies(comment.replies)
-        }
-      })
-    }
-
-    const sortedTopComments = sortComments(topLevelComments)
-    sortAllReplies(sortedTopComments)
-
-    // 分页处理（只对顶级评论分页）
-    const paginatedComments = sortedTopComments.slice(
-      (validatedData.page - 1) * validatedData.limit,
-      validatedData.page * validatedData.limit
-    )
-
-    const comments = paginatedComments
-
-    // 获取顶级评论总数
-    const total = topLevelComments.length
-
-    // 递归转换数据格式
-    const convertComment = (comment: any): TopicComment => ({
-      id: comment.id,
-      content: comment.content,
-      like_count: comment.like_count,
-      user: comment.user,
-      topic_id: comment.topic_id,
-      parent_id: comment.parent_id,
-      parent: comment.parent ? {
-        id: comment.parent.id,
-        content: comment.parent.content,
-        created: comment.parent.created.toISOString(),
-        user: {
-          id: comment.parent.user.id,
-          name: comment.parent.user.name,
-          avatar: comment.parent.user.avatar
-        },
-        like_count: 0,
-        updated: comment.parent.created.toISOString()
-      } : undefined,
-      replies: comment.replies ? comment.replies.map(convertComment) : [],
-      created: comment.created.toISOString(),
-      updated: comment.updated.toISOString(),
-      isLiked: comment.like_by && comment.like_by.length > 0
-    })
-
-    const result: TopicComment[] = comments.map(convertComment)
-
-    return NextResponse.json({
-      comments: result,
-      pagination: {
-        page: validatedData.page,
-        limit: validatedData.limit,
-        total,
-        totalPages: Math.ceil(total / validatedData.limit)
-      }
-    }, { status: 200 })
+    return NextResponse.json(response, { status: 200 })
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ message: error.errors[0].message }, { status: 400 })

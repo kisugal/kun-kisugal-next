@@ -1,13 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import Download from 'yet-another-react-lightbox/plugins/download'
 import 'yet-another-react-lightbox/styles.css'
 import { useMounted } from '~/hooks/useMounted'
 
-export const KunAutoImageViewer = () => {
+interface AutoImageViewerProps {
+  scopeRef: RefObject<HTMLElement | null>
+}
+
+export const KunAutoImageViewer = ({ scopeRef }: AutoImageViewerProps) => {
   const [openImage, setOpenImage] = useState<string | null>(null)
   const [images, setImages] = useState<
     { src: string; width: number; height: number }[]
@@ -15,11 +19,14 @@ export const KunAutoImageViewer = () => {
   const isMounted = useMounted()
 
   useEffect(() => {
-    if (!isMounted) {
+    if (!isMounted || !scopeRef.current) {
       return
     }
 
-    const checkImageDimensions = (img: HTMLImageElement) => {
+    const scopeElement = scopeRef.current
+    const cleanupMap = new Map<HTMLImageElement, () => void>()
+
+    const registerImage = (img: HTMLImageElement) => {
       if (img.width >= 200 && img.height >= 200) {
         setImages((prev) => {
           const exists = prev.some((image) => image.src === img.src)
@@ -33,7 +40,11 @@ export const KunAutoImageViewer = () => {
         })
 
         img.style.cursor = 'pointer'
-        img.addEventListener('click', () => setOpenImage(img.src))
+        if (!cleanupMap.has(img)) {
+          const handleClick = () => setOpenImage(img.src)
+          img.addEventListener('click', handleClick)
+          cleanupMap.set(img, () => img.removeEventListener('click', handleClick))
+        }
       }
     }
 
@@ -42,32 +53,33 @@ export const KunAutoImageViewer = () => {
         mutation.addedNodes.forEach((node) => {
           if (node instanceof HTMLImageElement) {
             if (node.complete) {
-              checkImageDimensions(node)
+              registerImage(node)
             } else {
-              node.onload = () => checkImageDimensions(node)
+              node.onload = () => registerImage(node)
             }
           }
         })
       })
     })
 
-    document.querySelectorAll('img').forEach((img) => {
+    scopeElement.querySelectorAll('img').forEach((img) => {
       if (img.complete) {
-        checkImageDimensions(img)
+        registerImage(img)
       } else {
-        img.onload = () => checkImageDimensions(img)
+        img.onload = () => registerImage(img)
       }
     })
 
-    observer.observe(document.body, {
+    observer.observe(scopeElement, {
       childList: true,
       subtree: true
     })
 
     return () => {
       observer.disconnect()
+      cleanupMap.forEach((cleanup) => cleanup())
     }
-  }, [isMounted])
+  }, [isMounted, scopeRef])
 
   const currentImageIndex = openImage
     ? images.findIndex((img) => img.src === openImage)

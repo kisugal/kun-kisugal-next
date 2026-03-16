@@ -1,12 +1,40 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 export default function Snow({ enabled = true }: { enabled?: boolean }) {
-    if (!enabled) return null
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
+    const [shouldRender, setShouldRender] = useState(false)
 
     useEffect(() => {
+        if (!enabled) {
+            setShouldRender(false)
+            return
+        }
+
+        const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+        const evaluate = () => {
+            setShouldRender(
+                !media.matches &&
+                    !document.hidden &&
+                    window.innerWidth >= 1024
+            )
+        }
+
+        evaluate()
+        media.addEventListener('change', evaluate)
+        document.addEventListener('visibilitychange', evaluate)
+        window.addEventListener('resize', evaluate, { passive: true })
+
+        return () => {
+            media.removeEventListener('change', evaluate)
+            document.removeEventListener('visibilitychange', evaluate)
+            window.removeEventListener('resize', evaluate)
+        }
+    }, [enabled])
+
+    useEffect(() => {
+        if (!enabled || !shouldRender) return
         const canvas = canvasRef.current
         if (!canvas) return
         const canvasEl = canvas as HTMLCanvasElement
@@ -175,9 +203,12 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
             window.removeEventListener('resize', handleResize)
             cancelAnimationFrame(animationId)
         }
-    }, [])
+    }, [enabled, shouldRender])
+
+    if (!enabled || !shouldRender) {
+        return null
+    }
 
     return <canvas ref={canvasRef} className="snow" aria-hidden="true" />
 }
-
 

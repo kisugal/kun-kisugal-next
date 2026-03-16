@@ -1,62 +1,89 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { kunFetchGet } from '~/utils/kunFetch'
+import { useEffect, useState, useTransition } from 'react'
 import { CommentCard } from './CommentCard'
 import { FilterBar } from './FilterBar'
-import { useMounted } from '~/hooks/useMounted'
 import { KunLoading } from '~/components/kun/Loading'
 import { KunHeader } from '../kun/Header'
-import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { KunPagination } from '~/components/kun/Pagination'
 import { KunNull } from '~/components/kun/Null'
 import type { SortDirection, SortOption } from './_sort'
 import type { PatchComment } from '~/types/api/comment'
+import {
+  buildCommentQueryString,
+  type CommentQueryState
+} from './query'
 
 interface Props {
   initialComments: PatchComment[]
   initialTotal: number
   uid?: number
+  initialQueryState: CommentQueryState
 }
 
 export const CardContainer = ({
   initialComments,
   initialTotal,
-  uid
+  uid,
+  initialQueryState
 }: Props) => {
-  const [comments, setComments] = useState<PatchComment[]>(initialComments)
-  const [total, setTotal] = useState(initialTotal)
-  const [loading, setLoading] = useState(false)
-  const [sortField, setSortField] = useState<SortOption>('created')
-  const [sortOrder, setSortOrder] = useState<SortDirection>('desc')
-  const isMounted = useMounted()
-  const searchParams = useSearchParams()
-  const [page, setPage] = useState(Number(searchParams.get('page')) || 1)
-
-  const fetchData = async () => {
-    setLoading(true)
-
-    const { comments } = await kunFetchGet<{
-      comments: PatchComment[]
-      total: number
-    }>('/api/comment', {
-      sortField,
-      sortOrder,
-      page,
-      limit: 50
-    })
-
-    setComments(comments)
-    setTotal(total)
-    setLoading(false)
-  }
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const [sortField, setSortField] = useState<SortOption>(
+    initialQueryState.sortField
+  )
+  const [sortOrder, setSortOrder] = useState<SortDirection>(
+    initialQueryState.sortOrder
+  )
+  const [page, setPage] = useState(initialQueryState.page)
 
   useEffect(() => {
-    if (!isMounted) {
-      return
-    }
-    fetchData()
-  }, [sortField, sortOrder, page])
+    setSortField(initialQueryState.sortField)
+    setSortOrder(initialQueryState.sortOrder)
+    setPage(initialQueryState.page)
+  }, [initialQueryState])
+
+  const navigate = (nextState: CommentQueryState) => {
+    const queryString = buildCommentQueryString(nextState)
+    const href = queryString ? `/comment?${queryString}` : '/comment'
+
+    startTransition(() => {
+      router.replace(href, { scroll: false })
+    })
+  }
+
+  const handleSortFieldChange = (value: SortOption) => {
+    setSortField(value)
+    setPage(1)
+    navigate({
+      ...initialQueryState,
+      sortField: value,
+      sortOrder,
+      page: 1
+    })
+  }
+
+  const handleSortOrderChange = (value: SortDirection) => {
+    setSortOrder(value)
+    setPage(1)
+    navigate({
+      ...initialQueryState,
+      sortField,
+      sortOrder: value,
+      page: 1
+    })
+  }
+
+  const handlePageChange = (value: number) => {
+    setPage(value)
+    navigate({
+      ...initialQueryState,
+      sortField,
+      sortOrder,
+      page: value
+    })
+  }
 
   return (
     <div className="container mx-auto my-4 space-y-6">
@@ -69,28 +96,28 @@ export const CardContainer = ({
         <>
           <FilterBar
             sortField={sortField}
-            setSortField={setSortField}
+            setSortField={handleSortFieldChange}
             sortOrder={sortOrder}
-            setSortOrder={setSortOrder}
+            setSortOrder={handleSortOrderChange}
           />
 
-          {loading ? (
+          {isPending ? (
             <KunLoading hint="正在获取评论数据..." />
           ) : (
             <div className="space-y-4">
-              {comments.map((comment) => (
+              {initialComments.map((comment) => (
                 <CommentCard key={comment.id} comment={comment} />
               ))}
             </div>
           )}
 
-          {total > 50 && (
+          {initialTotal > 50 && (
             <div className="flex justify-center">
               <KunPagination
-                total={Math.ceil(total / 50)}
+                total={Math.ceil(initialTotal / 50)}
                 page={page}
-                onPageChange={setPage}
-                isLoading={loading}
+                onPageChange={handlePageChange}
+                isLoading={isPending}
               />
             </div>
           )}

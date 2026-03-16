@@ -1,73 +1,83 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { useDebounce } from 'use-debounce'
 import { CompanyHeader } from './CompanyHeader'
 import { SearchCompany } from './SearchCompany'
 import { CompanyList } from './CompanyList'
-import { kunFetchGet, kunFetchPost } from '~/utils/kunFetch'
-import { useMounted } from '~/hooks/useMounted'
+import { kunFetchPost } from '~/utils/kunFetch'
 import { KunPagination } from '~/components/kun/Pagination'
 import { KunNull } from '~/components/kun/Null'
 import type { Company } from '~/types/api/company'
+import { useRouter } from 'next/navigation'
+import {
+    buildCompanyQueryString,
+    type CompanyQueryState
+} from './query'
 
 interface Props {
     initialCompanies: Company[]
     initialTotal: number
     uid?: number
+    initialQueryState: CompanyQueryState
 }
 
-export const Container = ({ initialCompanies, initialTotal, uid }: Props) => {
+export const Container = ({
+    initialCompanies,
+    initialTotal,
+    uid,
+    initialQueryState
+}: Props) => {
+    const router = useRouter()
+    const [isPending, startTransition] = useTransition()
     const [companies, setCompanies] = useState<Company[]>(initialCompanies)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(initialQueryState.page)
     const [total, setTotal] = useState(initialTotal)
-    const [loading, setLoading] = useState(false)
-    const isMounted = useMounted()
-
-    const fetchCompanies = async () => {
-        setLoading(true)
-        const { companies, total } = await kunFetchGet<{
-            companies: Company[]
-            total: number
-        }>('/api/company/all', {
-            page,
-            limit: 100
-        })
-        setCompanies(companies)
-        setTotal(total)
-        setLoading(false)
-    }
-
-    useEffect(() => {
-        if (!isMounted) {
-            return
-        }
-        fetchCompanies()
-    }, [page])
 
     const [query, setQuery] = useState('')
     const [debouncedQuery] = useDebounce(query, 500)
     const [searching, setSearching] = useState(false)
 
     useEffect(() => {
-        if (debouncedQuery) {
-            handleSearch()
-        } else {
-            fetchCompanies()
-        }
-    }, [debouncedQuery])
+        setCompanies(initialCompanies)
+        setTotal(initialTotal)
+        setPage(initialQueryState.page)
+    }, [initialCompanies, initialTotal, initialQueryState])
 
-    const handleSearch = async () => {
-        if (!query.trim()) {
+    useEffect(() => {
+        if (!debouncedQuery.trim()) {
+            setSearching(false)
+            setCompanies(initialCompanies)
+            return
+        }
+
+        handleSearch(debouncedQuery)
+    }, [debouncedQuery, initialCompanies])
+
+    const handleSearch = async (value: string = query) => {
+        if (!value.trim()) {
             return
         }
 
         setSearching(true)
         const response = await kunFetchPost<Company[]>('/api/search/company', {
-            query: query.split(' ').filter((term) => term.length > 0)
+            query: value.split(' ').filter((term) => term.length > 0)
         })
         setCompanies(response)
         setSearching(false)
+    }
+
+    const handlePageChange = (value: number) => {
+        setPage(value)
+        const queryString = buildCompanyQueryString({
+            ...initialQueryState,
+            page: value
+        })
+        const href = queryString ? `/companies?${queryString}` : '/companies'
+
+        startTransition(() => {
+            router.replace(href, { scroll: false })
+        })
     }
 
     return (
@@ -86,7 +96,7 @@ export const Container = ({ initialCompanies, initialTotal, uid }: Props) => {
                     {!searching && (
                         <CompanyList
                             companies={companies}
-                            loading={loading}
+                            loading={isPending}
                             searching={searching}
                         />
                     )}
@@ -96,8 +106,8 @@ export const Container = ({ initialCompanies, initialTotal, uid }: Props) => {
                             <KunPagination
                                 total={Math.ceil(total / 100)}
                                 page={page}
-                                onPageChange={setPage}
-                                isLoading={loading}
+                                onPageChange={handlePageChange}
+                                isLoading={isPending}
                             />
                         </div>
                     )}

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { prisma } from '~/prisma/index'
+import { renderMarkdownToHtml } from '~/app/api/utils/render/renderMarkdownToHtml'
 import type { PatchResource } from '~/types/api/patch'
 
 const patchIdSchema = z.object({
@@ -34,34 +35,39 @@ export const getPatchResource = async (
     }
   })
 
-  const resources: PatchResource[] = data.map((resource) => ({
-    id: resource.id,
-    name: resource.name,
-    section: resource.section,
-    uniqueId: resource.patch.unique_id,
-    storage: resource.storage,
-    size: resource.size,
-    type: resource.type,
-    language: resource.language,
-    note: resource.note,
-    hash: resource.hash,
-    content: resource.content,
-    code: resource.code,
-    password: resource.password,
-    platform: resource.platform,
-    likeCount: resource.like_by.length,
-    isLike: resource.like_by.length > 0,
-    status: resource.status,
-    userId: resource.user_id,
-    patchId: resource.patch_id,
-    created: String(resource.created),
-    user: {
-      id: resource.user.id,
-      name: resource.user.name,
-      avatar: resource.user.avatar,
-      patchCount: resource.user._count.patch_resource
-    }
-  }))
+  const resources: PatchResource[] = await Promise.all(
+    data.map(async (resource) => ({
+      id: resource.id,
+      name: resource.name,
+      section: resource.section,
+      uniqueId: resource.patch.unique_id,
+      storage: resource.storage,
+      size: resource.size,
+      type: resource.type,
+      language: resource.language,
+      note: resource.note,
+      noteHtml: resource.note
+        ? await renderMarkdownToHtml(resource.note)
+        : undefined,
+      hash: resource.hash,
+      content: resource.content,
+      code: resource.code,
+      password: resource.password,
+      platform: resource.platform,
+      likeCount: resource.like_by.length,
+      isLike: resource.like_by.length > 0,
+      status: resource.status,
+      userId: resource.user_id,
+      patchId: resource.patch_id,
+      created: String(resource.created),
+      user: {
+        id: resource.user.id,
+        name: resource.user.name,
+        avatar: resource.user.avatar,
+        patchCount: resource.user._count.patch_resource
+      }
+    }))
+  )
 
   return resources
 }
