@@ -9,10 +9,7 @@ import { useRouter } from 'next/navigation'
 import { KunPagination } from '~/components/kun/Pagination'
 import type { SortDirection, SortOption } from './_sort'
 import type { PatchResource } from '~/types/api/resource'
-import {
-  buildResourceQueryString,
-  type ResourceQueryState
-} from './query'
+import { buildResourceQueryString, type ResourceQueryState } from './query'
 
 interface Props {
   initialResources: PatchResource[]
@@ -41,12 +38,21 @@ export const CardContainer = ({
     setPage(initialQueryState.page)
   }, [initialQueryState])
 
-  const navigate = (nextState: ResourceQueryState) => {
+  const navigate = (
+    nextState: ResourceQueryState,
+    options: { history?: 'push' | 'replace'; scroll?: boolean } = {}
+  ) => {
     const queryString = buildResourceQueryString(nextState)
     const href = queryString ? `/resource?${queryString}` : '/resource'
+    const { history = 'replace', scroll = false } = options
 
     startTransition(() => {
-      router.replace(href, { scroll: false })
+      if (history === 'push') {
+        router.push(href, { scroll })
+        return
+      }
+
+      router.replace(href, { scroll })
     })
   }
 
@@ -74,12 +80,15 @@ export const CardContainer = ({
 
   const handlePageChange = (value: number) => {
     setPage(value)
-    navigate({
-      ...initialQueryState,
-      sortField,
-      sortOrder,
-      page: value
-    })
+    navigate(
+      {
+        ...initialQueryState,
+        sortField,
+        sortOrder,
+        page: value
+      },
+      { history: 'push', scroll: true }
+    )
   }
 
   return (

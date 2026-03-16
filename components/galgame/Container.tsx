@@ -7,10 +7,7 @@ import { FilterBar } from './FilterBar'
 import { KunHeader } from '../kun/Header'
 import { KunPagination } from '../kun/Pagination'
 import type { SortField, SortOrder } from './_sort'
-import {
-  buildGalgameQueryString,
-  type GalgameQueryState
-} from './query'
+import { buildGalgameQueryString, type GalgameQueryState } from './query'
 
 interface Props {
   initialGalgames: GalgameCard[]
@@ -59,12 +56,21 @@ export const CardContainer = ({
     setPage(initialQueryState.page)
   }, [initialQueryState])
 
-  const navigate = (nextState: GalgameQueryState) => {
+  const navigate = (
+    nextState: GalgameQueryState,
+    options: { history?: 'push' | 'replace'; scroll?: boolean } = {}
+  ) => {
     const queryString = buildGalgameQueryString(nextState)
     const href = queryString ? `/galgame?${queryString}` : '/galgame'
+    const { history = 'replace', scroll = false } = options
 
     startTransition(() => {
-      router.replace(href, { scroll: false })
+      if (history === 'push') {
+        router.push(href, { scroll })
+        return
+      }
+
+      router.replace(href, { scroll })
     })
   }
 
@@ -149,9 +155,8 @@ export const CardContainer = ({
   }
 
   const handleYearsChange = (value: string[]) => {
-    const normalizedYears = value.includes('all') || value.length === 0
-      ? ['all']
-      : value
+    const normalizedYears =
+      value.includes('all') || value.length === 0 ? ['all'] : value
     const normalizedMonths =
       normalizedYears.includes('all') && !selectedMonths.includes('all')
         ? ['all']
@@ -176,9 +181,8 @@ export const CardContainer = ({
   }
 
   const handleMonthsChange = (value: string[]) => {
-    const normalizedMonths = value.includes('all') || value.length === 0
-      ? ['all']
-      : value
+    const normalizedMonths =
+      value.includes('all') || value.length === 0 ? ['all'] : value
 
     setSelectedMonths(normalizedMonths)
     setPage(1)
@@ -197,17 +201,20 @@ export const CardContainer = ({
 
   const handlePageChange = (value: number) => {
     setPage(value)
-    navigate({
-      ...initialQueryState,
-      selectedType,
-      selectedLanguage,
-      selectedPlatform,
-      sortField,
-      sortOrder,
-      selectedYears,
-      selectedMonths,
-      page: value
-    })
+    navigate(
+      {
+        ...initialQueryState,
+        selectedType,
+        selectedLanguage,
+        selectedPlatform,
+        sortField,
+        sortOrder,
+        selectedYears,
+        selectedMonths,
+        page: value
+      },
+      { history: 'push', scroll: true }
+    )
   }
 
   return (

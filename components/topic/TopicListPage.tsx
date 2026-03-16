@@ -2,17 +2,21 @@
 
 import { useEffect, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardBody, CardHeader, Button, Select, SelectItem } from '@heroui/react'
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Select,
+  SelectItem
+} from '@heroui/react'
 import { Plus, Filter } from 'lucide-react'
 import { TopicList } from './TopicList'
 import { KunPagination } from '~/components/kun/Pagination'
 import type { TopicCard } from '~/types/api/topic'
 import { useUserStore } from '~/store/userStore'
 import toast from 'react-hot-toast'
-import {
-  buildTopicQueryString,
-  type TopicQueryState
-} from './query'
+import { buildTopicQueryString, type TopicQueryState } from './query'
 
 const sortOptions = [
   { key: 'created', label: '最新发布' },
@@ -50,7 +54,12 @@ export const TopicListPage = ({
     setSortOrder(initialQueryState.sortOrder)
   }, [initialQueryState])
 
-  const updateURL = (page: number, sort: string, order: string) => {
+  const updateURL = (
+    page: number,
+    sort: string,
+    order: string,
+    options: { history?: 'push' | 'replace'; scroll?: boolean } = {}
+  ) => {
     const queryString = buildTopicQueryString({
       ...initialQueryState,
       page,
@@ -58,15 +67,24 @@ export const TopicListPage = ({
       sortOrder: order as TopicQueryState['sortOrder']
     })
     const newURL = queryString ? `/topic?${queryString}` : '/topic'
+    const { history = 'replace', scroll = false } = options
 
     startTransition(() => {
-      router.replace(newURL, { scroll: false })
+      if (history === 'push') {
+        router.push(newURL, { scroll })
+        return
+      }
+
+      router.replace(newURL, { scroll })
     })
   }
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
-    updateURL(page, sortField, sortOrder)
+    updateURL(page, sortField, sortOrder, {
+      history: 'push',
+      scroll: true
+    })
   }
 
   const handleSortChange = (
@@ -131,9 +149,7 @@ export const TopicListPage = ({
                 className="w-32"
               >
                 {sortOptions.map((option) => (
-                  <SelectItem key={option.key}>
-                    {option.label}
-                  </SelectItem>
+                  <SelectItem key={option.key}>{option.label}</SelectItem>
                 ))}
               </Select>
             </div>
@@ -152,9 +168,7 @@ export const TopicListPage = ({
                 className="w-20"
               >
                 {orderOptions.map((option) => (
-                  <SelectItem key={option.key}>
-                    {option.label}
-                  </SelectItem>
+                  <SelectItem key={option.key}>{option.label}</SelectItem>
                 ))}
               </Select>
             </div>

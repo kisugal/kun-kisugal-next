@@ -10,10 +10,7 @@ import { KunPagination } from '~/components/kun/Pagination'
 import { KunNull } from '~/components/kun/Null'
 import type { SortDirection, SortOption } from './_sort'
 import type { PatchComment } from '~/types/api/comment'
-import {
-  buildCommentQueryString,
-  type CommentQueryState
-} from './query'
+import { buildCommentQueryString, type CommentQueryState } from './query'
 
 interface Props {
   initialComments: PatchComment[]
@@ -44,12 +41,21 @@ export const CardContainer = ({
     setPage(initialQueryState.page)
   }, [initialQueryState])
 
-  const navigate = (nextState: CommentQueryState) => {
+  const navigate = (
+    nextState: CommentQueryState,
+    options: { history?: 'push' | 'replace'; scroll?: boolean } = {}
+  ) => {
     const queryString = buildCommentQueryString(nextState)
     const href = queryString ? `/comment?${queryString}` : '/comment'
+    const { history = 'replace', scroll = false } = options
 
     startTransition(() => {
-      router.replace(href, { scroll: false })
+      if (history === 'push') {
+        router.push(href, { scroll })
+        return
+      }
+
+      router.replace(href, { scroll })
     })
   }
 
@@ -77,12 +83,15 @@ export const CardContainer = ({
 
   const handlePageChange = (value: number) => {
     setPage(value)
-    navigate({
-      ...initialQueryState,
-      sortField,
-      sortOrder,
-      page: value
-    })
+    navigate(
+      {
+        ...initialQueryState,
+        sortField,
+        sortOrder,
+        page: value
+      },
+      { history: 'push', scroll: true }
+    )
   }
 
   return (

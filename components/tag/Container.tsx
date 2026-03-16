@@ -73,7 +73,7 @@ export const Container = ({
     const href = queryString ? `/tag?${queryString}` : '/tag'
 
     startTransition(() => {
-      router.replace(href, { scroll: false })
+      router.push(href, { scroll: true })
     })
   }
 

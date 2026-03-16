@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Input } from '@heroui/react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { KeyboardEvent } from 'react'
@@ -20,19 +20,22 @@ export const KunPagination = ({
 }: Props) => {
   const [isEditing, setIsEditing] = useState(false)
   const [inputValue, setInputValue] = useState(String(page))
+  const lastPageRef = useRef(page)
 
   useEffect(() => {
     setInputValue(String(page))
   }, [page])
 
   useEffect(() => {
-    if (!isLoading) {
+    if (lastPageRef.current !== page) {
+      lastPageRef.current = page
+
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       })
     }
-  }, [isLoading])
+  }, [page])
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= total) {
