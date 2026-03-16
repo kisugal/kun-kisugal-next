@@ -24,7 +24,7 @@ const REDIRECT_ADS_DATA: AdItem[] = [
     title: '',
     description: '',
     image: 'https://r2.sakinori.top/mumu/mumu.jpg',
-    link: 'https://t.glgnd.com/?pid=77'
+    link: 'https://t.ameaw.com/?pid=77'
   },
   {
     id: 'redirect-ad3', // eueuVPN
