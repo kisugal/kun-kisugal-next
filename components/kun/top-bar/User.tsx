@@ -16,6 +16,7 @@ import { KunSearch } from './Search'
 import { UserMessageBell } from './UserMessageBell'
 import { Tooltip } from '@heroui/tooltip'
 import { RandomGalgameButton } from '~/components/home/carousel/RandomGalgameButton'
+import { NSFWSwitcher } from './NSFWSwitcher'
 import type { UserState } from '~/store/userStore'
 import type { Message } from '~/types/api/message'
 
@@ -38,9 +39,8 @@ export const KunTopBarUser = () => {
 
     const syncUserStatus = async () => {
       try {
-        const status = await kunFetchGet<KunResponse<UserState>>(
-          '/api/user/status'
-        )
+        const status =
+          await kunFetchGet<KunResponse<UserState>>('/api/user/status')
 
         if (cancelled) {
           return
@@ -131,6 +131,8 @@ export const KunTopBarUser = () => {
           </Tooltip>
 
           <ThemeSwitcher />
+
+          <NSFWSwitcher />
 
           {user.name && (
             <>

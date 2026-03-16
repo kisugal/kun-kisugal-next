@@ -17,7 +17,6 @@ import {
   useDisclosure
 } from '@heroui/modal'
 import {
-  ArrowLeftRight,
   CalendarCheck,
   CircleHelp,
   LogOut,
@@ -33,7 +32,6 @@ import { kunFetchPost } from '~/utils/kunFetch'
 import toast from 'react-hot-toast'
 import { showKunSooner } from '~/components/kun/Sooner'
 import { kunErrorHandler } from '~/utils/kunErrorHandler'
-import { NSFWSwitcher } from './NSFWSwitcher'
 
 export const UserDropdown = () => {
   const router = useRouter()
@@ -88,7 +86,8 @@ export const UserDropdown = () => {
             color="secondary"
             name={user.name.charAt(0).toUpperCase()}
             size="sm"
-            {...(user.avatar && user.avatar.trim() !== '' && { src: user.avatar })}
+            {...(user.avatar &&
+              user.avatar.trim() !== '' && { src: user.avatar })}
             showFallback
           />
         </DropdownTrigger>
@@ -134,14 +133,6 @@ export const UserDropdown = () => {
             startContent={<CircleHelp className="size-4" />}
           >
             帮助与反馈
-          </DropdownItem>
-          <DropdownItem
-            isReadOnly
-            textValue="NSFW 切换"
-            key="nsfw_toggle"
-            startContent={<ArrowLeftRight className="size-4" />}
-          >
-            <NSFWSwitcher />
           </DropdownItem>
           <DropdownItem
             key="logout"
