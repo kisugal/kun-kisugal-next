@@ -1,10 +1,10 @@
 import { TopicDetail } from '~/components/topic'
 import type { Metadata } from 'next'
 import { kunMoyuMoe } from '~/config/moyu-moe'
-import { getTopic } from '~/app/api/topic/[id]/route'
+import { getTopic } from '~/app/api/topic/[id]/getTopic'
 import { notFound } from 'next/navigation'
-import { verifyHeaderCookie } from '~/middleware/_verifyHeaderCookie'
-import { headers } from 'next/headers'
+import { verifyHeaderCookie } from '~/utils/actions/verifyHeaderCookie'
+import { getTopicComments } from '~/app/api/topic/comment/getTopicComments'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -41,16 +41,7 @@ export default async function TopicDetailPage({ params }: Props) {
     notFound()
   }
 
-  // 获取用户信息
-  const headersList = await headers()
-  const cookie = headersList.get('cookie') || ''
-  const request = {
-    headers: {
-      get: (name: string) => name === 'cookie' ? cookie : null
-    }
-  } as any
-  
-  const payload = await verifyHeaderCookie(request)
+  const payload = await verifyHeaderCookie()
   const userId = payload?.uid
 
   const topic = await getTopic(id, userId)
@@ -58,9 +49,24 @@ export default async function TopicDetailPage({ params }: Props) {
     notFound()
   }
 
+  const commentsResponse = await getTopicComments(
+    {
+      topicId: id,
+      sortField: 'created',
+      sortOrder: 'desc',
+      page: 1,
+      limit: 50
+    },
+    userId
+  )
+
   return (
     <div className="container mx-auto my-4">
-      <TopicDetail topic={topic} />
+      <TopicDetail
+        topic={topic}
+        initialComments={commentsResponse.comments}
+        initialCommentsTotal={commentsResponse.pagination.total}
+      />
     </div>
   )
 }

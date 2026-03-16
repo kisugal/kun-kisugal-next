@@ -1,5 +1,4 @@
 import '~/styles/index.css'
-import Script from 'next/script'
 import { Providers } from '~/app/providers'
 import { Toaster } from 'react-hot-toast'
 import { KunNavigationBreadcrumb } from '~/components/kun/NavigationBreadcrumb'
@@ -7,7 +6,7 @@ import { cn } from '~/utils/cn'
 import { KunTopBar } from '~/components/kun/top-bar/TopBar'
 import { KunBackToTop } from '~/components/kun/BackToTop'
 import { AppShell } from '~/components/layout/AppShell'
-import Snow from '~/components/ui/Snow'
+import { LazySnow } from '~/components/ui/LazySnow'
 import { ENABLE_SNOW } from '~/config/featureFlags'
 
 export default function RootLayout({
@@ -30,7 +29,7 @@ export default function RootLayout({
             <AppShell>{children}</AppShell>
             <KunBackToTop />
           </div>
-          <Snow enabled={ENABLE_SNOW} />
+          <LazySnow enabled={ENABLE_SNOW} />
         </Providers>
       </body>
     </html>

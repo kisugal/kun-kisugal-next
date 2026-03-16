@@ -1,10 +1,8 @@
 import { NextRequest } from 'next/server'
-import { Prisma } from '@prisma/client'
-import { prisma } from '~/prisma/index'
 import { verifyHeaderCookie } from '~/middleware/_verifyHeaderCookie'
 import { topicListSchema, createTopicSchema } from '~/validations/topic'
-import { markdownToText } from '~/utils/markdownToText'
-import type { TopicCard } from '~/types/api/topic'
+import { prisma } from '~/prisma/index'
+import { getTopicList } from './getTopicList'
 
 // GET - 获取话题列表
 export async function GET(request: NextRequest) {
@@ -18,68 +16,15 @@ export async function GET(request: NextRequest) {
   })
 
   const { sortField, sortOrder, page, limit, is_pinned } = validatedData
-
-  const where: Prisma.topicWhereInput = {
-    status: 0 // 只显示未删除的话题
-  }
-  
-  if (is_pinned !== undefined) {
-    where.is_pinned = is_pinned
-  }
-
-  // 修改排序逻辑：置顶话题优先，然后按照指定字段排序
-  const orderBy: Prisma.topicOrderByWithRelationInput[] = [
-    { is_pinned: 'desc' }, // 置顶话题优先
-    { [sortField]: sortOrder } // 然后按照指定字段排序
-  ]
-
-  const topics = await prisma.topic.findMany({
-    where,
-    orderBy,
-    skip: (page - 1) * limit,
-    take: limit,
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          avatar: true
-        }
-      },
-      _count: {
-        select: {
-          topic_likes: true,
-          topic_comments: true
-        }
-      }
-    }
-  })
-
-  const total = await prisma.topic.count({ where })
-
-  const topicCards: TopicCard[] = topics.map((topic: any) => ({
-    id: topic.id,
-    title: topic.title,
-    content: markdownToText(topic.content).slice(0, 200),
-    is_pinned: topic.is_pinned,
-    view_count: topic.view_count,
-    like_count: topic._count.topic_likes,
-    comment_count: topic._count.topic_comments,
-    user: {
-      id: topic.user.id,
-      name: topic.user.name,
-      avatar: topic.user.avatar
-    },
-    created: topic.created.toISOString(),
-    updated: topic.updated.toISOString()
-  }))
-
-  return Response.json({
-    topics: topicCards,
-    total,
+  const response = await getTopicList({
+    sortField,
+    sortOrder,
     page,
-    limit
+    limit,
+    is_pinned
   })
+
+  return Response.json(response)
 }
 
 // POST - 创建新话题

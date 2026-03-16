@@ -1,75 +1,217 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { kunFetchGet } from '~/utils/kunFetch'
+import { useEffect, useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { GalgameCard } from './Card'
 import { FilterBar } from './FilterBar'
-import { useMounted } from '~/hooks/useMounted'
 import { KunHeader } from '../kun/Header'
 import { KunPagination } from '../kun/Pagination'
 import type { SortField, SortOrder } from './_sort'
+import {
+  buildGalgameQueryString,
+  type GalgameQueryState
+} from './query'
 
 interface Props {
   initialGalgames: GalgameCard[]
   initialTotal: number
+  initialQueryState: GalgameQueryState
 }
 
-export const CardContainer = ({ initialGalgames, initialTotal }: Props) => {
-  const isMounted = useMounted()
+export const CardContainer = ({
+  initialGalgames,
+  initialTotal,
+  initialQueryState
+}: Props) => {
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const [selectedType, setSelectedType] = useState<string>(
+    initialQueryState.selectedType
+  )
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    initialQueryState.selectedLanguage
+  )
+  const [selectedPlatform, setSelectedPlatform] = useState<string>(
+    initialQueryState.selectedPlatform
+  )
+  const [sortField, setSortField] = useState<SortField>(
+    initialQueryState.sortField
+  )
+  const [sortOrder, setSortOrder] = useState<SortOrder>(
+    initialQueryState.sortOrder
+  )
+  const [selectedYears, setSelectedYears] = useState<string[]>(
+    initialQueryState.selectedYears
+  )
+  const [selectedMonths, setSelectedMonths] = useState<string[]>(
+    initialQueryState.selectedMonths
+  )
+  const [page, setPage] = useState(initialQueryState.page)
 
-  const [galgames, setGalgames] = useState<GalgameCard[]>(initialGalgames)
-  const [total, setTotal] = useState(initialTotal)
-  const [loading, setLoading] = useState(false)
-  const [selectedType, setSelectedType] = useState<string>('all')
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('all')
-  const [selectedPlatform, setSelectedPlatform] = useState<string>('all')
-  const [sortField, setSortField] = useState<SortField>('resource_update_time')
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-  const [selectedYears, setSelectedYears] = useState<string[]>(['all'])
-  const [selectedMonths, setSelectedMonths] = useState<string[]>(['all'])
-  const [page, setPage] = useState(1)
+  useEffect(() => {
+    setSelectedType(initialQueryState.selectedType)
+    setSelectedLanguage(initialQueryState.selectedLanguage)
+    setSelectedPlatform(initialQueryState.selectedPlatform)
+    setSortField(initialQueryState.sortField)
+    setSortOrder(initialQueryState.sortOrder)
+    setSelectedYears(initialQueryState.selectedYears)
+    setSelectedMonths(initialQueryState.selectedMonths)
+    setPage(initialQueryState.page)
+  }, [initialQueryState])
 
-  const fetchPatches = async () => {
-    setLoading(true)
+  const navigate = (nextState: GalgameQueryState) => {
+    const queryString = buildGalgameQueryString(nextState)
+    const href = queryString ? `/galgame?${queryString}` : '/galgame'
 
-    const { galgames, total } = await kunFetchGet<{
-      galgames: GalgameCard[]
-      total: number
-    }>('/api/galgame', {
+    startTransition(() => {
+      router.replace(href, { scroll: false })
+    })
+  }
+
+  const handleSortFieldChange = (value: SortField) => {
+    setSortField(value)
+    setPage(1)
+    navigate({
+      ...initialQueryState,
+      selectedType,
+      selectedLanguage,
+      selectedPlatform,
+      sortField: value,
+      sortOrder,
+      selectedYears,
+      selectedMonths,
+      page: 1
+    })
+  }
+
+  const handleSortOrderChange = (value: SortOrder) => {
+    setSortOrder(value)
+    setPage(1)
+    navigate({
+      ...initialQueryState,
+      selectedType,
+      selectedLanguage,
+      selectedPlatform,
+      sortField,
+      sortOrder: value,
+      selectedYears,
+      selectedMonths,
+      page: 1
+    })
+  }
+
+  const handleTypeChange = (value: string) => {
+    setSelectedType(value)
+    setPage(1)
+    navigate({
+      ...initialQueryState,
+      selectedType: value,
+      selectedLanguage,
+      selectedPlatform,
+      sortField,
+      sortOrder,
+      selectedYears,
+      selectedMonths,
+      page: 1
+    })
+  }
+
+  const handleLanguageChange = (value: string) => {
+    setSelectedLanguage(value)
+    setPage(1)
+    navigate({
+      ...initialQueryState,
+      selectedType,
+      selectedLanguage: value,
+      selectedPlatform,
+      sortField,
+      sortOrder,
+      selectedYears,
+      selectedMonths,
+      page: 1
+    })
+  }
+
+  const handlePlatformChange = (value: string) => {
+    setSelectedPlatform(value)
+    setPage(1)
+    navigate({
+      ...initialQueryState,
+      selectedType,
+      selectedLanguage,
+      selectedPlatform: value,
+      sortField,
+      sortOrder,
+      selectedYears,
+      selectedMonths,
+      page: 1
+    })
+  }
+
+  const handleYearsChange = (value: string[]) => {
+    const normalizedYears = value.includes('all') || value.length === 0
+      ? ['all']
+      : value
+    const normalizedMonths =
+      normalizedYears.includes('all') && !selectedMonths.includes('all')
+        ? ['all']
+        : selectedMonths
+
+    setSelectedYears(normalizedYears)
+    if (normalizedMonths !== selectedMonths) {
+      setSelectedMonths(normalizedMonths)
+    }
+    setPage(1)
+    navigate({
+      ...initialQueryState,
       selectedType,
       selectedLanguage,
       selectedPlatform,
       sortField,
       sortOrder,
-      page,
-      limit: 24,
-      yearString: JSON.stringify(selectedYears),
-      monthString: JSON.stringify(selectedMonths)
+      selectedYears: normalizedYears,
+      selectedMonths: normalizedMonths,
+      page: 1
     })
-
-    setGalgames(galgames)
-    setTotal(total)
-    setLoading(false)
   }
 
-  useEffect(() => {
-    if (!isMounted) {
-      return
-    }
-    fetchPatches()
-  }, [
-    sortField,
-    sortOrder,
-    selectedType,
-    selectedLanguage,
-    selectedPlatform,
-    page,
-    selectedYears,
-    selectedMonths
-  ])
+  const handleMonthsChange = (value: string[]) => {
+    const normalizedMonths = value.includes('all') || value.length === 0
+      ? ['all']
+      : value
+
+    setSelectedMonths(normalizedMonths)
+    setPage(1)
+    navigate({
+      ...initialQueryState,
+      selectedType,
+      selectedLanguage,
+      selectedPlatform,
+      sortField,
+      sortOrder,
+      selectedYears,
+      selectedMonths: normalizedMonths,
+      page: 1
+    })
+  }
+
+  const handlePageChange = (value: number) => {
+    setPage(value)
+    navigate({
+      ...initialQueryState,
+      selectedType,
+      selectedLanguage,
+      selectedPlatform,
+      sortField,
+      sortOrder,
+      selectedYears,
+      selectedMonths,
+      page: value
+    })
+  }
 
   return (
-    <div className="container mx-auto my-4 space-y-6">
+    <div className="container mx-auto my-4 space-y-6" aria-busy={isPending}>
       <KunHeader
         name="Galgame"
         description="这里展示了本站所有的 Galgame, 您可以点击进入以下载 Galgame 资源"
@@ -77,34 +219,36 @@ export const CardContainer = ({ initialGalgames, initialTotal }: Props) => {
 
       <FilterBar
         selectedType={selectedType}
-        setSelectedType={setSelectedType}
+        setSelectedType={handleTypeChange}
         sortField={sortField}
-        setSortField={setSortField}
+        setSortField={handleSortFieldChange}
         sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
+        setSortOrder={handleSortOrderChange}
         selectedLanguage={selectedLanguage}
-        setSelectedLanguage={setSelectedLanguage}
+        setSelectedLanguage={handleLanguageChange}
         selectedPlatform={selectedPlatform}
-        setSelectedPlatform={setSelectedPlatform}
+        setSelectedPlatform={handlePlatformChange}
         selectedYears={selectedYears}
-        setSelectedYears={setSelectedYears}
+        setSelectedYears={handleYearsChange}
         selectedMonths={selectedMonths}
-        setSelectedMonths={setSelectedMonths}
+        setSelectedMonths={handleMonthsChange}
       />
 
-      <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4 xl:grid-cols-6">
-        {galgames.map((pa) => (
+      <div
+        className={`grid grid-cols-2 gap-4 transition-opacity sm:gap-5 md:grid-cols-4 xl:grid-cols-6 ${isPending ? 'opacity-60' : 'opacity-100'}`}
+      >
+        {initialGalgames.map((pa) => (
           <GalgameCard key={pa.id} patch={pa} />
         ))}
       </div>
 
-      {total > 24 && (
+      {initialTotal > 24 && (
         <div className="flex justify-center">
           <KunPagination
-            total={Math.ceil(total / 24)}
+            total={Math.ceil(initialTotal / 24)}
             page={page}
-            onPageChange={setPage}
-            isLoading={loading}
+            onPageChange={handlePageChange}
+            isLoading={isPending}
           />
         </div>
       )}

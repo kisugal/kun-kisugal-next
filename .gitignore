@@ -53,3 +53,6 @@ next-env.d.ts
 /migration/markdown
 /migration/*.txt
 /migration/*.json
+
+# report
+perf-results/**

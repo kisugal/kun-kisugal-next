@@ -8,12 +8,28 @@ export const KunBackToTop = () => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
+    let frameId = 0
+
     const handleScroll = () => {
-      setShow(window.scrollY > 400)
+      if (frameId) {
+        return
+      }
+
+      frameId = window.requestAnimationFrame(() => {
+        setShow(window.scrollY > 400)
+        frameId = 0
+      })
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (frameId) {
+        window.cancelAnimationFrame(frameId)
+      }
+    }
   }, [])
 
   const scrollToTop = () => {

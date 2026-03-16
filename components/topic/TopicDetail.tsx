@@ -6,16 +6,24 @@ import { formatDistanceToNow } from '~/utils/formatDistanceToNow'
 import type { Topic } from '~/types/api/topic'
 import { Heart, Eye, Pin, PinOff, Edit, Trash2 } from 'lucide-react'
 import { MarkdownRenderer } from '~/components/kun/MarkdownRenderer'
+import { HtmlContent } from '~/components/kun/HtmlContent'
 import { TopicCommentContainer } from '~/components/comment/TopicCommentContainer'
 import { EditTopic } from './EditTopic'
 import { useUserStore } from '~/store/userStore'
 import toast from 'react-hot-toast'
+import type { TopicComment } from '~/types/api/topic-comment'
 
 interface Props {
   topic: Topic
+  initialComments?: TopicComment[]
+  initialCommentsTotal?: number
 }
 
-export const TopicDetail = ({ topic: initialTopic }: Props) => {
+export const TopicDetail = ({
+  topic: initialTopic,
+  initialComments = [],
+  initialCommentsTotal = 0
+}: Props) => {
   const { user } = useUserStore()
   const [topic, setTopic] = useState(initialTopic)
   const [isLiking, setIsLiking] = useState(false)
@@ -190,10 +198,17 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
           </div>
         </CardHeader>
         <CardBody className="pt-0">
-          <MarkdownRenderer 
-            content={topic.content}
-            className="whitespace-pre-wrap"
-          />
+          {topic.contentHtml ? (
+            <HtmlContent
+              html={topic.contentHtml}
+              className="milkdown milkdown-renderer max-w-none whitespace-pre-wrap"
+            />
+          ) : (
+            <MarkdownRenderer
+              content={topic.content}
+              className="whitespace-pre-wrap"
+            />
+          )}
           
           <div className="flex items-center justify-between mt-6 pt-4 border-t border-divider">
             <div className="flex items-center gap-4 text-sm text-foreground/60">
@@ -270,7 +285,11 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
       </Card>
       
       {/* 评论区域 */}
-      <TopicCommentContainer topicId={topic.id} />
+      <TopicCommentContainer
+        topicId={topic.id}
+        initialComments={initialComments}
+        initialTotal={initialCommentsTotal}
+      />
       
       {/* 删除确认对话框 */}
       <Modal 
