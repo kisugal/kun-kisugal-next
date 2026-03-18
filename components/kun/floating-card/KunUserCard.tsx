@@ -17,6 +17,10 @@ export const KunUserCard = ({ uid }: UserCardProps) => {
   const [error, setError] = useState<boolean>(false)
 
   useEffect(() => {
+    // reset state before starting a new request for a different uid
+    setError(false)
+    setUser(null)
+
     const fetchData = async () => {
       try {
         const user = await kunFetchGet<FloatingCardUser>(
@@ -26,6 +30,7 @@ export const KunUserCard = ({ uid }: UserCardProps) => {
         if (typeof user === 'string') {
           setError(true)
         } else {
+          setError(false)
           setUser(user)
         }
       } catch (error) {
