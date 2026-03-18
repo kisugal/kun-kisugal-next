@@ -1,8 +1,7 @@
-import { PatchHeaderContainer } from '~/components/patch/header/Container'
 import { ErrorComponent } from '~/components/error/ErrorComponent'
+import { PatchDetailPage } from '~/components/patch/header/PatchDetailPage'
+import { getPatchDetailData } from '~/components/patch/header/data'
 import { generateKunMetadataTemplate } from './metadata'
-import { kunGetPatchActions, kunGetPatchIntroductionActions } from './actions'
-import { verifyHeaderCookie } from '~/utils/actions/verifyHeaderCookie'
 import type { Metadata } from 'next'
 
 export const revalidate = 3
@@ -15,15 +14,12 @@ export const generateMetadata = async ({
   params
 }: Props): Promise<Metadata> => {
   const { id } = await params
-  const patch = await kunGetPatchActions({
-    uniqueId: id
-  })
-  const intro = await kunGetPatchIntroductionActions({ uniqueId: id })
-  if (typeof patch === 'string' || typeof intro === 'string') {
+  const response = await getPatchDetailData(id)
+  if (typeof response === 'string') {
     return {}
   }
 
-  return generateKunMetadataTemplate(patch, intro)
+  return generateKunMetadataTemplate(response.patch, response.intro)
 }
 
 export default async function Kun({ params }: Props) {
@@ -32,23 +28,10 @@ export default async function Kun({ params }: Props) {
     return <ErrorComponent error={'提取页面参数错误'} />
   }
 
-  const patch = await kunGetPatchActions({
-    uniqueId: id
-  })
-  if (typeof patch === 'string') {
-    return <ErrorComponent error={patch} />
+  const response = await getPatchDetailData(id)
+  if (typeof response === 'string') {
+    return <ErrorComponent error={response} />
   }
 
-  const intro = await kunGetPatchIntroductionActions({ uniqueId: id })
-  if (typeof intro === 'string') {
-    return <ErrorComponent error={intro} />
-  }
-
-  const payload = await verifyHeaderCookie()
-
-  return (
-    <div className="container py-6 mx-auto space-y-6">
-      <PatchHeaderContainer patch={patch} intro={intro} uid={payload?.uid} />
-    </div>
-  )
+  return <PatchDetailPage data={response} />
 }
