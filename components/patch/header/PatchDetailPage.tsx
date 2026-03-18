@@ -470,7 +470,7 @@ const SteamHero = ({
           </h1>
         </div>
 
-        <div className="grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1.2fr)] lg:gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1.1fr)]">
+        <div className="grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.65fr)_minmax(380px,1.35fr)] lg:gap-6 xl:grid-cols-[minmax(0,1.75fr)_minmax(430px,1.25fr)]">
           <div className="order-2 flex h-full min-w-0 flex-col justify-center rounded-[24px] bg-content2/40 p-2 shadow-sm ring-1 ring-default-200/50 backdrop-blur-md sm:p-3 lg:order-1">
             <PatchDetailMediaCarousel
               images={overviewImages}
@@ -558,8 +558,12 @@ const SteamHero = ({
                     }}
                   />
 
-                  <div className="overflow-x-auto">
-                    <KunCardStats patch={data.patch} disableTooltip={false} />
+                  <div className="min-w-0 lg:ml-auto">
+                    <KunCardStats
+                      patch={data.patch}
+                      disableTooltip={false}
+                      className="justify-start gap-x-2.5 sm:gap-x-3 lg:justify-end"
+                    />
                   </div>
                 </div>
 
