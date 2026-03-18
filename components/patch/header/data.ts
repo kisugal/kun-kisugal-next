@@ -67,6 +67,25 @@ const parseMarkdownImages = (section: string): PatchDetailScreenshot[] => {
     .filter((item): item is PatchDetailScreenshot => Boolean(item))
 }
 
+const isSafeHref = (href: string): boolean => {
+  const value = href.trim()
+
+  // Allow same-origin relative paths and in-page anchors.
+  if (value.startsWith('/') || value.startsWith('#')) {
+    return true
+  }
+
+  try {
+    // Use a dummy base to support relative URLs in a safe way.
+    const url = new URL(value, 'https://example.com')
+    const protocol = url.protocol.toLowerCase()
+    return protocol === 'http:' || protocol === 'https:'
+  } catch {
+    // Malformed URLs are treated as unsafe.
+    return false
+  }
+}
+
 const parseKunLinks = (section: string): PatchDetailLink[] => {
   return section
     .split('\n')
@@ -78,9 +97,16 @@ const parseKunLinks = (section: string): PatchDetailLink[] => {
         return null
       }
 
+      const label = match[1].trim()
+      const href = match[2].trim()
+
+      if (!isSafeHref(href)) {
+        return null
+      }
+
       return {
-        label: match[1].trim(),
-        href: match[2].trim()
+        label,
+        href
       }
     })
     .filter((item): item is PatchDetailLink => Boolean(item))
