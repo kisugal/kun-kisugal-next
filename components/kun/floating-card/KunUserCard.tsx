@@ -14,21 +14,40 @@ interface UserCardProps {
 
 export const KunUserCard = ({ uid }: UserCardProps) => {
   const [user, setUser] = useState<FloatingCardUser | null>(null)
+  const [error, setError] = useState<boolean>(false)
 
   useEffect(() => {
+    // reset state before starting a new request for a different uid
+    setError(false)
+    setUser(null)
+
     const fetchData = async () => {
-      const user = await kunFetchGet<FloatingCardUser>(
-        '/api/user/profile/floating',
-        { uid }
-      )
-      setUser(user)
+      try {
+        const user = await kunFetchGet<FloatingCardUser>(
+          '/api/user/profile/floating',
+          { uid }
+        )
+        if (typeof user === 'string') {
+          setError(true)
+        } else {
+          setError(false)
+          setUser(user)
+        }
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error)
+        setError(true)
+      }
     }
     fetchData()
-  }, [])
+  }, [uid])
 
   return (
     <div className="p-2 w-[300px]">
-      {user ? (
+      {error ? (
+        <div className="p-4 text-center text-sm text-default-500">
+          获取用户资料失败
+        </div>
+      ) : user ? (
         <>
           <div className="flex items-center justify-between">
             <User

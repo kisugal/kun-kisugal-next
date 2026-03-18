@@ -56,3 +56,7 @@ next-env.d.ts
 
 # report
 perf-results/**
+
+# dev
+/components/design
+/app/(main)/design
