@@ -253,7 +253,7 @@ export const PatchDetailTabs = ({ data, children }: Props) => {
             }
             className="p-0"
           >
-            <div id="demo-resources" className="pt-5">
+            <div className="pt-5">
               <TabSection
                 title="资源链接"
                 icon={<FolderOpenDot className="size-5 text-default-500" />}
