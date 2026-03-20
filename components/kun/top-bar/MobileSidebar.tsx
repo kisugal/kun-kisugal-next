@@ -15,7 +15,8 @@ import {
     Hash,
     HeartMinus,
     ClipboardList,
-    X
+    X,
+    HeartIcon
 } from 'lucide-react'
 import { Button } from '@heroui/button'
 import { memo, useEffect, useState } from 'react'
@@ -51,6 +52,26 @@ const navSections = [
         items: [
             { name: '友情链接', href: '/friend-link', icon: HeartMinus },
             { name: '待办事项', href: '/todo', icon: ClipboardList }
+        ]
+    },
+    {
+        title: '推荐内容',
+        items: [
+            {
+                name: 'Ai女友💋',
+                href: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
+                icon: HeartIcon
+            },
+            {
+                name: '⚡️翻墙Vpn推荐',
+                href: 'https://eueua.cc/#/register?code=V437MLYw',
+                icon: HeartIcon
+            },
+            {
+                name: '哔咔漫画',
+                href: 'https://wrkb-tj.fukmaydt.com/?ch=m1f1v8bk',
+                icon: HeartIcon
+            }
         ]
     }
 ]
@@ -102,7 +123,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
             {/* 侧边栏 */}
             <div
                 className={cn(
-                    'fixed top-0 left-0 bottom-0 w-[280px] bg-background z-50',
+                    'fixed top-0 left-0 bottom-0 w-[220px] bg-background z-50',
                     'transform transition-transform duration-300 ease-out',
                     'shadow-xl',
                     isOpen ? 'translate-x-0' : '-translate-x-full'
