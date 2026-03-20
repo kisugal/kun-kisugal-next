@@ -5,6 +5,7 @@ import { patchCreateSchema, patchUpdateSchema } from '~/validations/edit'
 import { createGalgame } from './create'
 import { updateGalgame } from './update'
 import { prisma } from '~/prisma'
+import { isPatchDuplicateErrorMessage } from './_externalIds'
 
 const checkStringArrayValid = (type: 'alias' | 'tag', aliasString: string) => {
   const label = type === 'alias' ? '别名' : '标签'
@@ -42,7 +43,10 @@ export const POST = async (req: NextRequest) => {
     console.log('用户验证成功，用户ID:', payload.uid)
 
     if (payload.role < 3) {
-      return NextResponse.json({ error: '本页面仅管理员可访问' }, { status: 403 })
+      return NextResponse.json(
+        { error: '本页面仅管理员可访问' },
+        { status: 403 }
+      )
     }
 
     const { alias, banner, tag, gameCGFiles, ...rest } = input
@@ -88,7 +92,12 @@ export const POST = async (req: NextRequest) => {
     console.log('createGalgame调用完成')
 
     if (typeof response === 'string') {
-      return NextResponse.json({ error: response }, { status: 500 })
+      const status = isPatchDuplicateErrorMessage(response) ? 409 : 500
+      return NextResponse.json({ error: response }, { status })
+    }
+
+    if ('error' in response) {
+      return NextResponse.json(response, { status: 409 })
     }
 
     return NextResponse.json(response)
@@ -128,8 +137,16 @@ export const PUT = async (req: NextRequest) => {
     }
 
     if (payload.uid !== patch.user_id && payload.role < 3) {
-      console.error('用户无权限编辑游戏，用户ID:', payload.uid, '游戏创建者ID:', patch.user_id)
-      return NextResponse.json({ error: '您没有权限编辑此游戏' }, { status: 403 })
+      console.error(
+        '用户无权限编辑游戏，用户ID:',
+        payload.uid,
+        '游戏创建者ID:',
+        patch.user_id
+      )
+      return NextResponse.json(
+        { error: '您没有权限编辑此游戏' },
+        { status: 403 }
+      )
     }
     console.log('权限检查通过')
 
@@ -138,7 +155,8 @@ export const PUT = async (req: NextRequest) => {
 
     if (typeof response === 'string') {
       console.error('updateGalgame返回错误:', response)
-      return NextResponse.json({ error: response }, { status: 500 })
+      const status = isPatchDuplicateErrorMessage(response) ? 409 : 500
+      return NextResponse.json({ error: response }, { status })
     }
 
     console.log('游戏信息更新成功')

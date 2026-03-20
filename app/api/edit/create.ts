@@ -1,12 +1,23 @@
 import crypto from 'crypto'
 import { z } from 'zod'
 import { prisma } from '~/prisma/index'
-import { uploadPatchBanner } from './_upload'
+import { uploadPatchBanner, uploadPatchImages } from './_upload'
 import { patchCreateSchema } from '~/validations/edit'
 import { handleBatchPatchTags } from './batchTag'
 import { handleBatchPatchCompanies } from './batchCompany'
 import { kunMoyuMoe } from '~/config/moyu-moe'
 import { postToIndexNow } from './_postToIndexNow'
+import { delKv } from '~/lib/redis'
+import {
+  findPatchDuplicateConflict,
+  getPatchUniqueConstraintErrorMessage,
+  normalizePatchExternalId
+} from './_externalIds'
+import type { PatchDuplicateConflict } from './_externalIds'
+
+interface CreateGalgameSuccess {
+  uniqueId: string
+}
 
 export const createGalgame = async (
   input: Omit<z.infer<typeof patchCreateSchema>, 'alias' | 'tag'> & {
@@ -25,6 +36,7 @@ export const createGalgame = async (
       name,
       vndbId,
       dlsiteId,
+      forceOverwrite,
       alias,
       banner,
       tag,
@@ -33,28 +45,86 @@ export const createGalgame = async (
       contentLimit
     } = input
 
-    console.log('游戏信息:', { name, vndbId, introduction, released, contentLimit })
+    const normalizedVndbId = normalizePatchExternalId(vndbId)
+    const normalizedDlsiteId = normalizePatchExternalId(dlsiteId)
+    const [vndbConflict, dlsiteConflict] = await Promise.all([
+      normalizedVndbId
+        ? findPatchDuplicateConflict('vndb_id', normalizedVndbId)
+        : Promise.resolve(null),
+      normalizedDlsiteId
+        ? findPatchDuplicateConflict('dlsite_id', normalizedDlsiteId)
+        : Promise.resolve(null)
+    ])
+
+    if (
+      vndbConflict &&
+      dlsiteConflict &&
+      vndbConflict.duplicate.patch.id !== dlsiteConflict.duplicate.patch.id
+    ) {
+      return `${vndbConflict.error}，且 ${dlsiteConflict.error}`
+    }
+
+    const overwriteConflict = (vndbConflict ??
+      dlsiteConflict) as PatchDuplicateConflict | null
+
+    if (overwriteConflict) {
+      if (!forceOverwrite) {
+        return overwriteConflict
+      }
+
+      if (!overwriteConflict.duplicate.canOverwrite) {
+        return overwriteConflict.error
+      }
+    }
+
+    const overwritePatchId = overwriteConflict?.duplicate.patch.id
+    const galgameUniqueId =
+      overwriteConflict?.duplicate.patch.uniqueId ??
+      crypto.randomBytes(4).toString('hex')
+
+    console.log('游戏信息:', {
+      name,
+      vndbId: normalizedVndbId,
+      dlsiteId: normalizedDlsiteId,
+      forceOverwrite,
+      introduction,
+      released,
+      contentLimit
+    })
     const bannerArrayBuffer = banner as ArrayBuffer
     console.log('Banner大小:', bannerArrayBuffer.byteLength)
-    const galgameUniqueId = crypto.randomBytes(4).toString('hex')
     console.log('生成的游戏ID:', galgameUniqueId)
 
     const res = await prisma.$transaction(
       async (prisma) => {
         console.log('开始数据库事务')
-        const patch = await prisma.patch.create({
-          data: {
-            name,
-            unique_id: galgameUniqueId,
-            vndb_id: vndbId ? vndbId : null,
-            dlsite_id: input.dlsiteId ? input.dlsiteId : null,
-            introduction,
-            user_id: uid,
-            banner: '',
-            released,
-            content_limit: contentLimit
-          }
-        })
+        const patch = overwritePatchId
+          ? await prisma.patch.update({
+              where: { id: overwritePatchId },
+              data: {
+                name,
+                vndb_id: normalizedVndbId,
+                dlsite_id: normalizedDlsiteId,
+                introduction,
+                user_id: uid,
+                banner: '',
+                released,
+                content_limit: contentLimit
+              }
+            })
+          : await prisma.patch.create({
+              data: {
+                name,
+                unique_id: galgameUniqueId,
+                vndb_id: normalizedVndbId,
+                dlsite_id: normalizedDlsiteId,
+                introduction,
+                user_id: uid,
+                banner: '',
+                released,
+                content_limit: contentLimit
+              }
+            })
         console.log('创建patch成功，ID:', patch.id)
 
         const newId = patch.id
@@ -68,55 +138,68 @@ export const createGalgame = async (
         console.log('图片上传成功')
         const imageLink = `${process.env.KUN_VISUAL_NOVEL_IMAGE_BED_URL}/patch/${newId}/banner/banner.avif`
 
-        let finalIntro = introduction;
-        let cgs: string[] = [];
+        let finalIntro = introduction
+        let cgs: string[] = []
 
-        let developers: string[] = [];
+        let developers: string[] = []
 
         if (input.gameCGUrls) {
           try {
-            const parsed = JSON.parse(input.gameCGUrls) as string[];
+            const parsed = JSON.parse(input.gameCGUrls) as string[]
             if (Array.isArray(parsed)) {
-              cgs = cgs.concat(parsed);
+              cgs = cgs.concat(parsed)
             }
-          } catch (e) { console.error('Error parsing gameCGUrls', e) }
+          } catch (e) {
+            console.error('Error parsing gameCGUrls', e)
+          }
         }
 
         if (input.gameCGFiles) {
           const filesToUpload = Array.isArray(input.gameCGFiles)
             ? input.gameCGFiles
-            : [input.gameCGFiles];
+            : [input.gameCGFiles]
 
           if (filesToUpload.length > 0) {
-            console.log('开始上传游戏CG, 数量:', filesToUpload.length);
-            const { uploadPatchImages } = require('./_upload');
-            const uploadedUrls = await uploadPatchImages(filesToUpload, newId);
-            cgs = cgs.concat(uploadedUrls);
+            console.log('开始上传游戏CG, 数量:', filesToUpload.length)
+            const uploadedUrls = await uploadPatchImages(filesToUpload, newId)
+            cgs = cgs.concat(uploadedUrls)
           }
         }
 
         if (cgs.length > 0) {
-          const cgMd = cgs.map(url => `![](${url})`).join('\n\n');
-          finalIntro += `\n\n## 游戏截图\n${cgMd}`;
+          const cgMd = cgs.map((url) => `![](${url})`).join('\n\n')
+          finalIntro += `\n\n## 游戏截图\n${cgMd}`
         }
 
         if (input.gameLinks) {
           try {
-            const links = JSON.parse(input.gameLinks) as { name: string, link: string }[];
+            const links = JSON.parse(input.gameLinks) as {
+              name: string
+              link: string
+            }[]
             if (Array.isArray(links) && links.length > 0) {
-              const linkMd = links.map(l => `::kun-link{text="${l.name || '链接'}" href="${l.link}"}`).join('\n\n');
-              finalIntro += `\n\n## 相关链接\n\n${linkMd}`;
+              const linkMd = links
+                .map(
+                  (l) =>
+                    `::kun-link{text="${l.name || '链接'}" href="${l.link}"}`
+                )
+                .join('\n\n')
+              finalIntro += `\n\n## 相关链接\n\n${linkMd}`
             }
-          } catch (e) { console.error('Error parsing gameLinks', e) }
+          } catch (e) {
+            console.error('Error parsing gameLinks', e)
+          }
         }
 
         if (input.developers) {
           try {
-            const devs = JSON.parse(input.developers) as string[];
+            const devs = JSON.parse(input.developers) as string[]
             if (Array.isArray(devs) && devs.length > 0) {
-              developers = devs;
+              developers = devs
             }
-          } catch (e) { console.error('Error parsing developers', e) }
+          } catch (e) {
+            console.error('Error parsing developers', e)
+          }
         }
 
         await prisma.patch.update({
@@ -126,6 +209,12 @@ export const createGalgame = async (
             introduction: finalIntro
           }
         })
+
+        if (overwritePatchId) {
+          await prisma.patch_alias.deleteMany({
+            where: { patch_id: newId }
+          })
+        }
 
         if (alias.length) {
           const aliasData = alias.map((name) => ({
@@ -163,15 +252,30 @@ export const createGalgame = async (
       await handleBatchPatchCompanies(res.patchId, res.developers, uid)
     }
 
+    if (overwritePatchId) {
+      await Promise.all([
+        delKv(`patch:${galgameUniqueId}`),
+        delKv(`patch:introduction:${galgameUniqueId}`)
+      ])
+    }
+
     if (contentLimit === 'sfw') {
       const newPatchUrl = `${kunMoyuMoe.domain.main}/${galgameUniqueId}`
       await postToIndexNow(newPatchUrl)
     }
 
-    return { uniqueId: galgameUniqueId }
+    return { uniqueId: galgameUniqueId } satisfies CreateGalgameSuccess
   } catch (error) {
+    const duplicateMessage = getPatchUniqueConstraintErrorMessage(error)
+    if (duplicateMessage) {
+      return duplicateMessage
+    }
+
     console.error('创建游戏时发生错误:', error)
-    console.error('错误堆栈:', error instanceof Error ? error.stack : 'Unknown error')
+    console.error(
+      '错误堆栈:',
+      error instanceof Error ? error.stack : 'Unknown error'
+    )
     return `创建游戏失败: ${error instanceof Error ? error.message : '未知错误'}`
   }
 }
