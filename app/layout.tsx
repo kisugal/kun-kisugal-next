@@ -33,6 +33,7 @@ export default function RootLayout({
           </div>
           <SnowWrapper enabled={ENABLE_SNOW} />
         </Providers>
+        <script defer src="https://umami.kisugal.icu/script.js" data-website-id="64cac2dd-0bca-4041-907d-18eef228439c" />
       </body>
     </html>
   )
