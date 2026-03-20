@@ -31,58 +31,104 @@ import { Button } from '@heroui/button'
 import { Tooltip } from '@heroui/tooltip'
 import { Image } from '@heroui/image'
 import { useSettingStore } from '~/store/settingStore'
-import { useMemo } from 'react'
-
-// 固定的推荐内容
-const getRecommendations = () => {
-  return [
-    { name: '五彩斑斓的世界', description: '', href: '#', icon: HeartIcon },
-    { name: '星辰恋曲的白色永恒', description: '', href: '#', icon: HeartIcon },
-    { name: '星空的记忆', description: '', href: '#', icon: HeartIcon },
-    { name: '樱花、萌放', description: '', href: '#', icon: HeartIcon }
-  ]
-}
 
 const navSections = [
   {
     title: '推荐内容',
-    items: getRecommendations(),
+    items: [
+      {
+        name: 'Ai女友💋',
+        description: '🌟在线畅玩。顶尖色情，即刻生图😍多样角色场景18禁性癖待你开发！💋',
+        href: "https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67",
+        icon: HeartIcon,
+        popover: {
+          title: 'Ai女友',
+          description: 'Ai女友💋',
+          image: "https://r2.sakinori.top/%E9%A3%8E%E6%9C%88AI/320x500GIF4.gif"
+        }
+      },
+      {
+        name: '⚡️翻墙Vpn推荐',
+        description: '翻墙Vpn推荐，加速下载！觉得下载资源慢？觉得加载页面不丝滑？',
+        href: "https://eueua.cc/#/register?code=V437MLYw",
+        icon: HeartIcon,
+        popover: {
+          title: 'VPN',
+          description: '⚡️翻墙Vpn推荐',
+          image: "https://r2.sakinori.top/eueuVPN/eueuVPN.jpg"
+        }
+      },
+      {
+        name: '哔咔漫画',
+        description: '哔咔漫画，你想要的这里都有~',
+        href: "https://wrkb-tj.fukmaydt.com/?ch=m1f1v8bk",
+        icon: HeartIcon,
+        popover: {
+          title: '哔咔漫画',
+          description: '哔咔漫画',
+          image: "https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/1694af269120260107195520.webp"
+        }
+      }
+    ]
   },
   {
     title: '核心功能',
     items: [
       { name: '首页', description: '网站首页', href: '/', icon: Home },
-      { name: 'Galgame', description: 'Galgame 本体获取', href: '/galgame', icon: Gamepad2 },
-      { name: '补丁和存档', description: '游戏补丁与存档', href: '/resource', icon: FileText },
-    ],
+      {
+        name: 'Galgame',
+        description: 'Galgame 本体获取',
+        href: '/galgame',
+        icon: Gamepad2
+      },
+      {
+        name: '补丁和存档',
+        description: '游戏补丁与存档',
+        href: '/resource',
+        icon: FileText
+      }
+    ]
   },
   {
     title: '游戏信息',
     items: [
-      { name: '游戏标签', description: '按标签浏览游戏', href: '/tag', icon: Tags },
-      { name: '开发商', description: '按开发商浏览', href: '/companies', icon: Building },
-    ],
+      {
+        name: '游戏标签',
+        description: '按标签浏览游戏',
+        href: '/tag',
+        icon: Tags
+      },
+      {
+        name: '制作会社',
+        description: '按会社浏览游戏',
+        href: '/companies',
+        icon: Building
+      }
+    ]
   },
   {
     title: '社区交流',
     items: [
-      { name: '社区评论列表', description: '社区评论动态', href: '/comment', icon: MessagesSquare },
-      { name: '社区话题列表', description: '社区话题', href: '/topic', icon: Hash },
-    ],
+      {
+        name: '评论列表',
+        description: '最新评论动态',
+        href: '/comment',
+        icon: MessagesSquare
+      },
+      { name: '话题列表', description: '最新话题', href: '/topic', icon: Hash }
+    ]
   },
-  // {
-  //   title: '帮助支持',
-  //   items: [
-  //     { name: '帮助文档', description: '使用说明文档', href: '/doc', icon: BookUser },
-  //   ],
-  // },
   {
     title: '其他',
     items: [
-      { name: '友情链接', description: '可爱的好朋友们！', href: '/friend-link', icon: HeartMinus },
-      { name: '待办事项', description: '站点开发计划与进度', href: '/todo', icon: ClipboardList },
-    ],
-  },
+      {
+        name: '友情链接',
+        description: '可爱的好朋友们！',
+        href: '/friend-link',
+        icon: HeartMinus
+      }
+    ]
+  }
 ]
 
 const SidebarPopoverContent = ({ popover }: { popover: any }) => (
@@ -92,7 +138,6 @@ const SidebarPopoverContent = ({ popover }: { popover: any }) => (
     <Image
       src={popover.image}
       alt={popover.title}
-      // 2. 调整 width 来改变图片宽度
       width={320}
       radius="md"
     />
@@ -123,7 +168,8 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
             <div className="text-xs text-orange-700 dark:text-orange-300">
               <div className="font-medium mb-1">部分 Galgame 已被隐藏</div>
               <div className="text-orange-600 dark:text-orange-400">
-                网站未启用 NSFW, 部分 Galgame 不可见, 要查看所有 Galgame, 请在网站右上角设置打开 NSFW
+                网站未启用 NSFW, 部分 Galgame 不可见, 要查看所有 Galgame,
+                请在顶部导航栏切换网站内容显示
               </div>
             </div>
           </div>
@@ -137,9 +183,9 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
           <div className="flex items-start gap-2">
             <Eye className="w-4 h-4 text-pink-500 mt-0.5 flex-shrink-0" />
             <div className="text-xs text-pink-700 dark:text-pink-300">
-              <div className="font-medium mb-1">网站已进入♡全面涩涩模式♡</div>
+              <div className="font-medium mb-1">网站已进入NSFW模式</div>
               <div className="text-pink-600 dark:text-pink-400">
-                网站已启用 NSFW, 杂鱼~♡ 杂鱼~♡, 请检查四周有无其他人喔~
+                网站已启用 NSFW, 您可访问本站所有内容，可能含有R18内容，请勿在公共场所浏览，以免造成不必要的困扰
               </div>
             </div>
           </div>
@@ -162,14 +208,17 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
       </div>
       <div className="flex-1 px-3 py-4 overflow-y-auto scrollbar-hide">
         {navSections.map((section, index) => {
-          // 广告区域特殊处理
           const isAdSection = section.title === '推荐内容'
 
           return (
-            <div key={section.title} className={cn(
-              !isCollapsed && 'mb-2',
-              isAdSection && 'mb-4 mx-1 p-3 bg-default-50 dark:bg-default-100/10 border border-pink-200 dark:border-pink-400/50 rounded-lg shadow-sm backdrop-blur-sm'
-            )}>
+            <div
+              key={section.title}
+              className={cn(
+                !isCollapsed && 'mb-2',
+                isAdSection &&
+                  'mb-4 mx-1 p-3 bg-default-50 dark:bg-default-100/10 border border-pink-200 dark:border-pink-400/50 rounded-lg shadow-sm backdrop-blur-sm'
+              )}
+            >
               {index > 0 && !isAdSection && (
                 <div
                   className={cn(
@@ -181,7 +230,9 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
               <h2
                 className={cn(
                   'text-xs font-semibold uppercase px-2 py-1 transition-opacity duration-300',
-                  isAdSection ? 'text-default-600 dark:text-default-300 font-bold' : 'text-default-400',
+                  isAdSection
+                    ? 'text-default-600 dark:text-default-300 font-bold'
+                    : 'text-default-400',
                   isCollapsed && 'opacity-0 h-0 p-0 m-0 hidden'
                 )}
               >
@@ -194,7 +245,7 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
                       href={item.href}
                       rel={isAdSection ? 'nofollow' : undefined}
                       className={cn(
-                        'flex items-center p-2 rounded-lg hover:bg-default-100 group',
+                        'flex items-start p-2 rounded-lg hover:bg-default-100 group min-w-0', // 改为 items-start 对齐顶部
                         pathname === item.href
                           ? 'bg-primary text-primary-foreground'
                           : 'text-foreground'
@@ -202,16 +253,28 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
                     >
                       <item.icon
                         className={cn(
-                          'w-5 h-5 transition duration-75',
+                          'w-5 h-5 mt-0.5 transition duration-75 flex-shrink-0', // 强制不压缩图标，mt-0.5 对齐第一行文字
                           isAdSection
                             ? 'text-primary group-hover:text-pink-600 dark:text-primary dark:group-hover:text-pink-300'
                             : 'text-default-500 group-hover:text-foreground',
-                          pathname === item.href ? 'text-primary-foreground' : ''
+                          pathname === item.href
+                            ? 'text-primary-foreground'
+                            : ''
                         )}
                       />
-                      <div className={cn('flex flex-col ms-3', isCollapsed && 'hidden')}>
-                        <span className="text-sm">{item.name}</span>
-                        <span className="text-xs text-default-500">{item.description}</span>
+                      <div
+                        className={cn(
+                          'flex flex-col ms-3 min-w-0',
+                          isCollapsed && 'hidden'
+                        )}
+                      >
+                        {/* 移除了 truncate，允许文字自动换行显示全 */}
+                        <span className="text-sm font-semibold break-words leading-tight">
+                          {item.name}
+                        </span>
+                        <span className="text-xs text-default-500 mt-1 break-words leading-normal">
+                          {item.description}
+                        </span>
                       </div>
                     </Link>
                   )
@@ -220,17 +283,21 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
                     <li key={item.name}>
                       {isCollapsed ? (
                         <Tooltip content={item.name} placement="right">
-                          <div className="flex justify-center">{linkContent}</div>
+                          <div className="flex justify-center">
+                            {linkContent}
+                          </div>
                         </Tooltip>
                       ) : item.popover ? (
                         <Tooltip
-                          content={<SidebarPopoverContent popover={item.popover} />}
+                          content={
+                            <SidebarPopoverContent popover={item.popover} />
+                          }
                           placement="right"
                           delay={100}
                           closeDelay={100}
-                          // 3. 添加 classNames 属性来定义背景样式
                           classNames={{
-                            content: 'p-0 bg-background/70 backdrop-blur-md border border-divider',
+                            content:
+                              'p-0 bg-background/70 backdrop-blur-md border border-divider'
                           }}
                         >
                           {linkContent}
@@ -253,8 +320,14 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
           className="w-full justify-center data-[is-icon-only=false]:justify-start"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          {isCollapsed ? <ChevronsRight className="size-4" /> : <ChevronsLeft className="size-4" />}
-          <span className={cn('ms-2 transition-opacity', isCollapsed && 'hidden')}>
+          {isCollapsed ? (
+            <ChevronsRight className="size-4 flex-shrink-0" />
+          ) : (
+            <ChevronsLeft className="size-4 flex-shrink-0" />
+          )}
+          <span
+            className={cn('ms-2 transition-opacity', isCollapsed && 'hidden')}
+          >
             收起
           </span>
         </Button>

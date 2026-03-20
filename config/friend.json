@@ -2,7 +2,7 @@
   "friends": [
     {
       "name": "鲲galgame补丁",
-      "avatar": "http://youke.xn--y7xa690gmna.cn/s1/2026/01/17/696b40b9e7746.webp",
+      "avatar": "https://www.moyu.moe/_next/image?url=%2Ffavicon.webp&w=128&q=75",
       "label": "开源, 免费, 零门槛, 纯手写, 最先进的 Galgame 补丁资源下载站, 提供 Windows, 安卓, KRKR, Tyranor 等各类平台的 Galgame 补丁资源下载。永远免费！",
       "link": "https://www.moyu.moe/"
     },
@@ -11,7 +11,18 @@
       "avatar": "https://www.kungal.com/favicon.webp",
       "label": "世界上最萌的 Galgame 论坛! 现阶段世界上最先进的 Galgame 资源发布网站! 永远不会有广告! 永远免费! Galgame 下载, Galgame 资源网站",
       "link": "https://www.kungal.com/"
-    }
-    
+    },
+  {
+      "name": "紫缘社",
+      "avatar": "https://www.galzy.moe/favicon.ico",
+      "label": "Galgame 资源站, 这里收录了大部分电脑端与手机端的汉化 Galgame",
+      "link": "https://galzy.moe/"
+    },
+    {
+      "name": "TouchGal",
+      "avatar": "https://www.touchgal.top/_next/image?url=%2Ffavicon.webp&w=64&q=75",
+      "label": "TouchGal是一个一站式 Galgame 文化社区。提供Galgame 论坛、Galgame 下载等服务。承诺永久免费, 高质量。为Galgame 爱好者提供一片净土!",
+      "link": "https://www.touchgal.top/"
+      }
   ]
 }
