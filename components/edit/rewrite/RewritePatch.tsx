@@ -5,7 +5,7 @@ import { Button, Card, CardBody, CardHeader } from '@heroui/react'
 import { useRewritePatchStore } from '~/store/rewriteStore'
 import { KunDualEditorProvider } from '~/components/kun/milkdown/DualEditorProvider'
 import toast from 'react-hot-toast'
-import { kunFetchPut } from '~/utils/kunFetch'
+import { getKunFetchErrorMessage, kunFetchPut } from '~/utils/kunFetch'
 import { kunErrorHandler } from '~/utils/kunErrorHandler'
 import { patchUpdateSchema } from '~/validations/edit'
 import { useRouter } from '@bprogress/next'
@@ -57,12 +57,14 @@ export const RewritePatch = () => {
     try {
       const res = await kunFetchPut<KunResponse<{}>>('/api/edit', { ...data })
       await kunErrorHandler(res, async () => {
-        toast.success('重新编辑成功, 由于缓存影响, 您的更改将在至多 30 秒后生效')
+        toast.success(
+          '重新编辑成功, 由于缓存影响, 您的更改将在至多 30 秒后生效'
+        )
         router.push(`/${data.uniqueId}`)
       })
     } catch (error) {
       console.error('编辑游戏信息失败:', error)
-      toast.error('编辑失败，请稍后重试')
+      toast.error(getKunFetchErrorMessage(error) ?? '编辑失败，请稍后重试')
     } finally {
       setRewriting(false)
     }

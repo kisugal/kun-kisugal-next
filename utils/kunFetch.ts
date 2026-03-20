@@ -17,6 +17,27 @@ export class KunFetchError extends Error {
   }
 }
 
+export const getKunFetchErrorMessage = (error: unknown) => {
+  if (!(error instanceof KunFetchError)) {
+    return null
+  }
+
+  if (typeof error.responseBody === 'string') {
+    return error.responseBody
+  }
+
+  if (
+    error.responseBody &&
+    typeof error.responseBody === 'object' &&
+    'error' in error.responseBody &&
+    typeof error.responseBody.error === 'string'
+  ) {
+    return error.responseBody.error
+  }
+
+  return `请求失败 (${error.status})`
+}
+
 const kunFetchRequest = async <T>(
   url: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
