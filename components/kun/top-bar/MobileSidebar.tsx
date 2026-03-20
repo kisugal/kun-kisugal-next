@@ -162,7 +162,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                     {navSections.map((section, sectionIndex) => (
                         <div key={sectionIndex} className="mb-2">
                             {section.title && (
-                                <p className="px-4 py-2 text-xs font-semibold text-default-400 uppercase">
+                                <p className="px-4 py-1 text-xs font-semibold text-default-400 uppercase">
                                     {section.title}
                                 </p>
                             )}
@@ -173,7 +173,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                                             href={item.href}
                                             onClick={handleLinkClick}
                                             className={cn(
-                                                'flex items-center gap-3 px-4 py-3 mx-2 rounded-lg',
+                                                'flex items-center gap-3 px-4 py-2 mx-2 rounded-lg',
                                                 'transition-colors duration-150',
                                                 pathname === item.href
                                                     ? 'bg-primary/10 text-primary'
