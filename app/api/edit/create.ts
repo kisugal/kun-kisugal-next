@@ -7,13 +7,10 @@ import { handleBatchPatchTags } from './batchTag'
 import { handleBatchPatchCompanies } from './batchCompany'
 import { kunMoyuMoe } from '~/config/moyu-moe'
 import { postToIndexNow } from './_postToIndexNow'
-import { delKv } from '~/lib/redis'
 import {
-  findPatchDuplicateConflict,
   getPatchUniqueConstraintErrorMessage,
   normalizePatchExternalId
 } from './_externalIds'
-import type { PatchDuplicateConflict } from './_externalIds'
 
 interface CreateGalgameSuccess {
   uniqueId: string
@@ -36,7 +33,6 @@ export const createGalgame = async (
       name,
       vndbId,
       dlsiteId,
-      forceOverwrite,
       alias,
       banner,
       tag,
@@ -47,46 +43,12 @@ export const createGalgame = async (
 
     const normalizedVndbId = normalizePatchExternalId(vndbId)
     const normalizedDlsiteId = normalizePatchExternalId(dlsiteId)
-    const [vndbConflict, dlsiteConflict] = await Promise.all([
-      normalizedVndbId
-        ? findPatchDuplicateConflict('vndb_id', normalizedVndbId)
-        : Promise.resolve(null),
-      normalizedDlsiteId
-        ? findPatchDuplicateConflict('dlsite_id', normalizedDlsiteId)
-        : Promise.resolve(null)
-    ])
-
-    if (
-      vndbConflict &&
-      dlsiteConflict &&
-      vndbConflict.duplicate.patch.id !== dlsiteConflict.duplicate.patch.id
-    ) {
-      return `${vndbConflict.error}，且 ${dlsiteConflict.error}`
-    }
-
-    const overwriteConflict = (vndbConflict ??
-      dlsiteConflict) as PatchDuplicateConflict | null
-
-    if (overwriteConflict) {
-      if (!forceOverwrite) {
-        return overwriteConflict
-      }
-
-      if (!overwriteConflict.duplicate.canOverwrite) {
-        return overwriteConflict.error
-      }
-    }
-
-    const overwritePatchId = overwriteConflict?.duplicate.patch.id
-    const galgameUniqueId =
-      overwriteConflict?.duplicate.patch.uniqueId ??
-      crypto.randomBytes(4).toString('hex')
+    const galgameUniqueId = crypto.randomBytes(4).toString('hex')
 
     console.log('游戏信息:', {
       name,
       vndbId: normalizedVndbId,
       dlsiteId: normalizedDlsiteId,
-      forceOverwrite,
       introduction,
       released,
       contentLimit
@@ -98,33 +60,19 @@ export const createGalgame = async (
     const res = await prisma.$transaction(
       async (prisma) => {
         console.log('开始数据库事务')
-        const patch = overwritePatchId
-          ? await prisma.patch.update({
-              where: { id: overwritePatchId },
-              data: {
-                name,
-                vndb_id: normalizedVndbId,
-                dlsite_id: normalizedDlsiteId,
-                introduction,
-                user_id: uid,
-                banner: '',
-                released,
-                content_limit: contentLimit
-              }
-            })
-          : await prisma.patch.create({
-              data: {
-                name,
-                unique_id: galgameUniqueId,
-                vndb_id: normalizedVndbId,
-                dlsite_id: normalizedDlsiteId,
-                introduction,
-                user_id: uid,
-                banner: '',
-                released,
-                content_limit: contentLimit
-              }
-            })
+        const patch = await prisma.patch.create({
+          data: {
+            name,
+            unique_id: galgameUniqueId,
+            vndb_id: normalizedVndbId,
+            dlsite_id: normalizedDlsiteId,
+            introduction,
+            user_id: uid,
+            banner: '',
+            released,
+            content_limit: contentLimit
+          }
+        })
         console.log('创建patch成功，ID:', patch.id)
 
         const newId = patch.id
@@ -210,12 +158,6 @@ export const createGalgame = async (
           }
         })
 
-        if (overwritePatchId) {
-          await prisma.patch_alias.deleteMany({
-            where: { patch_id: newId }
-          })
-        }
-
         if (alias.length) {
           const aliasData = alias.map((name) => ({
             name,
@@ -250,13 +192,6 @@ export const createGalgame = async (
 
     if (res.developers && res.developers.length > 0) {
       await handleBatchPatchCompanies(res.patchId, res.developers, uid)
-    }
-
-    if (overwritePatchId) {
-      await Promise.all([
-        delKv(`patch:${galgameUniqueId}`),
-        delKv(`patch:introduction:${galgameUniqueId}`)
-      ])
     }
 
     if (contentLimit === 'sfw') {

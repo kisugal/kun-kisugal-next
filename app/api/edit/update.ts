@@ -3,7 +3,6 @@ import { prisma } from '~/prisma/index'
 import { patchUpdateSchema } from '~/validations/edit'
 import { handleBatchPatchTags } from './batchTag'
 import {
-  getPatchDuplicateErrorMessage,
   getPatchUniqueConstraintErrorMessage,
   normalizePatchExternalId
 } from './_externalIds'
@@ -24,27 +23,6 @@ export const updateGalgame = async (
 
     const normalizedVndbId = normalizePatchExternalId(input.vndbId)
     const normalizedDlsiteId = normalizePatchExternalId(input.dlsiteId)
-
-    if (normalizedVndbId) {
-      console.log('检查VNDB ID重复性...')
-      const galgame = await prisma.patch.findUnique({
-        where: { vndb_id: normalizedVndbId }
-      })
-      if (galgame && galgame.id !== input.id) {
-        console.error('VNDB ID重复，冲突游戏ID:', galgame.unique_id)
-        return getPatchDuplicateErrorMessage('vndb_id', galgame.unique_id)
-      }
-      console.log('VNDB ID检查通过')
-    }
-
-    if (normalizedDlsiteId) {
-      const galgame = await prisma.patch.findUnique({
-        where: { dlsite_id: normalizedDlsiteId }
-      })
-      if (galgame && galgame.id !== input.id) {
-        return getPatchDuplicateErrorMessage('dlsite_id', galgame.unique_id)
-      }
-    }
 
     const { id, name, alias, introduction, contentLimit, released } = input
 
