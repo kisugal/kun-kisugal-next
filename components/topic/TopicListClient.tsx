@@ -127,7 +127,7 @@ export const TopicListClient = ({
     page: number = 1,
     sort: string = 'created',
     order: string = 'desc',
-    tab: TabType = 'official'
+    tab: TabType = 'all'
   ) => {
     startTransition(async () => {
       try {
@@ -191,7 +191,7 @@ export const TopicListClient = ({
       )
     } else {
       // 没有保存的状态，加载默认数据
-      fetchTopics(1, 'created', 'desc', 'official')
+      fetchTopics(1, 'created', 'desc', 'all')
     }
 
     setIsInitialized(true)
