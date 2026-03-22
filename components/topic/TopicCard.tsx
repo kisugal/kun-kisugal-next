@@ -21,23 +21,28 @@ export const TopicCard = ({ topic, className }: Props) => {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <Card
-      isPressable
-      as={Link}
-      href={`/topic/${topic.id}`}
-      className={cn(
-        'flex flex-col gap-2 p-4 transition-all duration-200 border shadow-sm rounded-xl group border-divider hover:shadow-lg hover:border-primary-200',
-        className
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <CardBody className="p-0">
+    <div className="border-b border-divider hover:shadow-lg hover:rounded-xl">
+      <Link
+        // isPressable
+        // as={Link}
+        href={`/topic/${topic.id}`}
+        className={cn(
+          'flex flex-col gap-2 p-2 transition-all duration-200 hover:rounded-xl group hover:border-primary-200',
+          className
+        )}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* <CardBody className="p-0"> */}
         {/* 话题头部信息 */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <Avatar
-              src={topic.user.avatar && topic.user.avatar.trim() !== '' ? topic.user.avatar : undefined}
+              src={
+                topic.user.avatar && topic.user.avatar.trim() !== ''
+                  ? topic.user.avatar
+                  : undefined
+              }
               alt={topic.user.name}
               size="sm"
               className="flex-shrink-0"
@@ -83,9 +88,9 @@ export const TopicCard = ({ topic, className }: Props) => {
         <p className="text-sm text-foreground/70 line-clamp-3 mb-4 leading-relaxed">
           {markdownToText(topic.content)}
         </p>
-      </CardBody>
+        {/* </CardBody> */}
 
-      <CardFooter className="p-0 pt-3 border-t border-divider/50">
+        {/* <CardFooter className="p-0 pt-3 border-t border-divider/50"> */}
         {/* 统计信息 */}
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-4 text-sm text-foreground/60">
@@ -108,7 +113,8 @@ export const TopicCard = ({ topic, className }: Props) => {
             更新于 {formatDistanceToNow(new Date(topic.updated))}
           </span>
         </div>
-      </CardFooter>
-    </Card>
+        {/* </CardFooter> */}
+      </Link>
+    </div>
   )
 }

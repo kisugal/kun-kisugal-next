@@ -84,19 +84,18 @@ export const KunTopBarUser = () => {
             </NavbarContent>
           )}
 
-          
           <NSFWSwitcher />
 
           <KunSearch />
 
-          <Tooltip
+          {/* <Tooltip
             disableAnimation
             showArrow
             closeDelay={0}
             content="随机一部游戏"
           >
             <RandomGalgameButton isIconOnly variant="light" />
-          </Tooltip>
+          </Tooltip> */}
 
           <ThemeSwitcher />
 
