@@ -12,7 +12,7 @@
       "label": "世界上最萌的 Galgame 论坛! 现阶段世界上最先进的 Galgame 资源发布网站! 永远不会有广告! 永远免费! Galgame 下载, Galgame 资源网站",
       "link": "https://www.kungal.com/"
     },
-  {
+    {
       "name": "紫缘社",
       "avatar": "https://www.galzy.moe/favicon.ico",
       "label": "Galgame 资源站, 这里收录了大部分电脑端与手机端的汉化 Galgame",
@@ -23,12 +23,12 @@
       "avatar": "https://www.touchgal.top/_next/image?url=%2Ffavicon.webp&w=64&q=75",
       "label": "TouchGal是一个一站式 Galgame 文化社区。提供Galgame 论坛、Galgame 下载等服务。承诺永久免费, 高质量。为Galgame 爱好者提供一片净土!",
       "link": "https://www.touchgal.top/"
-      },
-      {
+    },
+    {
       "name": "ACG盒子",
       "avatar": "https://www.acgbox.link/wp-content/uploads/logo/86742914_p0.png",
       "label": "ACG盒子，专注ACG的导航盒子，收录二次元相关的网站，打造一个二次元专属的网站",
       "link": "https://www.acgbox.link/"
-      }
+    }
   ]
 }

@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import {
   Card,
   CardBody,
-  CardHeader,
   Select,
   SelectItem,
   Tabs,
@@ -13,7 +12,6 @@ import {
   Skeleton,
   Button
 } from '@heroui/react'
-import { Filter, Plus } from 'lucide-react'
 import { TopicList } from './TopicList'
 import { KunPagination } from '~/components/kun/Pagination'
 import { kunFetchGet } from '~/utils/kunFetch'
@@ -139,7 +137,7 @@ export const TopicListClient = ({
         } else if (tab === 'image') {
           url += '&type=image'
         } else if (tab === 'official') {
-          url += '&username=KisuGal官方'
+          url += '&username=admin'
         }
 
         const response = await kunFetchGet<TopicListResponse>(url)
@@ -204,7 +202,7 @@ export const TopicListClient = ({
       <div className="flex gap-6">
         {/* 主内容区域 */}
 
-        <div className="flex-1 min-w-0 space-y-6">
+        <div className="flex-1 min-w-0 space-y-3">
           {/* 标签页导航 */}
           {/* <Card>
             <CardBody className="p-0"> */}
@@ -214,10 +212,11 @@ export const TopicListClient = ({
             variant="underlined"
             classNames={{
               tabList:
-                'w-full relative rounded-none p-0 border-b border-divider',
+                'w-full flex rounded-none p-0 border-b border-divider',
               cursor: 'w-full bg-primary',
-              tab: 'max-w-fit px-6 h-12',
-              tabContent: 'group-data-[selected=true]:text-primary'
+              tab: 'flex-1 px-6 h-12 flex justify-center',
+              tabContent: 'group-data-[selected=true]:text-primary text-center',
+              base: "flex"
             }}
           >
             <Tab key="following" title="关注" />
@@ -231,14 +230,14 @@ export const TopicListClient = ({
           {/* 筛选和排序 */}
           {/* <Card>
             <CardHeader className="pb-3"> */}
-          <div className="flex items-center gap-2">
-            <Filter className="size-4" />
-            <span className="font-medium">筛选和排序</span>
+          <div className="flex items-center mb-0 gap-2">
+            {/* <Filter className="size-4" />
+            <span className="font-medium">筛选和排序</span> */}
             <Button
               color="primary"
               size="sm"
               variant="bordered"
-              className="ml-auto mr-3 lg:hidden"
+              className="ml-auto mr-3 mb-3 lg:hidden w-full"
               onPress={() => router.push('/topic/create')}
             >
               {/* <Plus className="size-4" /> */}

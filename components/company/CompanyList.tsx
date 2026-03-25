@@ -17,7 +17,7 @@ export const CompanyList = ({ companies, loading, searching }: CompanyListProps)
         settings.kunNsfwEnable === 'nsfw' || settings.kunNsfwEnable === 'all'
 
     if (loading) {
-        return <KunLoading hint="正在获取开发商数据..." />
+        return <KunLoading hint="正在获取会社数据..." />
     }
 
     if (!searching && companies.length === 0) {

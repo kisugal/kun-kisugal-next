@@ -141,7 +141,7 @@ export const SearchSuggestion = ({
                     variant="flat"
                     startContent={<Building className="w-4 h-4" />}
                   >
-                    开发商
+                    会社
                   </Chip>
                 )}
               </span>

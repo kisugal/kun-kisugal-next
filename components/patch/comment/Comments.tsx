@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { Card, CardBody } from '@heroui/card'
 import { Button } from '@heroui/button'
 import { KunUser } from '~/components/kun/floating-card/KunUser'
@@ -29,19 +30,90 @@ export const Comments = ({ id }: Props) => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
   const user = useUserStore((state) => state.user)
 
+  const normalizeComment = (comment: PatchComment): PatchComment => ({
+    ...comment,
+    user: {
+      id: comment.user?.id ?? comment.userId,
+      name: comment.user?.name?.trim() || '已注销用户',
+      avatar: comment.user?.avatar ?? ''
+    },
+    reply: comment.reply ? normalizeComments(comment.reply) : []
+  })
+
+  const normalizeComments = (items: PatchComment[]) =>
+    items.map(normalizeComment)
+
+  const addCommentToTree = (
+    existingComments: PatchComment[],
+    newComment: PatchComment
+  ): PatchComment[] => {
+    const normalizedComment = normalizeComment(newComment)
+
+    if (!normalizedComment.parentId) {
+      return [...existingComments, normalizedComment]
+    }
+
+    let inserted = false
+
+    const appendToReplies = (items: PatchComment[]): PatchComment[] =>
+      items.map((comment) => {
+        if (comment.id === normalizedComment.parentId) {
+          inserted = true
+          return {
+            ...comment,
+            reply: [...comment.reply, normalizedComment]
+          }
+        }
+
+        if (!comment.reply.length) {
+          return comment
+        }
+
+        return {
+          ...comment,
+          reply: appendToReplies(comment.reply)
+        }
+      })
+
+    const nextComments = appendToReplies(existingComments)
+
+    return inserted ? nextComments : [...nextComments, normalizedComment]
+  }
+
   useEffect(() => {
     if (!user.uid) {
       return
     }
 
+    let cancelled = false
+
     const fetchData = async () => {
-      const res = await kunFetchGet<PatchComment[]>('/api/patch/comment', {
-        patchId: Number(id)
-      })
-      setComments(res)
+      const res = await kunFetchGet<KunResponse<PatchComment[]>>(
+        '/api/patch/comment',
+        {
+          patchId: Number(id)
+        }
+      )
+
+      if (cancelled) {
+        return
+      }
+
+      if (typeof res === 'string') {
+        toast.error(res)
+        setComments([])
+        return
+      }
+
+      setComments(normalizeComments(res))
     }
-    fetchData()
-  }, [])
+
+    void fetchData()
+
+    return () => {
+      cancelled = true
+    }
+  }, [id, user.uid])
 
   const sortComments = (commentsToSort: PatchComment[]): PatchComment[] => {
     const sortedComments = [...commentsToSort].sort((a, b) => {
@@ -61,7 +133,7 @@ export const Comments = ({ id }: Props) => {
   }
 
   const setNewComment = async (newComment: PatchComment) => {
-    setComments((prevComments) => [...prevComments, newComment])
+    setComments((prevComments) => addCommentToTree(prevComments, newComment))
     await new Promise((resolve) => {
       setTimeout(resolve, 500)
     })

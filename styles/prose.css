@@ -9,7 +9,8 @@
 
 /* Links */
 .kun-prose a {
-  @apply text-primary-500 underline decoration-primary-200 underline-offset-2 font-medium transition-colors duration-200 hover:text-primary-600 hover:decoration-primary-400;
+  @apply text-primary-500 underline decoration-primary-200 underline-offset-2 font-medium
+         transition-colors duration-200 hover:text-primary-600 hover:decoration-primary-400;
 }
 
 .kun-prose .anchor {
@@ -18,19 +19,23 @@
 
 /* Headings with improved spacing and refined typography */
 .kun-prose h1 {
-  @apply text-default-900 font-extrabold text-4xl mt-0 mb-8 leading-tight tracking-tight scroll-m-20;
+  @apply text-default-900 font-extrabold text-4xl mt-0 mb-8 leading-tight
+         tracking-tight scroll-m-20;
 }
 
 .kun-prose h2 {
-  @apply text-default-900 font-bold text-2xl mt-16 border-t border-default-200 pt-8 mb-4 leading-tight tracking-tight scroll-m-20;
+  @apply text-default-900 font-bold text-2xl mt-16 border-t border-default-200
+         pt-8 mb-4 leading-tight tracking-tight scroll-m-20;
 }
 
 .kun-prose h3 {
-  @apply text-default-900 font-semibold text-xl mt-8 mb-4 leading-snug tracking-tight scroll-m-20;
+  @apply text-default-900 font-semibold text-xl mt-8 mb-4 leading-snug
+         tracking-tight scroll-m-20;
 }
 
 .kun-prose h4 {
-  @apply text-default-900 font-semibold text-lg mt-6 mb-4 leading-snug tracking-tight scroll-m-20;
+  @apply text-default-900 font-semibold text-lg mt-6 mb-4 leading-snug
+         tracking-tight scroll-m-20;
 }
 
 /* Lists with improved spacing and bullets */
@@ -47,18 +52,20 @@
 }
 
 /* Nested lists */
-.kun-prose li>ul,
-.kun-prose li>ol {
+.kun-prose li > ul,
+.kun-prose li > ol {
   @apply my-2 space-y-2;
 }
 
 /* Code blocks with improved styling */
 .kun-prose code:not([class*="language-"]) {
-  @apply text-sm bg-default-100 px-1.5 py-0.5 rounded-md font-mono text-default-800 border border-default-200;
+  @apply text-sm bg-default-100 px-1.5 py-0.5 rounded-md font-mono
+         text-default-800 border border-default-200;
 }
 
 .kun-prose pre:not([class*="language-"]) {
-  @apply bg-default-50 rounded-xl p-4 my-6 overflow-x-auto border border-default-200 ring-1 ring-default-200/50 shadow-sm;
+  @apply bg-default-50 rounded-xl p-4 my-6 overflow-x-auto border border-default-200
+         ring-1 ring-default-200/50 shadow-sm;
 }
 
 .kun-prose pre:not([class*="language-"]) code {
@@ -77,12 +84,14 @@
 
 /* Quotes with refined styling */
 .kun-prose blockquote {
-  @apply border-l-4 border-primary-200 pl-6 pr-4 py-1 my-8 bg-primary-50/50 rounded-r-lg font-medium text-default-800 shadow-sm;
+  @apply border-l-4 border-primary-200 pl-6 pr-4 py-1 my-8
+         bg-primary-50/50 rounded-r-lg font-medium text-default-800 shadow-sm;
 }
 
 /* Tables with NextUI-inspired design */
 .kun-prose table {
-  @apply w-full my-8 border border-default-200 rounded-lg overflow-hidden shadow-sm bg-content1;
+  @apply w-full my-8 border border-default-200 rounded-lg overflow-hidden
+         shadow-sm bg-content1;
 }
 
 .kun-prose thead {
@@ -90,7 +99,8 @@
 }
 
 .kun-prose th {
-  @apply border-b border-default-200 px-4 py-3 text-left font-semibold text-default-700 text-sm tracking-wide uppercase;
+  @apply border-b border-default-200 px-4 py-3 text-left font-semibold
+         text-default-700 text-sm tracking-wide uppercase;
 }
 
 .kun-prose td {
@@ -114,28 +124,6 @@
   @apply rounded-lg shadow-md my-8 border border-default-200;
 }
 
-/* 游戏截图容器 - 三列网格布局 */
-.kun-prose .game-screenshots {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 my-6;
-}
-
-.kun-prose .game-screenshots img {
-  @apply my-0 w-full h-auto object-cover;
-}
-
-.kun-prose .game-screenshots p {
-  @apply my-0 contents;
-}
-
-/* 包含多个图片的段落 - 自动变成网格布局 */
-.kun-prose p:has(img:nth-child(2)) {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 my-6;
-}
-
-.kun-prose p:has(img:nth-child(2)) img {
-  @apply my-0 w-full h-auto object-cover rounded-lg shadow-md border border-default-200;
-}
-
 .kun-prose figure {
   @apply my-8;
 }
@@ -155,7 +143,8 @@
 
 /* Keyboard shortcuts */
 .kun-prose kbd {
-  @apply px-2 py-1 text-sm font-mono bg-default-100 border border-default-300 rounded shadow-sm text-default-700;
+  @apply px-2 py-1 text-sm font-mono bg-default-100 border border-default-300
+         rounded shadow-sm text-default-700;
 }
 
 /* Mark text */

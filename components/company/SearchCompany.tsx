@@ -26,7 +26,7 @@ export const SearchCompany = ({
                     <Button
                         isIconOnly
                         variant="light"
-                        aria-label="搜索开发商"
+                        aria-label="搜索制作会社"
                         onPress={handleSearch}
                     >
                         <Search />
@@ -36,7 +36,7 @@ export const SearchCompany = ({
                     if (e.key === 'Enter') handleSearch()
                 }}
             />
-            {searching && <KunLoading hint="正在搜索开发商数据..." />}
+            {searching && <KunLoading hint="正在搜索会社数据..." />}
         </>
     )
 }

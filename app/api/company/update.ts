@@ -12,7 +12,7 @@ export const updateCompany = async (input: z.infer<typeof updateCompanySchema>) 
         }
     })
     if (existingCompany && existingCompany.id !== companyId) {
-        return '这个开发商已经存在了'
+        return '这个会社已经存在了'
     }
 
     const newCompany: CompanyDetail = await prisma.patch_company.update({

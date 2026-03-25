@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
 import { createRoot } from 'react-dom/client'
+import DOMPurify from 'isomorphic-dompurify'
 import { Card, CardBody } from '@heroui/card'
 import { Chip } from '@heroui/react'
 import { Divider } from '@heroui/divider'
@@ -11,11 +12,11 @@ import { Info } from './Info'
 import { PatchTag } from './Tag'
 import dynamic from 'next/dynamic'
 import { useMounted } from '~/hooks/useMounted'
+import { KunAutoImageViewer } from '~/components/kun/image-viewer/AutoImageViewer'
 import { KunLink } from '~/components/kun/milkdown/plugins/components/link/KunLink'
 import { KunExternalLink } from '~/components/kun/external-link/ExternalLink'
 import { kunUpdatePatchViewsActions } from '~/app/(main)/[id]/actions'
 import type { PatchIntroduction } from '~/types/api/patch'
-import type DOMPurifyType from 'dompurify'
 
 import './_adjust.scss'
 
@@ -38,24 +39,6 @@ interface Props {
 export const IntroductionTab = ({ intro, patchId, uniqueId, uid, companies }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const isMounted = useMounted()
-  const [sanitizedHtml, setSanitizedHtml] = useState<string>('')
-  const [DOMPurify, setDOMPurify] = useState<typeof DOMPurifyType | null>(null)
-
-  // 客户端动态加载 DOMPurify
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      import('dompurify').then((mod) => {
-        setDOMPurify(() => mod.default)
-      })
-    }
-  }, [])
-
-  // 当 DOMPurify 加载完成后清理 HTML
-  useEffect(() => {
-    if (DOMPurify && intro.introduction) {
-      setSanitizedHtml(DOMPurify.sanitize(intro.introduction))
-    }
-  }, [DOMPurify, intro.introduction])
 
   // 更新浏览量
   useEffect(() => {
@@ -65,7 +48,7 @@ export const IntroductionTab = ({ intro, patchId, uniqueId, uid, companies }: Pr
   }, [uniqueId, isMounted])
 
   useEffect(() => {
-    if (!contentRef.current || !sanitizedHtml) {
+    if (!contentRef.current || !isMounted) {
       return
     }
 
@@ -113,34 +96,25 @@ export const IntroductionTab = ({ intro, patchId, uniqueId, uid, companies }: Pr
       const linkRoot = ReactDOM.createRoot(root)
       linkRoot.render(<KunLink href={href} text={text} />)
     })
-  }, [sanitizedHtml])
+  }, [isMounted])
 
   return (
     <Card className="p-1 sm:p-8">
       <CardBody className="p-4 space-y-6">
-        <h2 className="text-2xl font-medium" style={{ color: '#11181C' }}>游戏介绍</h2>
-
-        {sanitizedHtml ? (
-          <div
-            ref={contentRef}
-            dangerouslySetInnerHTML={{
-              __html: sanitizedHtml
-            }}
-            className="kun-prose max-w-none"
-          />
-        ) : (
-          <div className="animate-pulse space-y-3">
-            <div className="h-4 bg-default-200 rounded w-3/4"></div>
-            <div className="h-4 bg-default-200 rounded w-full"></div>
-            <div className="h-4 bg-default-200 rounded w-5/6"></div>
-          </div>
-        )}
+        <div
+          ref={contentRef}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(intro.introduction)
+          }}
+          className="kun-prose max-w-none"
+        />
+        <KunAutoImageViewer scopeRef={contentRef} />
 
         {companies && companies.length > 0 && (
           <>
             <Divider className="my-4" />
             <div className="flex flex-col gap-4">
-              <span className="text-xl">所属开发商</span>
+              <span className="text-xl">所属会社（开发）</span>
               <div className="flex flex-wrap gap-2">
                 {companies.map((company) => (
                   <Chip

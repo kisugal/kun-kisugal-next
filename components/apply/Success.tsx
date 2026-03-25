@@ -68,7 +68,7 @@ export const ApplySuccess = () => {
               size="lg"
               onPress={() => router.push('/edit/create')}
             >
-              发布补丁
+              发布资源
             </Button>
             <Button
               startContent={<Home className="size-4" />}

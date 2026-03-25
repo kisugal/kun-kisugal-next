@@ -182,7 +182,7 @@ export const Resources = ({ id, vndbId }: Props) => {
         </ModalContent>
       </Modal>
 
-      {/* <GameDetailAds /> */}
+      <GameDetailAds />
     </div>
   )
 }

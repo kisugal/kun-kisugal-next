@@ -28,8 +28,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env
-.env.save
 
 # vercel
 .vercel
@@ -41,7 +39,6 @@ next-env.d.ts
 # env
 .env
 .env.production
-.env.save
 
 # uploads
 /uploads
@@ -56,3 +53,10 @@ next-env.d.ts
 /migration/markdown
 /migration/*.txt
 /migration/*.json
+
+# report
+perf-results/**
+
+# dev
+/components/design
+/app/(main)/design

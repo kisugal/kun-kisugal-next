@@ -24,22 +24,22 @@ const GAME_DETAIL_ADS_DATA: AdItem[] = [
     id: 'redirect-ad3', //null
     title: '',
     description: '',
-    image: 'https://r2.sakinori.top/1200x200.png',
-    link: '#'
+    image: 'https://r2.sakinori.top/eueuVPN/eueuVPN.jpg',//https://r2.sakinori.top/1200x200.png
+    link: 'https://eueua.cc/#/register?code=u9ev6t6U'
   },
   {
     id: 'redirect-ad4', //muguawan
     title: '',
     description: '',
     image: 'https://r2.sakinori.top/mumu/mumu.jpg',
-    link: 'https://t.glgnd.com/?pid=77'
+    link: 'https://t.ameaw.com/?pid=77'
   },
   {
     id: 'game-detail-ad2', //soulai
     title: '',
     description: '',
     image: 'https://r2.sakinori.top/mumu/soul.gif',
-    link: 'https://sch.agz1g.com/?channel=7018' // 游戏详情页专用广告链接
+    link: 'https://sch.wbnbg.com?channel=7018' // 游戏详情页专用广告链接
   }
 ]
 

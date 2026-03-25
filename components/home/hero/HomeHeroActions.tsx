@@ -16,7 +16,7 @@ export const HomeHeroActions = ({ telegramHref }: HomeHeroActionsProps) => {
       <RandomGalgameButton color="primary" variant="solid">
         随机一部游戏
       </RandomGalgameButton>
-      {/* <Tooltip showArrow content="Telegram 服务器">
+      <Tooltip showArrow content="Telegram 服务器">
         <Button
           isIconOnly
           isExternal
@@ -27,7 +27,7 @@ export const HomeHeroActions = ({ telegramHref }: HomeHeroActionsProps) => {
         >
           <Telegram />
         </Button>
-      </Tooltip> */}
+      </Tooltip>
     </div>
   )
 }

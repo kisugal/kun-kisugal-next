@@ -15,11 +15,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
       height="4px"
       options={{ showSpinner: false }}
     >
-      <HeroUIProvider
-        navigate={router.push}
-        validationBehavior="native"
-        disableRipple={false}
-      >
+      <HeroUIProvider navigate={router.push}>
         <ThemeProvider attribute="class">{children}</ThemeProvider>
       </HeroUIProvider>
     </ProgressProvider>

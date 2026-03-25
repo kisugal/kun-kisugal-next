@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardBody, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/modal'
 import { Textarea } from '@heroui/input'
 import { Heart, Reply, Edit, Trash2, Flag, MoreVertical, ChevronDown, ChevronUp } from 'lucide-react'
 import { KunAvatar } from '~/components/kun/floating-card/KunAvatar'
 import { MarkdownRenderer } from '~/components/kun/MarkdownRenderer'
+import { HtmlContent } from '~/components/kun/HtmlContent'
 import { KunEditor } from '~/components/kun/milkdown/Editor'
 import { formatDistanceToNow } from '~/utils/formatDistanceToNow'
 import { useUserStore } from '~/store/userStore'
@@ -47,6 +48,11 @@ export const TopicCommentCard = ({ comment, topicId, onUpdate, level = 0 }: Prop
   const [isDeleting, setIsDeleting] = useState(false)
   const [isReporting, setIsReporting] = useState(false)
   const [localComment, setLocalComment] = useState(comment)
+
+  useEffect(() => {
+    setLocalComment(comment)
+    setEditContent(comment.content)
+  }, [comment])
   
   // 计算所有子评论总数，只对顶级评论（level === 0）进行折叠判断
   const totalRepliesCount = countAllReplies(localComment)
@@ -129,7 +135,11 @@ export const TopicCommentCard = ({ comment, topicId, onUpdate, level = 0 }: Prop
         content: editContent
       })
 
-      setLocalComment(prev => ({ ...prev, content: editContent }))
+      setLocalComment(prev => ({
+        ...prev,
+        content: editContent,
+        contentHtml: undefined
+      }))
       onCloseEdit()
       toast.success('编辑成功')
       onUpdate?.()
@@ -301,14 +311,22 @@ export const TopicCommentCard = ({ comment, topicId, onUpdate, level = 0 }: Prop
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden'
                 }}>
-                  <MarkdownRenderer content={comment.parent.content} />
+                  {comment.parentContentHtml ? (
+                    <HtmlContent html={comment.parentContentHtml} />
+                  ) : (
+                    <MarkdownRenderer content={comment.parent.content} />
+                  )}
                 </div>
               </div>
             )}
 
             {/* 评论内容 */}
             <div className="kun-prose max-w-none">
-              <MarkdownRenderer content={localComment.content} />
+              {localComment.contentHtml ? (
+                <HtmlContent html={localComment.contentHtml} />
+              ) : (
+                <MarkdownRenderer content={localComment.content} />
+              )}
             </div>
 
             {/* 操作按钮 */}

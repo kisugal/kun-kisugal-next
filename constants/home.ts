@@ -21,18 +21,18 @@ export const homeNavigationItems: HomeNavItem[] = [
     color: 'primary',
     isExternal: false
   },
-  // {
-  //   icon: ToolCase,
-  //   label: '工具',
-  //   href: '/tag/1',
-  //   color: 'secondary',
-  //   isExternal: false
-  // },
-  // {
-  //   icon: FileText,
-  //   label: '文档',
-  //   href: '/doc',
-  //   color: 'success',
-  //   isExternal: false
-  // }
+  {
+    icon: ToolCase,
+    label: '工具',
+    href: '/tag/1',
+    color: 'secondary',
+    isExternal: false
+  },
+  {
+    icon: FileText,
+    label: '文档',
+    href: '/doc',
+    color: 'success',
+    isExternal: false
+  }
 ]

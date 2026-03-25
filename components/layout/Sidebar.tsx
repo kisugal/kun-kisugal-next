@@ -184,7 +184,7 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
 
     if (isSFW) {
       return (
-        <div className="mx-3 mb-4 p-3 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 rounded-lg">
+        <div className="mx-3 p-3 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 rounded-lg">
           <div className="flex items-start gap-2">
             <Shield className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
             <div className="text-xs text-orange-700 dark:text-orange-300">
@@ -228,7 +228,7 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
       <div className="pt-4 pb-2">
         <NSFWNotice />
       </div>
-      <div className="flex-1 px-3 py-4 overflow-y-auto scrollbar-hide">
+      <div className="flex-1 px-3 py-2 overflow-y-auto scrollbar-hide">
         {navSections.map((section, index) => {
           const isAdSection = section.title === '推荐内容'
 
@@ -238,7 +238,7 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
               className={cn(
                 !isCollapsed && 'mb-2',
                 isAdSection &&
-                  'mb-4 mx-1 p-3 bg-default-50 dark:bg-default-100/10 border border-pink-200 dark:border-pink-400/50 rounded-lg shadow-sm backdrop-blur-sm'
+                'mb-4 mx-1 p-3 bg-default-50 dark:bg-default-100/10 border border-pink-200 dark:border-pink-400/50 rounded-lg shadow-sm backdrop-blur-sm'
               )}
             >
               {index > 0 && !isAdSection && (

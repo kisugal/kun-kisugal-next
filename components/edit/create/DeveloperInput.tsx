@@ -17,30 +17,30 @@ export const DeveloperInput = () => {
     }
 
     const addDeveloper = (val: string) => {
-        if (!data.developers.includes(val)) {
+        if (!(data.developers ?? []).includes(val)) {
             setData({
                 ...data,
-                developers: [...data.developers, val]
+                developers: [...(data.developers ?? []), val]
             })
         }
         setInputValue('')
     }
 
     const removeDeveloper = (index: number) => {
-        const newDevs = [...data.developers]
+        const newDevs = [...(data.developers ?? [])]
         newDevs.splice(index, 1)
         setData({ ...data, developers: newDevs })
     }
 
     return (
         <div className="space-y-2">
-            <h2 className="text-xl">开发商 / 开发者</h2>
+            <h2 className="text-xl">制作会社 / 开发者</h2>
             <p className="text-sm text-default-500">
                 输入开发者或社团名称后按回车添加
             </p>
 
             <div className="flex flex-wrap gap-2 mb-2 min-h-[32px]">
-                {data.developers.map((dev, index) => (
+                {(data.developers ?? []).map((dev, index) => (
                     <Chip key={index} onClose={() => removeDeveloper(index)} variant="flat" color="secondary">
                         {dev}
                     </Chip>

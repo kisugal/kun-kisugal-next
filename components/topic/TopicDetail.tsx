@@ -6,16 +6,24 @@ import { formatDistanceToNow } from '~/utils/formatDistanceToNow'
 import type { Topic } from '~/types/api/topic'
 import { Heart, Eye, Pin, PinOff, Edit, Trash2 } from 'lucide-react'
 import { MarkdownRenderer } from '~/components/kun/MarkdownRenderer'
+import { HtmlContent } from '~/components/kun/HtmlContent'
 import { TopicCommentContainer } from '~/components/comment/TopicCommentContainer'
 import { EditTopic } from './EditTopic'
 import { useUserStore } from '~/store/userStore'
 import toast from 'react-hot-toast'
+import type { TopicComment } from '~/types/api/topic-comment'
 
 interface Props {
   topic: Topic
+  initialComments?: TopicComment[]
+  initialCommentsTotal?: number
 }
 
-export const TopicDetail = ({ topic: initialTopic }: Props) => {
+export const TopicDetail = ({
+  topic: initialTopic,
+  initialComments = [],
+  initialCommentsTotal = 0
+}: Props) => {
   const { user } = useUserStore()
   const [topic, setTopic] = useState(initialTopic)
   const [isLiking, setIsLiking] = useState(false)
@@ -34,9 +42,9 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
       toast.error('请先登录后点赞')
       return
     }
-    
+
     if (isLiking) return
-    
+
     setIsLiking(true)
     try {
       const response = await fetch('/api/topic/like', {
@@ -48,13 +56,13 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
           topicId: topic.id
         })
       })
-      
+
       if (!response.ok) {
         throw new Error(`点赞失败: ${response.status}`)
       }
-      
+
       const result = await response.json()
-      
+
       setTopic(prev => ({
         ...prev,
         isLiked: result.liked,
@@ -70,7 +78,7 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
 
   const handlePin = async () => {
     if (isPinning) return
-    
+
     setIsPinning(true)
     try {
       const response = await fetch('/api/admin/topic', {
@@ -83,11 +91,11 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
           is_pinned: !topic.is_pinned
         })
       })
-      
+
       if (!response.ok) {
         throw new Error(`置顶操作失败: ${response.status}`)
       }
-      
+
       setTopic(prev => ({
         ...prev,
         is_pinned: !prev.is_pinned
@@ -110,7 +118,7 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
 
   const handleDelete = async () => {
     if (isDeleting) return
-    
+
     setIsDeleting(true)
     try {
       const response = await fetch(`/api/topic/${topic.id}`, {
@@ -119,11 +127,11 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
           'Content-Type': 'application/json',
         }
       })
-      
+
       if (!response.ok) {
         throw new Error(`删除失败: ${response.status}`)
       }
-      
+
       // 删除成功后跳转到话题列表页面
       window.location.href = '/topic'
     } catch (error) {
@@ -146,7 +154,7 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
   // 如果正在编辑，显示编辑表单
   if (isEditing) {
     return (
-      <EditTopic 
+      <EditTopic
         topic={topic}
         onCancel={handleEditCancel}
         onSuccess={handleEditSuccess}
@@ -190,11 +198,18 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
           </div>
         </CardHeader>
         <CardBody className="pt-0">
-          <MarkdownRenderer 
-            content={topic.content}
-            className="whitespace-pre-wrap"
-          />
-          
+          {topic.contentHtml ? (
+            <HtmlContent
+              html={topic.contentHtml}
+              className="milkdown milkdown-renderer max-w-none whitespace-pre-wrap"
+            />
+          ) : (
+            <MarkdownRenderer
+              content={topic.content}
+              className="whitespace-pre-wrap"
+            />
+          )}
+
           <div className="flex items-center justify-between mt-6 pt-4 border-t border-divider">
             <div className="flex items-center gap-4 text-sm text-foreground/60">
               <div className="flex items-center gap-1">
@@ -206,7 +221,7 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
                 <span>{topic.like_count}</span>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <Button
                 color={topic.isLiked ? "danger" : "default"}
@@ -220,7 +235,7 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
               >
                 {topic.isLiked ? '取消点赞' : '点赞'}
               </Button>
-              
+
               {/* 话题作者编辑按钮 */}
               {user && user.uid === topic.user.id && (
                 <Button
@@ -233,15 +248,15 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
                   编辑
                 </Button>
               )}
-              
+
               {/* 管理员置顶按钮 */}
               {user && user.role >= 3 && (
                 <Button
                   color={topic.is_pinned ? "warning" : "default"}
                   variant={topic.is_pinned ? "flat" : "bordered"}
                   startContent={
-                    topic.is_pinned ? 
-                      <PinOff className="w-4 h-4" /> : 
+                    topic.is_pinned ?
+                      <PinOff className="w-4 h-4" /> :
                       <Pin className="w-4 h-4" />
                   }
                   onPress={handlePin}
@@ -251,7 +266,7 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
                   {topic.is_pinned ? '取消置顶' : '置顶'}
                 </Button>
               )}
-              
+
               {/* 管理员删除按钮 */}
               {user && user.role >= 2 && (
                 <Button
@@ -268,13 +283,17 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
           </div>
         </CardBody>
       </Card>
-      
+
       {/* 评论区域 */}
-      <TopicCommentContainer topicId={topic.id} />
-      
+      <TopicCommentContainer
+        topicId={topic.id}
+        initialComments={initialComments}
+        initialTotal={initialCommentsTotal}
+      />
+
       {/* 删除确认对话框 */}
-      <Modal 
-        isOpen={showDeleteConfirm} 
+      <Modal
+        isOpen={showDeleteConfirm}
         onClose={handleDeleteCancel}
         placement="center"
       >
@@ -287,15 +306,15 @@ export const TopicDetail = ({ topic: initialTopic }: Props) => {
             <p className="text-sm text-foreground/60">此操作不可撤销，话题删除后将无法恢复。</p>
           </ModalBody>
           <ModalFooter>
-            <Button 
-              color="default" 
-              variant="light" 
+            <Button
+              color="default"
+              variant="light"
               onPress={handleDeleteCancel}
             >
               取消
             </Button>
-            <Button 
-              color="danger" 
+            <Button
+              color="danger"
               onPress={handleDelete}
               isLoading={isDeleting}
             >

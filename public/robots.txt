@@ -1,5 +1,8 @@
 User-agent: *
-Allow: /
+Disallow: /message
+Disallow: /admin
+Disallow: /user
+Disallow: /tag
 
 # Disallow all bots from accessing NSFW content
 Disallow: /*?page=

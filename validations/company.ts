@@ -4,19 +4,19 @@ export const createCompanySchema = z.object({
     name: z
         .string()
         .trim()
-        .min(1, { message: '开发商名不可为空' })
-        .max(50, { message: '开发商名最大 50 个字符' }),
+        .min(1, { message: '会社名不可为空' })
+        .max(50, { message: '会社名最大 50 个字符' }),
     introduction: z
         .string()
         .trim()
-        .max(10007, { message: '开发商的介绍最大 10007 个字符' })
+        .max(10007, { message: '会社的介绍最大 10007 个字符' })
         .optional(),
     alias: z.array(
         z
             .string()
             .trim()
             .min(1, { message: '别名不可为空' })
-            .max(50, { message: '单个开发商的别名最大 50 个字符' })
+            .max(50, { message: '单个会社的别名最大 50 个字符' })
     )
 })
 

@@ -1,11 +1,12 @@
 import '~/styles/index.css'
 import { Providers } from '~/app/providers'
 import { Toaster } from 'react-hot-toast'
+import { KunNavigationBreadcrumb } from '~/components/kun/NavigationBreadcrumb'
 import { cn } from '~/utils/cn'
 import { KunTopBar } from '~/components/kun/top-bar/TopBar'
 import { KunBackToTop } from '~/components/kun/BackToTop'
 import { AppShell } from '~/components/layout/AppShell'
-import { SnowWrapper } from '~/components/ui/SnowWrapper'
+import { LazySnow } from '~/components/ui/LazySnow'
 import { ENABLE_SNOW } from '~/config/featureFlags'
 
 export default function RootLayout({
@@ -14,14 +15,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="google-site-verification" content="U_BmJbgXvmhmO7Zf5_6b0Aiy60_Nh3sTycpHDp5loYw" />
-        {/* 预连接到外部域名 */}
-        <link rel="preconnect" href="https://cloud.umami.is" />
-        <link rel="preconnect" href="https://was.arisumika.top" />
-        <link rel="dns-prefetch" href="https://cloud.umami.is" />
-        <link rel="dns-prefetch" href="https://was.arisumika.top" />
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="e9ab7228-7489-4a5f-841d-bf643f09e517"></script>
+        <script defer src="https://was.arisumika.top/script.js" data-website-id="a7f17bf9-67ae-4dc9-b273-5bc1144d6039"></script>
       </head>
       <body className={cn('min-h-screen bg-background antialiased')}>
         <Providers>
@@ -31,9 +29,8 @@ export default function RootLayout({
             <AppShell>{children}</AppShell>
             <KunBackToTop />
           </div>
-          <SnowWrapper enabled={ENABLE_SNOW} />
+          <LazySnow enabled={ENABLE_SNOW} />
         </Providers>
-        <script defer src="https://umami.kisugal.icu/script.js" data-website-id="64cac2dd-0bca-4041-907d-18eef228439c" />
       </body>
     </html>
   )

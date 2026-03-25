@@ -20,9 +20,9 @@ export const KunFooter = () => {
           </Link>
 
           <div className="flex space-x-8">
-               {/* <Link href="/doc" className="flex items-center">
+            {/* <Link href="/doc" className="flex items-center">
               使用指南
-            </Link>  */}
+            </Link> */}
             <Link
               href={kunMoyuMoe.domain.nav}
               target="_blank"

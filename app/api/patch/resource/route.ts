@@ -49,10 +49,10 @@ export const POST = async (req: NextRequest) => {
   }
   if (payload.role < 3) {
     if (input.section === 'galgame') {
-      return NextResponse.json('用户或创作者仅可发布补丁资源')
+      return NextResponse.json('用户或创作者仅可发布资源资源')
     }
-    if (input.storage === 'kisugal') {
-      return NextResponse.json('仅管理员可使用 KisuGal 资源盘')
+    if (input.storage === 'lycorisgal') {
+      return NextResponse.json('仅管理员可使用 LyCorisGal 资源盘')
     }
   }
 

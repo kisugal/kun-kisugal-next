@@ -25,7 +25,7 @@ export const getCompanyById = async (input: z.infer<typeof getCompanyByIdSchema>
         }
     })
     if (!company) {
-        return '未找到开发商'
+        return '未找到会社'
     }
 
     return company

@@ -25,7 +25,9 @@ export const createPatchComment = async (
       },
       user: {
         select: {
-          name: true
+          id: true,
+          name: true,
+          avatar: true
         }
       }
     }
@@ -55,7 +57,7 @@ export const createPatchComment = async (
     input.content
   )
 
-  const newComment: Omit<PatchComment, 'user'> = {
+  const newComment: PatchComment = {
     id: data.id,
     uniqueId: data.patch?.unique_id ?? '',
     content: data.content,
@@ -66,7 +68,14 @@ export const createPatchComment = async (
     patchId: data.patch_id,
     reply: [],
     created: String(data.created),
-    updated: String(data.updated)
+    updated: String(data.updated),
+    quotedContent: null,
+    quotedUsername: null,
+    user: {
+      id: data.user.id,
+      name: data.user.name,
+      avatar: data.user.avatar
+    }
   }
 
   return newComment

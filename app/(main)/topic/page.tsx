@@ -1,33 +1,37 @@
-import { Suspense } from 'react'
 import { TopicListPage } from '~/components/topic/TopicListPage'
+import { parseTopicQueryState } from '~/components/topic/query'
 import type { Metadata } from 'next'
 import { kunMoyuMoe } from '~/config/moyu-moe'
+import { kunGetTopicListActions } from './actions'
+import { ErrorComponent } from '~/components/error/ErrorComponent'
+import type { SearchParamsRecord } from '~/utils/search-params'
 
 export const metadata: Metadata = {
   title: `话题列表 - ${kunMoyuMoe.title}`,
   description: '浏览所有话题讨论'
 }
 
-function TopicListLoading() {
-  return (
-    <div className="container mx-auto my-4 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">话题列表</h1>
-          <p className="text-sm text-foreground/60 mt-1">加载中...</p>
-        </div>
-      </div>
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="text-lg">加载中...</div>
-      </div>
-    </div>
-  )
+interface Props {
+  searchParams?: Promise<SearchParamsRecord>
 }
 
-export default function TopicPage() {
+export default async function TopicPage({ searchParams }: Props) {
+  const queryState = parseTopicQueryState(await searchParams)
+  const response = await kunGetTopicListActions({
+    sortField: queryState.sortField,
+    sortOrder: queryState.sortOrder,
+    page: queryState.page,
+    limit: queryState.limit
+  })
+  if (typeof response === 'string') {
+    return <ErrorComponent error={response} />
+  }
+
   return (
-    <Suspense fallback={<TopicListLoading />}>
-      <TopicListPage />
-    </Suspense>
+    <TopicListPage
+      initialTopics={response.topics}
+      initialTotal={response.total}
+      initialQueryState={queryState}
+    />
   )
 }

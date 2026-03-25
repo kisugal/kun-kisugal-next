@@ -1,27 +1,28 @@
 import { CardContainer } from '~/components/resource/Container'
+import { parseResourceQueryState } from '~/components/resource/query'
 import { kunMetadata } from './metadata'
 import { Suspense } from 'react'
 import { kunGetActions } from './actions'
 import { ErrorComponent } from '~/components/error/ErrorComponent'
 import type { Metadata } from 'next'
+import type { SearchParamsRecord } from '~/utils/search-params'
 
-export const revalidate = 60
+export const revalidate = 3
 
 export const metadata: Metadata = kunMetadata
 
 interface Props {
-  searchParams?: Promise<{ page?: number }>
+  searchParams?: Promise<SearchParamsRecord>
 }
 
 export default async function Kun({ searchParams }: Props) {
-  const res = await searchParams
-  const currentPage = res?.page ? res.page : 1
+  const queryState = parseResourceQueryState(await searchParams)
 
   const response = await kunGetActions({
-    sortField: 'created',
-    sortOrder: 'desc',
-    page: currentPage,
-    limit: 50
+    sortField: queryState.sortField,
+    sortOrder: queryState.sortOrder,
+    page: queryState.page,
+    limit: queryState.limit
   })
   if (typeof response === 'string') {
     return <ErrorComponent error={response} />
@@ -32,6 +33,7 @@ export default async function Kun({ searchParams }: Props) {
       <CardContainer
         initialResources={response.resources}
         initialTotal={response.total}
+        initialQueryState={queryState}
       />
     </Suspense>
   )

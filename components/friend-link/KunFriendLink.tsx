@@ -15,7 +15,7 @@ export const KunFriendLink = () => {
       >
         <h1 className="mb-4 text-4xl text-center text-primary-500">友情链接</h1>
         <p className="mb-12 text-center text-default-500">
-          {/* 下方是我们的友站, 您可以点击以访问这些网站 */}
+          下方是我们的友站, 您可以点击以访问这些网站
         </p>
       </motion.div>
 
@@ -65,11 +65,11 @@ export const KunFriendLink = () => {
       >
         <div className="mt-16">
           <h2 className="mb-4 text-2xl text-center text-default-800">
-            {/* 加入我们 */}
+            加入我们
           </h2>
           <p className="mb-12 text-center text-default-500">
-            {/* 要加入我们, 请加入我们的{' '} */}
-            {/* <Link
+            要加入我们, 请加入我们的{' '}
+            <Link
               isExternal
               showAnchorIcon
               href={kunMoyuMoe.domain.telegram_group}
@@ -77,7 +77,7 @@ export const KunFriendLink = () => {
             >
               Telegram 服务器
             </Link>
-            联系我们 */}
+            联系我们
           </p>
         </div>
       </motion.div>

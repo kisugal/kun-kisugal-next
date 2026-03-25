@@ -1,88 +1,77 @@
-import { Button } from '@heroui/button'
-import { ChevronRight } from 'lucide-react'
-import { GalgameCard } from '~/components/galgame/Card'
-import { ResourceCard } from '~/components/resource/ResourceCard'
-import { TopicCard } from '~/components/topic/TopicCard'
-import Link from 'next/link'
-import { HomeHero } from './hero/HomeHero'
-import { HomeAds } from './HomeAds'
-import type { HomeResource } from '~/types/api/home'
-import type { TopicCard as TopicCardType } from '~/types/api/topic'
+import { Suspense } from 'react'
+import { TopicListPage } from '~/components/topic/TopicListPage'
+import type { Metadata } from 'next'
+import { kunMoyuMoe } from '~/config/moyu-moe'
 
-interface Props {
-  galgames: GalgameCard[]
-  resources: HomeResource[]
-  topics: TopicCardType[]
+export const metadata: Metadata = {
+  metadataBase: new URL(kunMoyuMoe.domain.main),
+  title: {
+    default: kunMoyuMoe.title,
+    template: kunMoyuMoe.template
+  },
+  description: kunMoyuMoe.description,
+  keywords: kunMoyuMoe.keywords,
+  authors: kunMoyuMoe.author
 }
 
-export const HomeContainer = ({ galgames, resources, topics }: Props) => {
+function TopicListLoading() {
   return (
-    <div className="mx-auto space-y-8 max-w-7xl">
-      <HomeHero />
+    <div className="container mx-auto my-4">
+      <div className="flex gap-6">
+        <div className="flex-1 min-w-0 space-y-6">
+          {/* 标签页骨架 */}
+          <div className="bg-content1 rounded-large shadow-small p-4">
+            <div className="flex gap-4">
+              <div className="h-8 w-20 rounded-lg bg-default-200 animate-pulse" />
+              <div className="h-8 w-20 rounded-lg bg-default-200 animate-pulse" />
+              <div className="h-8 w-20 rounded-lg bg-default-200 animate-pulse" />
+              <div className="h-8 w-20 rounded-lg bg-default-200 animate-pulse" />
+            </div>
+          </div>
 
-      {/* 首页广告栏 */}
-      {/* <HomeAds /> */}
+          {/* 筛选骨架 */}
+          <div className="bg-content1 rounded-large shadow-small p-4">
+            <div className="flex gap-4">
+              <div className="h-10 w-32 rounded-lg bg-default-200 animate-pulse" />
+              <div className="h-10 w-24 rounded-lg bg-default-200 animate-pulse" />
+            </div>
+          </div>
 
-      <section className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <h2 className="text-lg font-bold sm:text-2xl">最新话题</h2>
-          <Button
-            variant="light"
-            as={Link}
-            color="primary"
-            endContent={<ChevronRight className="size-4" />}
-            href="/topic"
-          >
-            查看更多
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
-          {topics.map((topic) => (
-            <TopicCard key={topic.id} topic={topic} />
-          ))}
-        </div>
-      </section>
-
-      <section className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <h2 className="text-lg font-bold sm:text-2xl">最新 Galgame</h2>
-          <Button
-            variant="light"
-            as={Link}
-            color="primary"
-            endContent={<ChevronRight className="size-4" />}
-            href="/galgame"
-          >
-            查看更多
-          </Button>
-        </div>
-        <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4 xl:grid-cols-6">
-          {galgames.map((galgame) => (
-            <GalgameCard key={galgame.id} patch={galgame} />
-          ))}
-        </div>
-      </section>
-
-      <section className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <h2 className="text-lg font-bold sm:text-2xl">最新补丁资源下载</h2>
-          <Button
-            variant="light"
-            as={Link}
-            color="primary"
-            endContent={<ChevronRight className="size-4" />}
-            href="/resource"
-          >
-            查看更多
-          </Button>
+          {/* 话题列表骨架 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-content1 rounded-large shadow-small p-4 space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-default-200 animate-pulse" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 w-24 rounded-lg bg-default-200 animate-pulse" />
+                    <div className="h-3 w-32 rounded-lg bg-default-200 animate-pulse" />
+                  </div>
+                </div>
+                <div className="h-6 w-3/4 rounded-lg bg-default-200 animate-pulse" />
+                <div className="h-20 w-full rounded-lg bg-default-200 animate-pulse" />
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-2 sm:gap-6 md:grid-cols-2">
-          {resources.map((resource) => (
-            <ResourceCard key={resource.id} resource={resource} />
-          ))}
+        {/* 右侧边栏骨架 */}
+        <div className="hidden lg:block w-80 space-y-4">
+          <div className="bg-content1 rounded-large shadow-small p-4 space-y-3">
+            <div className="h-6 w-32 rounded-lg bg-default-200 animate-pulse" />
+            <div className="h-4 w-full rounded-lg bg-default-200 animate-pulse" />
+            <div className="h-4 w-full rounded-lg bg-default-200 animate-pulse" />
+          </div>
         </div>
-      </section>
+      </div>
     </div>
+  )
+}
+
+export default function Kun() {
+  return (
+    <Suspense fallback={<TopicListLoading />}>
+      <TopicListPage />
+    </Suspense>
   )
 }

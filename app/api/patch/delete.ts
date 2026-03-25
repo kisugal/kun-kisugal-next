@@ -10,13 +10,8 @@ export const deletePatchById = async (input: z.infer<typeof patchIdSchema>) => {
   const { patchId } = input
 
   const patch = await prisma.patch.findUnique({
-    where: { id: patchId },
-    include: {
-      tag: { include: { tag: true } },
-      company: { include: { company: true } }
-    }
+    where: { id: patchId }
   })
-
   if (!patch) {
     return '未找到该游戏'
   }
@@ -26,7 +21,6 @@ export const deletePatchById = async (input: z.infer<typeof patchIdSchema>) => {
   })
 
   return await prisma.$transaction(async (prisma) => {
-    // 删除 S3 上的资源文件
     if (patchResources.length > 0) {
       await Promise.all(
         patchResources.map(async (resource) => {
@@ -43,47 +37,10 @@ export const deletePatchById = async (input: z.infer<typeof patchIdSchema>) => {
       )
     }
 
-    // 处理标签：减少计数，如果计数为 0 则删除标签
-    if (patch.tag.length > 0) {
-      for (const tagRelation of patch.tag) {
-        const updatedTag = await prisma.patch_tag.update({
-          where: { id: tagRelation.tag_id },
-          data: { count: { decrement: 1 } }
-        })
-
-        // 如果计数为 0，删除标签
-        if (updatedTag.count <= 0) {
-          await prisma.patch_tag.delete({
-            where: { id: tagRelation.tag_id }
-          })
-        }
-      }
-    }
-
-    // 处理公司：减少计数，如果计数为 0 则删除公司
-    if (patch.company.length > 0) {
-      for (const companyRelation of patch.company) {
-        const updatedCompany = await prisma.patch_company.update({
-          where: { id: companyRelation.company_id },
-          data: { count: { decrement: 1 } }
-        })
-
-        // 如果计数为 0，删除公司
-        if (updatedCompany.count <= 0) {
-          await prisma.patch_company.delete({
-            where: { id: companyRelation.company_id }
-          })
-        }
-      }
-    }
-
-    // 删除游戏（CASCADE 会自动删除关联数据）
     await prisma.patch.delete({
       where: { id: patchId }
     })
 
     return {}
-  }, {
-    timeout: 60000
   })
 }

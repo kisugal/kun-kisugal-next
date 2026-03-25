@@ -56,7 +56,7 @@ export const ApplyContainer = ({ count }: Props) => {
         </CardHeader>
         <CardBody className="gap-6">
           <div className="flex items-center justify-between">
-            <p className="text-default-500">发布补丁进度: {count}/3</p>
+            <p className="text-default-500">发布资源进度: {count}/3</p>
             <Chip
               color={canApply ? 'success' : 'warning'}
               variant="flat"
@@ -81,7 +81,7 @@ export const ApplyContainer = ({ count }: Props) => {
             }}
             value={progress}
             showValueLabel={true}
-            aria-label="发布补丁进度"
+            aria-label="发布资源进度"
           />
 
           <Divider />

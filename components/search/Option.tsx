@@ -53,7 +53,7 @@ export const SearchOption = () => {
               setSearchData({ ...searchData, searchInCompany: checked })
             }
           >
-            包含开发商
+            包含制作会社
           </Checkbox>
         </div>
       </PopoverContent>

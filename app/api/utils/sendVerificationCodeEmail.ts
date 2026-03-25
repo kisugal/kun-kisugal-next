@@ -20,6 +20,7 @@ export const sendVerificationCodeEmail = async (
   }
 
   const code = generateRandomString(7)
+  console.log(`Generated verification code for ${email}: ${code}`)
   await setKv(email, code, 10 * 60)
   await setKv(`limit:email:${email}`, code, 60)
   await setKv(`limit:ip:${ip}`, code, 60)

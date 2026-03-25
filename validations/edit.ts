@@ -1,10 +1,16 @@
 import { z } from 'zod'
 
+const booleanFormField = z
+  .union([z.boolean(), z.enum(['true', 'false'])])
+  .optional()
+  .transform((value) => value === true || value === 'true')
+
 export const patchCreateSchema = z.object({
   banner: z.any(),
   name: z.string().trim().min(1, { message: '游戏名称是必填项' }),
-  vndbId: z.string().max(10),
-  dlsiteId: z.string().max(20).optional().or(z.literal('')),
+  vndbId: z.string().trim().max(10),
+  dlsiteId: z.string().trim().max(20).optional().or(z.literal('')),
+  forceOverwrite: booleanFormField,
   introduction: z
     .string()
     .trim()
@@ -27,8 +33,8 @@ export const patchCreateSchema = z.object({
 export const patchUpdateSchema = z.object({
   id: z.coerce.number().min(1).max(9999999),
   name: z.string().trim().min(1, { message: '游戏名称是必填项' }),
-  vndbId: z.string().max(10),
-  dlsiteId: z.string().max(20).optional().or(z.literal('')),
+  vndbId: z.string().trim().max(10),
+  dlsiteId: z.string().trim().max(20).optional().or(z.literal('')),
   introduction: z
     .string()
     .trim()
@@ -53,7 +59,7 @@ export const patchUpdateSchema = z.object({
 })
 
 export const duplicateSchema = z.object({
-  vndbId: z.string().max(10)
+  vndbId: z.string().trim().max(10)
 })
 
 export const imageSchema = z.object({

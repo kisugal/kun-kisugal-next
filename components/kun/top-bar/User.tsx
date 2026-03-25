@@ -8,21 +8,21 @@ import { Button } from '@heroui/button'
 import { Skeleton } from '@heroui/skeleton'
 import { useUserStore } from '~/store/userStore'
 import { useRouter } from '@bprogress/next'
-import { kunFetchGet } from '~/utils/kunFetch'
+import { KunFetchError, kunFetchGet } from '~/utils/kunFetch'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import { useMounted } from '~/hooks/useMounted'
 import { UserDropdown } from './UserDropdown'
 import { KunSearch } from './Search'
 import { UserMessageBell } from './UserMessageBell'
-import { NSFWSwitcher } from './NSFWSwitcher'
 import { Tooltip } from '@heroui/tooltip'
 import { RandomGalgameButton } from '~/components/home/carousel/RandomGalgameButton'
+import { NSFWSwitcher } from './NSFWSwitcher'
 import type { UserState } from '~/store/userStore'
 import type { Message } from '~/types/api/message'
 
 export const KunTopBarUser = () => {
   const router = useRouter()
-  const { user, setUser } = useUserStore((state) => state)
+  const { user, setUser, logout } = useUserStore((state) => state)
   const [hasUnread, setHasUnread] = useState(false)
   const isMounted = useMounted()
 
@@ -35,26 +35,61 @@ export const KunTopBarUser = () => {
       return
     }
 
-    const getUserStatus = async () => {
-      const res = await kunFetchGet<KunResponse<UserState>>('/api/user/status')
-      if (typeof res === 'string') {
-        toast.error(res)
-        router.push('/login')
-      } else {
-        setUser(res)
+    let cancelled = false
+
+    const syncUserStatus = async () => {
+      try {
+        const status =
+          await kunFetchGet<KunResponse<UserState>>('/api/user/status')
+
+        if (cancelled) {
+          return
+        }
+
+        if (typeof status === 'string') {
+          setHasUnread(false)
+          logout()
+          toast.error(status)
+          router.push('/login')
+          return
+        }
+
+        setUser(status)
+
+        try {
+          const message = await kunFetchGet<Message | null>(
+            '/api/message/unread'
+          )
+          if (!cancelled) {
+            setHasUnread(Boolean(message))
+          }
+        } catch (error) {
+          if (cancelled) {
+            return
+          }
+
+          if (error instanceof KunFetchError && error.status === 401) {
+            setHasUnread(false)
+            logout()
+            return
+          }
+
+          throw error
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setHasUnread(false)
+          console.error('Failed to sync top bar user status', error)
+        }
       }
     }
 
-    const getUserUnreadMessage = async () => {
-      const message = await kunFetchGet<Message | null>('/api/message/unread')
-      if (message) {
-        setHasUnread(true)
-      }
-    }
+    void syncUserStatus()
 
-    getUserStatus()
-    getUserUnreadMessage()
-  }, [isMounted, user.uid, user.name])
+    return () => {
+      cancelled = true
+    }
+  }, [isMounted, logout, router, setUser, user.uid, user.name])
 
   return (
     <NavbarContent as="div" className="items-center" justify="end">
@@ -84,8 +119,6 @@ export const KunTopBarUser = () => {
             </NavbarContent>
           )}
 
-          <NSFWSwitcher />
-
           <KunSearch />
 
           {/* <Tooltip
@@ -98,6 +131,8 @@ export const KunTopBarUser = () => {
           </Tooltip> */}
 
           <ThemeSwitcher />
+
+          <NSFWSwitcher />
 
           {user.name && (
             <>

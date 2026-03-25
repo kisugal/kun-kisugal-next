@@ -17,7 +17,6 @@ import {
   useDisclosure
 } from '@heroui/modal'
 import {
-  ArrowLeftRight,
   CalendarCheck,
   CircleHelp,
   LogOut,
@@ -27,38 +26,18 @@ import {
   UserRound
 } from 'lucide-react'
 import { useUserStore } from '~/store/userStore'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from '@bprogress/next'
-import { kunFetchGet, kunFetchPost } from '~/utils/kunFetch'
+import { kunFetchPost } from '~/utils/kunFetch'
 import toast from 'react-hot-toast'
-import { useMounted } from '~/hooks/useMounted'
 import { showKunSooner } from '~/components/kun/Sooner'
 import { kunErrorHandler } from '~/utils/kunErrorHandler'
-import { NSFWSwitcher } from './NSFWSwitcher'
-import type { UserState } from '~/store/userStore'
 
 export const UserDropdown = () => {
   const router = useRouter()
   const { user, setUser, logout } = useUserStore((state) => state)
-  const isMounted = useMounted()
   const [loading, setLoading] = useState(false)
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
-  useEffect(() => {
-    if (!isMounted) {
-      return
-    }
-    // 只有当用户已登录（uid > 0 且有name）时才调用API
-    if (!user.uid || user.uid === 0 || !user.name) {
-      return
-    }
-
-    const getUserStatus = async () => {
-      const userStatus = await kunFetchGet<UserState>('/api/user/status')
-      setUser(userStatus)
-    }
-    getUserStatus()
-  }, [isMounted, user.uid, user.name])
 
   const handleLogOut = async () => {
     setLoading(true)
@@ -107,7 +86,8 @@ export const UserDropdown = () => {
             color="secondary"
             name={user.name.charAt(0).toUpperCase()}
             size="sm"
-            {...(user.avatar && user.avatar.trim() !== '' && { src: user.avatar })}
+            {...(user.avatar &&
+              user.avatar.trim() !== '' && { src: user.avatar })}
             showFallback
           />
         </DropdownTrigger>

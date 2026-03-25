@@ -98,7 +98,7 @@ export const EditCompanyModal = ({ company, isOpen, onClose, onSuccess }: Props)
         kunErrorHandler(res, (value) => {
             reset()
             toast.success(
-                '开发商信息编辑成功, 由于缓存影响, 您的更改将在至多 30 秒后生效'
+                '会社信息编辑成功, 由于缓存影响, 您的更改将在至多 30 秒后生效'
             )
             onSuccess(value)
         })
@@ -114,21 +114,21 @@ export const EditCompanyModal = ({ company, isOpen, onClose, onSuccess }: Props)
         <Modal isOpen={isOpen} onClose={handleClose} size="2xl">
             <ModalContent>
                 <form>
-                    <ModalHeader>编辑开发商</ModalHeader>
+                    <ModalHeader>编辑会社</ModalHeader>
                     <ModalBody>
                         <div className="space-y-6">
                             <Input
                                 {...register('name')}
-                                label="开发商名称"
-                                placeholder="输入开发商名称"
+                                label="会社名称"
+                                placeholder="输入会社名称"
                                 isInvalid={!!errors.name}
                                 errorMessage={errors.name?.message}
                             />
 
                             <Textarea
                                 {...register('introduction')}
-                                label="开发商简介"
-                                placeholder="输入开发商简介"
+                                label="会社简介"
+                                placeholder="输入会社简介"
                                 isInvalid={!!errors.introduction}
                                 errorMessage={errors.introduction?.message}
                             />

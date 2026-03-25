@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
+import DOMPurify from 'isomorphic-dompurify'
 import { useMounted } from '~/hooks/useMounted'
 import { KunExternalLink } from '~/components/kun/external-link/ExternalLink'
 import { Code } from '@heroui/code'
@@ -17,19 +18,9 @@ interface Props {
 export const CommentContent = ({ comment }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const isMounted = useMounted()
-  const [sanitizedContent, setSanitizedContent] = useState('')
-
-  // 客户端动态加载 DOMPurify
-  useEffect(() => {
-    if (typeof window !== 'undefined' && comment.content) {
-      import('dompurify').then((mod) => {
-        setSanitizedContent(mod.default.sanitize(comment.content))
-      })
-    }
-  }, [comment.content])
 
   useEffect(() => {
-    if (!contentRef.current || !sanitizedContent) {
+    if (!contentRef.current || !isMounted) {
       return
     }
 
@@ -48,7 +39,7 @@ export const CommentContent = ({ comment }: Props) => {
       const videoRoot = createRoot(root)
       videoRoot.render(<KunExternalLink link={href}>{text}</KunExternalLink>)
     })
-  }, [sanitizedContent])
+  }, [isMounted])
 
   return (
     <>
@@ -67,17 +58,13 @@ export const CommentContent = ({ comment }: Props) => {
           </Chip>
         </Code>
       )}
-      {sanitizedContent ? (
-        <div
-          ref={contentRef}
-          dangerouslySetInnerHTML={{
-            __html: sanitizedContent
-          }}
-          className="kun-prose max-w-none"
-        />
-      ) : (
-        <div className="animate-pulse h-4 bg-default-200 rounded w-3/4"></div>
-      )}
+      <div
+        ref={contentRef}
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(comment.content)
+        }}
+        className="kun-prose max-w-none"
+      />
     </>
   )
 }

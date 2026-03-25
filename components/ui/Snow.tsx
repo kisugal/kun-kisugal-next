@@ -6,17 +6,35 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const [shouldRender, setShouldRender] = useState(false)
 
-    if (!enabled) return null
-
     useEffect(() => {
-        // 客户端检测是否为移动设备
-        const isMobile = window.innerWidth < 768
-        setShouldRender(!isMobile)
-
-        if (isMobile) {
+        if (!enabled) {
+            setShouldRender(false)
             return
         }
 
+        const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+        const evaluate = () => {
+            setShouldRender(
+                !media.matches &&
+                    !document.hidden &&
+                    window.innerWidth >= 1024
+            )
+        }
+
+        evaluate()
+        media.addEventListener('change', evaluate)
+        document.addEventListener('visibilitychange', evaluate)
+        window.addEventListener('resize', evaluate, { passive: true })
+
+        return () => {
+            media.removeEventListener('change', evaluate)
+            document.removeEventListener('visibilitychange', evaluate)
+            window.removeEventListener('resize', evaluate)
+        }
+    }, [enabled])
+
+    useEffect(() => {
+        if (!enabled || !shouldRender) return
         const canvas = canvasRef.current
         if (!canvas) return
         const canvasEl = canvas as HTMLCanvasElement
@@ -25,6 +43,7 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
         const context = ctx as CanvasRenderingContext2D
 
         let animationId = 0
+        // 雪花 (shape) 与 雪粒 (dot)
         let flakes: {
             x: number
             y: number
@@ -59,6 +78,8 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
         function initScene() {
             const w = window.innerWidth
             const h = window.innerHeight
+
+            // 数量
             const flakesCount = Math.max(20, Math.round(w / 60))
             const particlesCount = Math.max(80, Math.round(w / 16))
 
@@ -66,13 +87,14 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
             particles = []
 
             for (let i = 0; i < flakesCount; i++) {
+                // 雪花尺寸范围 1.0 - 3.5
                 const r = 1.0 + Math.random() * 2.5
                 flakes.push({
                     x: Math.random() * w,
                     y: Math.random() * h,
                     r,
-                    vx: (Math.random() - 0.5) * 0.4,
-                    vy: 0.2 + Math.random() * 0.7,
+                    vx: (Math.random() - 0.5) * 0.4, // 横向速度
+                    vy: 0.2 + Math.random() * 0.7, // 竖向速度
                     swing: 0.4 + Math.random() * 1.2,
                     phase: Math.random() * Math.PI * 2,
                     rot: Math.random() * Math.PI * 2
@@ -80,6 +102,7 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
             }
 
             for (let i = 0; i < particlesCount; i++) {
+                // 小粒子，用作低阶雪粒效果
                 const r = 0.4 + Math.random() * 1.6
                 particles.push({
                     x: Math.random() * w,
@@ -93,6 +116,7 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
         }
 
         function drawSnowflake(x: number, y: number, r: number, rot: number) {
+            // 六角雪花样式
             context.save()
             context.translate(x, y)
             context.rotate(rot)
@@ -166,19 +190,8 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
         }
 
         function handleResize() {
-            const nowMobile = window.innerWidth < 768
-            if (nowMobile) {
-                setShouldRender(false)
-                cancelAnimationFrame(animationId)
-                context.clearRect(0, 0, window.innerWidth, window.innerHeight)
-            } else {
-                setShouldRender(true)
-                resize()
-                initScene()
-                if (!animationId) {
-                    loop()
-                }
-            }
+            resize()
+            initScene()
         }
 
         window.addEventListener('resize', handleResize)
@@ -190,11 +203,12 @@ export default function Snow({ enabled = true }: { enabled?: boolean }) {
             window.removeEventListener('resize', handleResize)
             cancelAnimationFrame(animationId)
         }
-    }, [])
+    }, [enabled, shouldRender])
 
-    if (!shouldRender) {
+    if (!enabled || !shouldRender) {
         return null
     }
 
     return <canvas ref={canvasRef} className="snow" aria-hidden="true" />
 }
+

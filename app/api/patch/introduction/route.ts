@@ -10,7 +10,7 @@ import type { PatchIntroduction } from '~/types/api/patch'
 const CACHE_KEY = 'patch:introduction'
 
 const uniqueIdSchema = z.object({
-  uniqueId: z.string().min(1).max(8)
+  uniqueId: z.string().min(8).max(8)
 })
 
 export const getPatchIntroduction = async (

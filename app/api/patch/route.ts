@@ -9,7 +9,7 @@ import { getPatchById } from './get'
 import { deletePatchById } from './delete'
 
 const uniqueIdSchema = z.object({
-  uniqueId: z.string().min(1).max(8)
+  uniqueId: z.string().min(8).max(8)
 })
 
 const patchIdSchema = z.object({

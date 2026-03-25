@@ -119,7 +119,7 @@ export const CompanyDetailContainer = ({
                                     onPress={onOpen}
                                     startContent={<Pencil />}
                                 >
-                                    编辑该开发商
+                                    编辑该会社
                                 </Button>
                             )}
                             <EditCompanyModal
@@ -172,7 +172,7 @@ export const CompanyDetailContainer = ({
                         </div>
                     )}
 
-                    {!total && <KunNull message="该开发商暂无 Galgame" />}
+                    {!total && <KunNull message="该会社暂无 Galgame" />}
                 </>
             )}
         </div>

@@ -1,6 +1,8 @@
 export interface TopicComment {
   id: number
   content: string
+  contentHtml?: string
+  parentContentHtml?: string
   user: {
     id: number
     name: string
@@ -28,7 +30,10 @@ export interface TopicComment {
 
 export interface TopicCommentResponse {
   comments: TopicComment[]
-  total: number
-  page: number
-  limit: number
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+  }
 }

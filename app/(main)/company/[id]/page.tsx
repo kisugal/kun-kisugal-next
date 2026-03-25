@@ -48,7 +48,7 @@ export default async function Kun({ params, searchParams }: Props) {
                     total={response.total}
                 />
             ) : (
-                <KunNull message="请登录后查看开发商详细信息" />
+                <KunNull message="请登录后查看会社详细信息" />
             )}
         </Suspense>
     )

@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-
 }
 
 datasource db {
@@ -150,8 +149,8 @@ model patch {
   id                   Int                                   @id @default(autoincrement())
   unique_id            String                                @unique @db.VarChar(8)
   name                 String                                @db.VarChar(1007)
-  vndb_id              String?                               @unique @db.VarChar(107)
-  dlsite_id            String?                               @unique @db.VarChar(107)
+  vndb_id              String?                               @db.VarChar(107)
+  dlsite_id            String?                               @db.VarChar(107)
   banner               String                                @default("") @db.VarChar(1007)
   introduction         String                                @default("") @db.VarChar(100007)
   released             String                                @default("unknown") @db.VarChar(107)
@@ -176,6 +175,8 @@ model patch {
   favorite_folder      user_patch_favorite_folder_relation[]
 
   @@index([name])
+  @@index([vndb_id])
+  @@index([dlsite_id])
 }
 
 model patch_company {
