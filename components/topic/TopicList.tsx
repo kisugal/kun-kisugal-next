@@ -30,6 +30,9 @@ export const TopicList = ({
   const fabu = async () => {
     if (user.uid === 0) {
       toast.error('请先登录后再创建话题')
+      setTimeout(() => {
+        router.push('/login')
+      }, 1500)
       return
     } else {
       router.push('/topic/create')
