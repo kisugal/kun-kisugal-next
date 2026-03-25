@@ -137,7 +137,7 @@ export const TopicListClient = ({
         } else if (tab === 'image') {
           url += '&type=image'
         } else if (tab === 'official') {
-          url += '&username=admin'
+          url += '&username=KisuGal官方'
         }
 
         const response = await kunFetchGet<TopicListResponse>(url)

@@ -100,7 +100,8 @@ export const IntroductionTab = ({ intro, patchId, uniqueId, uid, companies }: Pr
 
   return (
     <Card className="p-1 sm:p-8">
-      <CardBody className="p-4 space-y-6">
+      <CardBody className="p-4 space-y-6"> 
+        <h2 className="text-2xl font-medium" style={{ color: '#11181C' }}>游戏介绍</h2>
         <div
           ref={contentRef}
           dangerouslySetInnerHTML={{

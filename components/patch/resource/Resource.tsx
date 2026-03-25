@@ -181,8 +181,8 @@ export const Resources = ({ id, vndbId }: Props) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      <GameDetailAds />
+{/* 游戏下载页广告 */}
+      {/* <GameDetailAds /> */}
     </div>
   )
 }
