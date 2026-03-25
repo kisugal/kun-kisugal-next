@@ -71,6 +71,14 @@ const navSections = [
                 name: '哔咔漫画',
                 href: 'https://wrkb-tj.fukmaydt.com/?ch=m1f1v8bk',
                 icon: HeartIcon
+            },
+            {   name: '精品飞机杯',
+                href: 'https://detail.tmall.com/item.htm?id=1018649046685&spm=a21dvs.23580594.0.0.1e1f645eDQUnq8',
+                icon: HeartIcon
+            },
+            {   name: '黄油圈',
+                href: 'https://l8.rsjkwh.com/dh980',
+                icon: HeartIcon
             }
         ]
     }

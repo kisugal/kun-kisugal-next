@@ -48,6 +48,17 @@ const navSections = [
         }
       },
       {
+        name: '精品飞机杯',
+        description: 'AYU-4396 没落女仆のメイド教育😍',
+        href: "https://detail.tmall.com/item.htm?id=1018649046685&spm=a21dvs.23580594.0.0.1e1f645eDQUnq8",
+        icon: HeartIcon,
+        popover: {
+          title: '彼之良淘宝官方旗舰店',
+          description: '飞机杯',
+          image: "https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/2.jpg"
+        }
+      },
+      {
         name: '⚡️翻墙Vpn推荐',
         description: '翻墙Vpn推荐，加速下载！觉得下载资源慢？觉得加载页面不丝滑？',
         href: "https://eueua.cc/#/register?code=V437MLYw",
@@ -55,7 +66,7 @@ const navSections = [
         popover: {
           title: 'VPN',
           description: '⚡️翻墙Vpn推荐',
-          image: "https://r2.sakinori.top/eueuVPN/eueuVPN.jpg"
+          image: "https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E6%96%B9.jpg"
         }
       },
       {
@@ -67,8 +78,19 @@ const navSections = [
           title: '哔咔漫画',
           description: '哔咔漫画',
           image: "https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/1694af269120260107195520.webp"
+         }
+        },
+        {
+        name: '黄油圈',
+        description: '福利游戏合集',
+        href: "https://l8.rsjkwh.com/dh980",
+        icon: HeartIcon,
+        popover: {
+          title: '黄油圈',
+          description: '黄油圈',
+          image: "https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/1.jpg"
         }
-      }
+       }
     ]
   },
   {
