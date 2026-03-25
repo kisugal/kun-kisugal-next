@@ -7,6 +7,8 @@ import { Button } from '@heroui/react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useMounted } from '~/hooks/useMounted'
+import { useUserStore } from '~/store/userStore'
+import toast from 'react-hot-toast'
 
 interface Props {
   topics: TopicCardType[]
@@ -15,14 +17,24 @@ interface Props {
   showEmpty?: boolean
 }
 
-export const TopicList = ({ 
-  topics, 
-  className, 
+export const TopicList = ({
+  topics,
+  className,
   columns = 1,
-  showEmpty = true 
+  showEmpty = true
 }: Props) => {
+  const { user } = useUserStore((state) => state)
   const router = useRouter()
   const mounted = useMounted()
+
+  const fabu = async () => {
+    if (user.uid === 0) {
+      toast.error('请先登录后再创建话题')
+      return
+    } else {
+      router.push('/topic/create')
+    }
+  }
 
   if (topics.length === 0 && showEmpty) {
     return (
@@ -41,10 +53,7 @@ export const TopicList = ({
           还没有人发布话题，快来发布第一个话题吧！
         </p>
         {mounted && (
-          <Button
-            color="primary"
-            onPress={() => router.push('/topic/create')}
-          >
+          <Button color="primary" onClick={() => fabu()}>
             发布话题
           </Button>
         )}
@@ -68,18 +77,9 @@ export const TopicList = ({
   }
 
   return (
-    <div 
-      className={cn(
-        'grid gap-4',
-        getGridCols(),
-        className
-      )}
-    >
+    <div className={cn('grid gap-4', getGridCols(), className)}>
       {topics.map((topic) => (
-        <TopicCard 
-          key={topic.id} 
-          topic={topic}
-        />
+        <TopicCard key={topic.id} topic={topic} />
       ))}
     </div>
   )
