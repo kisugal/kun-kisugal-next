@@ -1,17 +1,13 @@
 'use client'
 
-import { RefObject, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import Download from 'yet-another-react-lightbox/plugins/download'
 import 'yet-another-react-lightbox/styles.css'
 import { useMounted } from '~/hooks/useMounted'
 
-interface AutoImageViewerProps {
-  scopeRef: RefObject<HTMLElement | null>
-}
-
-export const KunAutoImageViewer = ({ scopeRef }: AutoImageViewerProps) => {
+export const KunAutoImageViewer = () => {
   const [openImage, setOpenImage] = useState<string | null>(null)
   const [images, setImages] = useState<
     { src: string; width: number; height: number }[]
@@ -19,14 +15,11 @@ export const KunAutoImageViewer = ({ scopeRef }: AutoImageViewerProps) => {
   const isMounted = useMounted()
 
   useEffect(() => {
-    if (!isMounted || !scopeRef.current) {
+    if (!isMounted) {
       return
     }
 
-    const scopeElement = scopeRef.current
-    const cleanupMap = new Map<HTMLImageElement, () => void>()
-
-    const registerImage = (img: HTMLImageElement) => {
+    const checkImageDimensions = (img: HTMLImageElement) => {
       if (img.width >= 200 && img.height >= 200) {
         setImages((prev) => {
           const exists = prev.some((image) => image.src === img.src)
@@ -40,11 +33,7 @@ export const KunAutoImageViewer = ({ scopeRef }: AutoImageViewerProps) => {
         })
 
         img.style.cursor = 'pointer'
-        if (!cleanupMap.has(img)) {
-          const handleClick = () => setOpenImage(img.src)
-          img.addEventListener('click', handleClick)
-          cleanupMap.set(img, () => img.removeEventListener('click', handleClick))
-        }
+        img.addEventListener('click', () => setOpenImage(img.src))
       }
     }
 
@@ -53,33 +42,32 @@ export const KunAutoImageViewer = ({ scopeRef }: AutoImageViewerProps) => {
         mutation.addedNodes.forEach((node) => {
           if (node instanceof HTMLImageElement) {
             if (node.complete) {
-              registerImage(node)
+              checkImageDimensions(node)
             } else {
-              node.onload = () => registerImage(node)
+              node.onload = () => checkImageDimensions(node)
             }
           }
         })
       })
     })
 
-    scopeElement.querySelectorAll('img').forEach((img) => {
+    document.querySelectorAll('img').forEach((img) => {
       if (img.complete) {
-        registerImage(img)
+        checkImageDimensions(img)
       } else {
-        img.onload = () => registerImage(img)
+        img.onload = () => checkImageDimensions(img)
       }
     })
 
-    observer.observe(scopeElement, {
+    observer.observe(document.body, {
       childList: true,
       subtree: true
     })
 
     return () => {
       observer.disconnect()
-      cleanupMap.forEach((cleanup) => cleanup())
     }
-  }, [isMounted, scopeRef])
+  }, [isMounted])
 
   const currentImageIndex = openImage
     ? images.findIndex((img) => img.src === openImage)
