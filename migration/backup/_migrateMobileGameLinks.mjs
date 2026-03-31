@@ -213,7 +213,7 @@ const createPatchResources = async (
             patchId,
             section: 'galgame',
             name: section.name,
-            storage: 'lycorisgal',
+            storage: 'kisuacg',
             size: size[link] ?? '未知大小',
             content: link,
             type: mapTypes(excludedType),

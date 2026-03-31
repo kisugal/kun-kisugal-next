@@ -30,7 +30,7 @@ export const ResourceLinksInput = ({
   const links = content.trim() ? content.trim().split(',') : ['']
 
   const checkLinkSize = async (link: string) => {
-    toast('正在尝试从 LyCorisGal Alist 获取文件大小')
+    toast('正在尝试从 kisuacg Alist 获取文件大小')
     const data = await fetchLinkData(link)
     if (data && data.code === 0) {
       let sizeInGB

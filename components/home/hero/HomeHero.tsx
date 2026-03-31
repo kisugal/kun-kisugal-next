@@ -19,7 +19,7 @@ export const HomeHero = () => {
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-primary-500" />
                 <Chip color="primary" variant="flat">
-                  欢迎来到 LyCorisGal
+                  欢迎来到 kisuacg
                 </Chip>
               </div>
 
@@ -27,12 +27,12 @@ export const HomeHero = () => {
                 <h1 className="py-1 text-3xl font-bold text-transparent xl:text-4xl bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text">
                   Gal引导资源站
                 </h1>
-                <p className="text-md text-default-600">
-                  简单  轻松  迅速
-                </p>
+                <p className="text-md text-default-600">简单 轻松 迅速</p>
               </div>
 
-              <HomeHeroActions telegramHref={kunMoyuMoe.domain.telegram_group} />
+              <HomeHeroActions
+                telegramHref={kunMoyuMoe.domain.telegram_group}
+              />
             </CardBody>
           </Card>
 

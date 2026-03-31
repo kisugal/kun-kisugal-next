@@ -4,8 +4,7 @@ import type { KunSiteConfig } from './config'
 const KUN_SITE_NAME = 'KisuGal'
 const KUN_SITE_MENTION = '@kisugal'
 const KUN_SITE_TITLE = 'KisuGal - 免费无门槛的一站式Galgame资源下载平台'
-const KUN_SITE_IMAGE =
-  'https://r2.lycorisgal.com/uploads/init/favicon.webp'
+const KUN_SITE_IMAGE = 'https://r2.kisuacg.com/uploads/init/favicon.webp'
 const KUN_SITE_DESCRIPTION =
   'KisuGal 是一个免费无门槛的Galgame资源站。提供Galgame下载、补丁下载、Galgame工具下载、Galgame教程等服务。帮助用户轻松迅速学习并获取资源'
 const KUN_SITE_URL = 'https://kisuacg.moe'
@@ -14,9 +13,7 @@ const KUN_SITE_FORUM = 'https://kisuacg.moe'
 const KUN_SITE_NAV = 'https://kisugal.com'
 const KUN_SITE_TELEGRAM_GROUP = '#'
 const KUN_SITE_DISCORD_GROUP = '#'
-const KUN_SITE_LIST = [
-  { name: KUN_SITE_NAME, url: 'https://kisuacg.moe' }
-]
+const KUN_SITE_LIST = [{ name: KUN_SITE_NAME, url: 'https://kisuacg.moe' }]
 const KUN_SITE_KEYWORDS = [
   'KisuGal',
   'Gal',
@@ -62,7 +59,7 @@ export const kunMoyuMoe: KunSiteConfig = {
   },
   domain: {
     main: KUN_SITE_URL,
-    imageBed: 'https://galtest.lycorisgal.com',
+    imageBed: 'https://galtest.kisuacg.com',
     storage: KUN_SITE_URL,
     kungal: KUN_SITE_URL,
     telegram_group: KUN_SITE_TELEGRAM_GROUP,

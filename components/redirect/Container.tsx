@@ -19,16 +19,16 @@ export const KunRedirectContainer = () => {
           <KunRedirectCard />
         </Suspense>
 
-        <div className="max-w-2xl">
+        {/* <div className="max-w-2xl">
           <Alert
             description="如果下载太慢可以看看下方的VPN加速，亲测可用！不可用你来找我！"
             title="公告"
             color="secondary"
             variant="faded"
           />
-        </div>
+        </div> */}
 
-        <RedirectAds />
+        {/* <RedirectAds /> */}
       </div>
     </div>
   )
