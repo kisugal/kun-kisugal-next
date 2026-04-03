@@ -74,21 +74,9 @@ const navSections = [
         }
       },
       {
-        name: '哔咔漫画',
-        description: '哔咔漫画，你想要的这里都有~',
-        href: 'https://wrkb-tj.fukmaydt.com/?ch=m1f1v8bk',
-        icon: HeartIcon,
-        popover: {
-          title: '哔咔漫画',
-          description: '哔咔漫画',
-          image:
-            'https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/1694af269120260107195520.webp'
-        }
-      },
-      {
         name: '黄油圈',
         description: '福利游戏合集',
-        href: 'https://l8.rsjkwh.com/dh980',
+        href: 'https://l1.mdkj114.com/dh980',
         icon: HeartIcon,
         popover: {
           title: '黄油圈',
