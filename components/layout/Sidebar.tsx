@@ -75,8 +75,8 @@ const navSections = [
       },
       {
         name: '黄油圈',
-        description: '福利游戏合集',
-        href: 'https://l1.mdkj114.com/dh980',
+        description: '福利游戏合集，你想要的都在这里~',
+        href: 'https://l3.zexqh.com/dh980',
         icon: HeartIcon,
         popover: {
           title: '黄油圈',
