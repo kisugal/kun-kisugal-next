@@ -51,13 +51,13 @@ const navSections = [
       {
         name: '精品飞机杯',
         description: 'AYU-4396 没落女仆のメイド教育😍',
-        href: 'https://detail.tmall.com/item.htm?id=1018649046685&spm=a21dvs.23580594.0.0.1e1f645eDQUnq8',
+        href: 'https://s.tb.cn/c.0x1IWF',
         icon: HeartIcon,
         popover: {
           title: '彼之良淘宝官方旗舰店',
           description: '飞机杯',
           image:
-            'https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/2.jpg'
+            'https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260406222000_11655_554.jpg'
         }
       },
       {
@@ -228,7 +228,7 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
               className={cn(
                 !isCollapsed && 'mb-2',
                 isAdSection &&
-                  'mb-4 mx-1 p-3 bg-default-50 dark:bg-default-100/10 border border-primary dark:border-primary/50 rounded-lg shadow-sm backdrop-blur-sm'
+                'mb-4 mx-1 p-3 bg-default-50 dark:bg-default-100/10 border border-primary dark:border-primary/50 rounded-lg shadow-sm backdrop-blur-sm'
               )}
             >
               {index > 0 && !isAdSection && (

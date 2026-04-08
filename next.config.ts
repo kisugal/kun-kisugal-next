@@ -37,6 +37,12 @@ const nextConfig: NextConfig = {
         hostname: 'img.touchgalstatic.org',
         port: '',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'd.kisugal.icu',
+        port: '',
+        pathname: '/**'
       }
     ]
   },

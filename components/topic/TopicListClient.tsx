@@ -10,13 +10,20 @@ import {
   Tabs,
   Tab,
   Skeleton,
-  Button
+  Button,
+  Accordion,
+  AccordionItem
 } from '@heroui/react'
 import { TopicList } from './TopicList'
 import { KunPagination } from '~/components/kun/Pagination'
 import { kunFetchGet } from '~/utils/kunFetch'
 import type { TopicCard } from '~/types/api/topic'
 import dynamic from 'next/dynamic'
+import { Leaf, Plus } from 'lucide-react'
+import { useUserStore } from '~/store/userStore'
+import toast from 'react-hot-toast'
+import Image from 'next/image'
+import Link from 'next/link'
 
 // 动态加载右侧边栏，不阻塞首屏
 const RightSidebar = dynamic(
@@ -58,6 +65,21 @@ const sortOptions = [
 const orderOptions = [
   { key: 'desc', label: '降序' },
   { key: 'asc', label: '升序' }
+]
+
+const glgc = [
+  {
+    title: '翻墙Vpn推荐⚡️',
+    imageurl: 'https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E6%96%B9.jpg',
+    url: "https://eueua.cc/#/register?code=V437MLYw",
+    content: '翻墙Vpn推荐，加速下载！觉得下载资源慢？觉得加载页面不丝滑？'
+  },
+  {
+    title: '精品飞机杯',
+    imageurl: 'https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260406222000_11655_554.jpg',
+    url: "https://s.tb.cn/c.0x1IWF",
+    content: null
+  }
 ]
 
 interface Props {
@@ -197,6 +219,19 @@ export const TopicListClient = ({
 
   const totalPages = Math.ceil(total / limit)
 
+  const { user } = useUserStore((state) => state)
+  const fabu = async () => {
+    if (user.uid === 0) {
+      toast.error('请先登录后再创建话题')
+      setTimeout(() => {
+        router.push('/login')
+      }, 1500)
+      return
+    } else {
+      router.push('/topic/create')
+    }
+  }
+
   return (
     <div className="container mx-auto my-4">
       <div className="flex gap-6">
@@ -204,8 +239,6 @@ export const TopicListClient = ({
 
         <div className="flex-1 min-w-0 space-y-3">
           {/* 标签页导航 */}
-          {/* <Card>
-            <CardBody className="p-0"> */}
           <Tabs
             selectedKey={activeTab}
             onSelectionChange={handleTabChange}
@@ -230,22 +263,48 @@ export const TopicListClient = ({
           {/* 筛选和排序 */}
           {/* <Card>
             <CardHeader className="pb-3"> */}
-          <div className="flex items-center mb-0 gap-2">
-            {/* <Filter className="size-4" />
+          {/* <div className="flex items-center mb-0 gap-2"> */}
+          {/* <Filter className="size-4" />
             <span className="font-medium">筛选和排序</span> */}
-            <Button
-              color="primary"
-              size="sm"
-              variant="bordered"
-              className="ml-auto mr-3 mb-3 lg:hidden w-full"
-              onPress={() => router.push('/topic/create')}
-            >
-              {/* <Plus className="size-4" /> */}
-              发布话题
-            </Button>
-          </div>
+          {/* </div> */}
           {/* </CardHeader> */}
           {/* <CardBody className="pt-0"> */}
+
+          <Accordion
+            isCompact
+          >
+            {glgc.map((item) => {
+              return (
+                <AccordionItem
+                  key={item.title}
+                  aria-label="Accordion 1"
+                  startContent={
+                    <Leaf className="w-5 h-5 text-yellow-500" />
+                  }
+                  title={item.title}
+                >
+                  <Link
+                    href={item.url}
+                    target='_blank'
+                  >
+                    {item.content && (
+                      <div className='opacity-80 text-sm mb-2'>
+                        {item.content}
+                      </div>
+                    )}
+                    <Image
+                      src={item.imageurl}
+                      // fill
+                      width={400}
+                      height={500}
+                      alt={item.title}
+                      className="rounded-lg opacity-80"
+                    />
+                  </Link>
+                </AccordionItem>
+              )
+            })}
+          </Accordion >
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <span className="text-sm text-foreground/70">排序方式:</span>
@@ -280,49 +339,61 @@ export const TopicListClient = ({
               </Select>
             </div>
           </div>
-          {/* </CardBody>
-          </Card> */}
 
           {/* 内容区域 */}
-          {isPending && topics.length === 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                // <Card key={i}>
-                <div className="space-y-3" key={i}>
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="w-10 h-10 rounded-full" />
-                    <div className="flex-1 space-y-2">
-                      <Skeleton className="h-4 w-24 rounded-lg" />
-                      <Skeleton className="h-3 w-32 rounded-lg" />
+          {
+            isPending && topics.length === 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[1, 2, 3, 4].map((i) => (
+                  // <Card key={i}>
+                  <div className="space-y-3" key={i}>
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="w-10 h-10 rounded-full" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-4 w-24 rounded-lg" />
+                        <Skeleton className="h-3 w-32 rounded-lg" />
+                      </div>
                     </div>
+                    <Skeleton className="h-6 w-3/4 rounded-lg" />
+                    <Skeleton className="h-20 w-full rounded-lg" />
                   </div>
-                  <Skeleton className="h-6 w-3/4 rounded-lg" />
-                  <Skeleton className="h-20 w-full rounded-lg" />
-                </div>
-                // </Card>
-              ))}
-            </div>
-          ) : (
-            // 话题列表
-            <TopicList topics={topics} columns={2} />
-          )}
+                  // </Card>
+                ))}
+              </div>
+            ) : (
+              // 话题列表
+              <TopicList topics={topics} columns={2} />
+            )
+          }
 
           {/* 分页 */}
-          {totalPages > 1 && (
-            <div className="flex justify-center">
-              <KunPagination
-                total={totalPages}
-                page={currentPage}
-                onPageChange={handlePageChange}
-                isLoading={isPending}
-              />
-            </div>
-          )}
-        </div>
+          {
+            totalPages > 1 && (
+              <div className="flex justify-center">
+                <KunPagination
+                  total={totalPages}
+                  page={currentPage}
+                  onPageChange={handlePageChange}
+                  isLoading={isPending}
+                />
+              </div>
+            )
+          }
+        </div >
 
         {/* 右侧边栏 */}
-        <RightSidebar />
+        < RightSidebar />
       </div>
-    </div>
+      <Button
+        color="primary"
+        size="lg"
+        isIconOnly
+        variant="shadow"
+        className="fixed bottom-6 right-6 z-50 rounded-full shadow-lg"
+        onPress={() => fabu()}
+      >
+        <Plus className="size-5" />
+      </Button>
+    </div >
   )
 }
