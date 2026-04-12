@@ -1,13 +1,13 @@
 {
   "friends": [
     {
-      "name": "鲲galgame补丁",
+      "name": "鲲 galgame 补丁",
       "avatar": "https://www.moyu.moe/_next/image?url=%2Ffavicon.webp&w=128&q=75",
       "label": "开源, 免费, 零门槛, 纯手写, 最先进的 Galgame 补丁资源下载站, 提供 Windows, 安卓, KRKR, Tyranor 等各类平台的 Galgame 补丁资源下载。永远免费！",
       "link": "https://www.moyu.moe/"
     },
     {
-      "name": "鲲GalGame论坛",
+      "name": "鲲 GalGame 论坛",
       "avatar": "https://www.kungal.com/favicon.webp",
       "label": "世界上最萌的 Galgame 论坛! 现阶段世界上最先进的 Galgame 资源发布网站! 永远不会有广告! 永远免费! Galgame 下载, Galgame 资源网站",
       "link": "https://www.kungal.com/"
@@ -21,14 +21,20 @@
     {
       "name": "TouchGal",
       "avatar": "https://www.touchgal.top/_next/image?url=%2Ffavicon.webp&w=64&q=75",
-      "label": "TouchGal是一个一站式 Galgame 文化社区。提供Galgame 论坛、Galgame 下载等服务。承诺永久免费, 高质量。为Galgame 爱好者提供一片净土!",
+      "label": "TouchGal是一个一站式 Galgame 文化社区。提供 Galgame 论坛、Galgame 下载等服务。承诺永久免费, 高质量。为 Galgame 爱好者提供一片净土!",
       "link": "https://www.touchgal.top/"
     },
     {
-      "name": "ACG盒子",
+      "name": "ACG 盒子",
       "avatar": "https://www.acgbox.link/wp-content/uploads/logo/86742914_p0.png",
-      "label": "ACG盒子，专注ACG的导航盒子，收录二次元相关的网站，打造一个二次元专属的网站",
+      "label": "ACG盒子，专注 ACG的导航盒子，收录二次元相关的网站，打造一个二次元专属的网站",
       "link": "https://www.acgbox.link/"
+    },
+    {
+      "name": "蛋窝资源库",
+      "avatar": "https://www.acgbox.link/wp-content/uploads/logo/86742914_p0.png",
+      "label": "一个永久免费的 ACG 资源站",
+      "link": "https://danwo.top/"
     }
   ]
 }
