@@ -68,11 +68,6 @@ const navSections = [
         icon: HeartIcon
       },
       {
-        name: '哔咔漫画',
-        href: 'https://wrkb-tj.fukmaydt.com/?ch=m1f1v8bk',
-        icon: HeartIcon
-      },
-      {
         name: '精品飞机杯',
         href: 'https://s.tb.cn/c.0x1IWF',
         icon: HeartIcon

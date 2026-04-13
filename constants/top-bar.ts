@@ -4,8 +4,7 @@ export interface KunNavItem {
   rel?: string
 }
 
-export const kunNavItem: KunNavItem[] = [
-]
+export const kunNavItem: KunNavItem[] = []
 
 export const kunMobileNavItem: KunNavItem[] = [
   ...kunNavItem,
@@ -46,11 +45,6 @@ export const kunMobileNavItem: KunNavItem[] = [
   {
     name: '⚡️翻墙Vpn推荐',
     href: 'https://eueua.cc/#/register?code=V437MLYw',
-    rel: 'nofollow'
-  },
-  {
-    name: '哔咔漫画',
-    href: 'https://wrkb-tj.fukmaydt.com/?ch=m1f1v8bk',
     rel: 'nofollow'
   }
 ]
