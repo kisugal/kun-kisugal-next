@@ -22,6 +22,7 @@ export const GalgameCard = ({ patch }: Props) => {
     <Card
       isPressable
       as={Link}
+      prefetch={false}
       href={`/${patch.uniqueId}`}
       className="flex flex-col gap-2 p-2 transition-shadow border shadow-sm rounded-xl group border-divider hover:shadow-lg"
     >
@@ -66,7 +67,7 @@ export const GalgameCard = ({ patch }: Props) => {
         >
           {patch.name}
         </h2>
-        
+
         <KunCardStats patch={patch} isMobile />
         <CardFooter className="pt-0">
           <KunPatchAttribute types={patch.type} size="sm" />
