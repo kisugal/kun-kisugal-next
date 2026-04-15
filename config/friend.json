@@ -35,6 +35,24 @@
       "avatar": "https://danwo.top/favicon.ico",
       "label": "一个永久免费的 ACG 资源站",
       "link": "https://danwo.top/"
+    },
+    {
+      "name": "绮梦ACG",
+      "avatar": "https://game.acgs.one/_next/image?url=%2Ffavicon.ico&w=64&q=75",
+      "label": "绮梦ACG是一个专注于ACG资源分享的社区，提供丰富的ACG资源下载和交流平台，致力于为ACG爱好者打造一个温馨的家园。",
+      "link": "https://game.acgs.one/"
+    },
+    {
+      "name": "0721Galgame",
+      "avatar": "https://nn0721.icu/usr/themes/cuckoo/assets/images/logo.png",
+      "label": "Galgame下载",
+      "link": "https://nn0721.icu/"
+    },
+    {
+      "name": "白鹭学园",
+      "avatar": "https://img.srsg.moe/2021/06/01/c5b555e3b8a17.png",
+      "label": "白鹭学园是一个动漫同好社区，著力于分享ACG相关信息",
+      "link": "https://www.srsg.moe/"
     }
   ]
 }
