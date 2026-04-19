@@ -53,6 +53,18 @@
       "avatar": "https://img.srsg.moe/2021/06/01/c5b555e3b8a17.png",
       "label": "白鹭学园是一个动漫同好社区，著力于分享ACG相关信息",
       "link": "https://www.srsg.moe/"
+    },
+    {
+      "name": "MikuGame初音游戏论坛",
+      "avatar": "https://www.mikugame.icu/favicon.ico",
+      "label": "MikuGame是一站式的游戏论坛！为游戏玩家提供Steam游戏，同人游戏，Galgame的社区与资源分享服务！",
+      "link": "https://mikugame.icu/"
+    },
+    {
+      "name": "绮梦·还悠",
+      "avatar": "https://huanyou.zip/usr/themes/JPGEHCA/assets/images/logo-light.png",
+      "label": "GAL 动漫原声带以及ASMR的综合收录站",
+      "link": "https://huanyou.zip/"
     }
   ]
 }
