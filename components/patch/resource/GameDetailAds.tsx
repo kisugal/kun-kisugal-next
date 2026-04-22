@@ -25,7 +25,7 @@ const GAME_DETAIL_ADS_DATA: AdItem[] = [
     title: '',
     description: '',
     image:
-      'https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E6%96%B9.jpg', // 游戏详情页专用广告图片
+      'https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260422115227_3895_10.jpg', // 游戏详情页专用广告图片
     link: 'https://eueua.cc/#/register?code=V437MLYw' // 游戏详情页专用广告链接
   }
 ]
