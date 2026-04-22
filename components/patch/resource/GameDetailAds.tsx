@@ -21,11 +21,12 @@ const GAME_DETAIL_ADS_DATA: AdItem[] = [
     link: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67' // 游戏详情页专用广告链接
   },
   {
-    id: 'game-detail-ad2', //黄油圈
+    id: 'game-detail-ad2', //VPN
     title: '',
     description: '',
-    image: 'https://r2.sakinori.top/%E9%A3%8E%E6%9C%88AI/1200x200-03.gif', // 游戏详情页专用广告图片
-    link: 'https://hbbq4.digital/hycdh980' // 游戏详情页专用广告链接
+    image:
+      'https://d.kisugal.icu/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E6%96%B9.jpg', // 游戏详情页专用广告图片
+    link: 'https://eueua.cc/#/register?code=V437MLYw' // 游戏详情页专用广告链接
   }
 ]
 
