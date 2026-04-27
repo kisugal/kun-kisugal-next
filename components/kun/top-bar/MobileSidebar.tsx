@@ -29,9 +29,7 @@ interface MobileSidebarProps {
   onClose: () => void
 }
 
-/**
- * 1. NSFW 提示：内容 100% 还原 PC 端长文本，卡片尺寸放大以示警醒
- */
+// 1. NSFW 提示：内容 100% 还原 PC 端长文本
 const NSFWNotice = ({ nsfwStatus }: { nsfwStatus: string }) => {
   const isSFW = nsfwStatus === 'sfw'
   const isNSFW = nsfwStatus === 'nsfw'
@@ -39,7 +37,7 @@ const NSFWNotice = ({ nsfwStatus }: { nsfwStatus: string }) => {
 
   if (isSFW) {
     return (
-      <div className="mx-2 mb-4 p-3 bg-primary/20 border border-primary/40 rounded-xl">
+      <div className="mx-2 mb-4 p-3 bg-primary/20 border border-primary/40 rounded-xl shadow-sm">
         <div className="flex items-start gap-2.5 text-[10.5px] leading-relaxed text-foreground">
           <Shield className="w-4 h-4 text-danger flex-shrink-0 mt-0.5" />
           <div className="flex flex-col">
@@ -58,8 +56,8 @@ const NSFWNotice = ({ nsfwStatus }: { nsfwStatus: string }) => {
 
   if (isNSFW || isAll) {
     return (
-      <div className="mx-2 mb-4 p-3 bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800 rounded-xl text-pink-700 dark:text-pink-300">
-        <div className="flex items-start gap-2.5 text-[10.5px] leading-relaxed">
+      <div className="mx-2 mb-4 p-3 bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800 rounded-xl shadow-sm">
+        <div className="flex items-start gap-2.5 text-[10.5px] leading-relaxed text-pink-700 dark:text-pink-300">
           <Eye className="w-4 h-4 text-pink-500 flex-shrink-0 mt-0.5" />
           <div className="flex flex-col">
             <p className="font-bold text-[11.5px] mb-1 text-pink-600 dark:text-pink-400">
@@ -77,28 +75,27 @@ const NSFWNotice = ({ nsfwStatus }: { nsfwStatus: string }) => {
   return null
 }
 
-/**
- * 2. 菜单数据配置
- */
 const navSections = [
   {
     title: '推荐内容',
     items: [
       {
         name: 'Ai女友💋',
-        description: '顶尖色情，即刻生图😍待你开发！💋',
+        description:
+          '🌟在线畅玩。顶尖色情，即刻生图😍多样角色场景18禁性癖待你开发！💋',
         href: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
         icon: HeartIcon
       },
       {
         name: '精品飞机杯',
-        description: 'AYU-4396 没落女仆教育😍',
+        description: 'AYU-4396 没落女仆のメイド教育😍',
         href: 'https://s.tb.cn/c.0x1IWF',
         icon: HeartIcon
       },
       {
         name: '翻墙Vpn推荐',
-        description: '加速下载，加载更丝滑！',
+        description:
+          '翻墙Vpn推荐，加速下载！觉得下载资源慢？觉得加载页面不丝滑？',
         href: 'https://eueua.cc/#/register?code=V437MLYw',
         icon: HeartIcon
       }
@@ -156,6 +153,17 @@ const navSections = [
       },
       { name: '话题列表', description: '最新话题', href: '/topic', icon: Hash }
     ]
+  },
+  {
+    title: '其他',
+    items: [
+      {
+        name: '友情链接',
+        description: '可爱的好朋友们！',
+        href: '/friend-link',
+        icon: HeartMinus
+      }
+    ]
   }
 ]
 
@@ -163,40 +171,47 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
   const pathname = usePathname()
   const nsfwEnable = useSettingStore((state) => state.data.kunNsfwEnable)
 
-  // 核心 Bug 修复逻辑：延迟卸载
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false) // 控制 DOM 挂载
+  const [active, setActive] = useState(false) // 控制 CSS 动画激活
 
   useEffect(() => {
     if (isOpen) {
       setMounted(true)
+      // 使用 requestAnimationFrame 确保在 DOM 渲染后的下一帧触发动画
+      const timer = requestAnimationFrame(() => {
+        setActive(true)
+      })
       document.body.style.overflow = 'hidden'
+      return () => cancelAnimationFrame(timer)
     } else {
+      setActive(false)
       document.body.style.overflow = ''
+      // 等待动画结束(300ms)后卸载 DOM
       const timer = setTimeout(() => setMounted(false), 310)
       return () => clearTimeout(timer)
     }
   }, [isOpen])
 
-  if (!mounted && !isOpen) return null
+  if (!mounted) return null
 
   return (
     <div className="relative z-[100]">
-      {/* 遮罩：修复点击穿透 */}
+      {/* 遮罩层 - 物理点击穿透修复 */}
       <div
         className={cn(
           'fixed inset-0 bg-black/50 transition-opacity duration-300 ease-in-out',
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          active ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
         onClick={onClose}
       />
 
-      {/* 侧栏主体：210px 宽度，硬件加速，掉帧优化 */}
+      {/* 侧边栏主体 - 开启 GPU 加速，锁死 210px 宽度 */}
       <aside
         className={cn(
           'fixed top-0 left-0 bottom-0 z-[101] flex flex-col bg-background shadow-2xl',
           'w-[210px] min-w-[210px] max-w-[210px]',
           'transform-gpu transition-transform duration-300 ease-in-out will-change-transform',
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          active ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         <div className="flex items-center justify-between p-3 border-b border-divider h-[57px] flex-shrink-0">
@@ -209,7 +224,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
               className="rounded-lg"
               priority
             />
-            <span className="font-bold text-[13px] text-primary truncate leading-none">
+            <span className="font-bold text-[13px] text-primary truncate">
               {kunMoyuMoe.creator.name}
             </span>
           </Link>
@@ -229,10 +244,9 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
 
           {navSections.map((section, index) => {
             const isAdSection = section.title === '推荐内容'
-
             return (
               <React.Fragment key={section.title}>
-                {/* 隔离横线：逻辑与 PC 端 Sidebar.tsx 完全同步 */}
+                {/* 隔离横线 - PC同步逻辑 */}
                 {index > 0 && !isAdSection && (
                   <div className="mx-4 my-2.5 border-t border-divider/60 flex-shrink-0" />
                 )}
@@ -241,7 +255,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                   className={cn(
                     'mb-2 px-1',
                     isAdSection &&
-                      'mx-1.5 mb-4 p-1.5 bg-default-50 dark:bg-default-100/10 border border-primary/30 rounded-xl shadow-inner'
+                      'mx-1.5 mb-4 p-2 bg-default-50 dark:bg-default-100/10 border border-primary/30 rounded-xl shadow-inner'
                   )}
                 >
                   <h2
@@ -262,7 +276,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                           className={cn(
                             'flex items-start p-1.5 mx-1 rounded-lg transition-all active:scale-[0.98]',
                             pathname === item.href
-                              ? 'bg-primary/10 text-primary font-bold shadow-sm'
+                              ? 'bg-primary/10 text-primary font-bold'
                               : 'active:bg-default-100 text-foreground'
                           )}
                         >
@@ -276,7 +290,6 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                                   : 'text-default-500'
                             )}
                           />
-
                           <div className="flex flex-col ms-2.5 min-w-0">
                             <span className="text-[12.5px] font-semibold leading-tight break-words">
                               {item.name}
