@@ -29,7 +29,9 @@ interface MobileSidebarProps {
   onClose: () => void
 }
 
-// 1. 优化后的 NSFWNotice：文字更大，卡片更醒目
+/**
+ * 1. NSFW 提示：内容 100% 还原 PC 端长文本，卡片尺寸放大以示警醒
+ */
 const NSFWNotice = ({ nsfwStatus }: { nsfwStatus: string }) => {
   const isSFW = nsfwStatus === 'sfw'
   const isNSFW = nsfwStatus === 'nsfw'
@@ -37,17 +39,17 @@ const NSFWNotice = ({ nsfwStatus }: { nsfwStatus: string }) => {
 
   if (isSFW) {
     return (
-      <div className="mx-2 mb-3 p-3.5 bg-primary/20 border border-primary/40 rounded-xl">
-        <div className="flex items-start gap-2.5 leading-snug text-foreground">
-          <Shield className="w-4.5 h-4.5 text-danger flex-shrink-0 mt-0.5" />
-          <div className="flex flex-col gap-1">
-            <div className="font-bold text-[11.5px] text-danger">
+      <div className="mx-2 mb-4 p-3 bg-primary/20 border border-primary/40 rounded-xl">
+        <div className="flex items-start gap-2.5 text-[10.5px] leading-relaxed text-foreground">
+          <Shield className="w-4 h-4 text-danger flex-shrink-0 mt-0.5" />
+          <div className="flex flex-col">
+            <p className="font-bold text-[11.5px] mb-1">
               部分 Galgame 已被隐藏
-            </div>
-            <div className="text-[10.5px] text-default-600 dark:text-default-400">
-              网站未启用 NSFW, 部分 Galgame 不可见, 要查看所有内容,
-              请在顶部导航栏切换模式。
-            </div>
+            </p>
+            <p className="text-default-600 dark:text-default-400">
+              网站未启用 NSFW, 部分 Galgame 不可见, 要查看所有 Galgame,
+              请在顶部导航栏切换网站内容显示
+            </p>
           </div>
         </div>
       </div>
@@ -56,15 +58,17 @@ const NSFWNotice = ({ nsfwStatus }: { nsfwStatus: string }) => {
 
   if (isNSFW || isAll) {
     return (
-      <div className="mx-2 mb-3 p-3.5 bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800 rounded-xl text-pink-600 dark:text-pink-400">
-        <div className="flex items-start gap-2.5 leading-snug">
-          <Eye className="w-4.5 h-4.5 flex-shrink-0 mt-0.5" />
-          <div className="flex flex-col gap-1">
-            <div className="font-bold text-[11.5px]">网站已进入 NSFW 模式</div>
-            <div className="text-[10.5px]">
-              您可访问本站所有内容，可能含有 R18
-              内容，请勿在公共场所浏览，以免造成不必要的困扰。
-            </div>
+      <div className="mx-2 mb-4 p-3 bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800 rounded-xl text-pink-700 dark:text-pink-300">
+        <div className="flex items-start gap-2.5 text-[10.5px] leading-relaxed">
+          <Eye className="w-4 h-4 text-pink-500 flex-shrink-0 mt-0.5" />
+          <div className="flex flex-col">
+            <p className="font-bold text-[11.5px] mb-1 text-pink-600 dark:text-pink-400">
+              网站已进入NSFW模式
+            </p>
+            <p className="text-pink-600 dark:text-pink-400">
+              网站已启用 NSFW,
+              您可访问本站所有内容，可能含有R18内容，请勿在公共场所浏览，以免造成不必要的困扰
+            </p>
           </div>
         </div>
       </div>
@@ -73,13 +77,16 @@ const NSFWNotice = ({ nsfwStatus }: { nsfwStatus: string }) => {
   return null
 }
 
+/**
+ * 2. 菜单数据配置
+ */
 const navSections = [
   {
     title: '推荐内容',
     items: [
       {
         name: 'Ai女友💋',
-        description: '顶尖色情，即刻生图😍',
+        description: '顶尖色情，即刻生图😍待你开发！💋',
         href: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
         icon: HeartIcon
       },
@@ -155,45 +162,44 @@ const navSections = [
 const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
   const pathname = usePathname()
   const nsfwEnable = useSettingStore((state) => state.data.kunNsfwEnable)
-  const [shouldRender, setShouldRender] = useState(false)
-  const [isAnimate, setIsAnimate] = useState(false)
+
+  // 核心 Bug 修复逻辑：延迟卸载
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
-      setShouldRender(true)
-      const frame = requestAnimationFrame(() => setIsAnimate(true))
+      setMounted(true)
       document.body.style.overflow = 'hidden'
-      return () => cancelAnimationFrame(frame)
     } else {
-      setIsAnimate(false)
-      const timer = setTimeout(() => setShouldRender(false), 300)
       document.body.style.overflow = ''
+      const timer = setTimeout(() => setMounted(false), 310)
       return () => clearTimeout(timer)
     }
   }, [isOpen])
 
-  if (!shouldRender && !isOpen) return null
+  if (!mounted && !isOpen) return null
 
   return (
-    <>
+    <div className="relative z-[100]">
+      {/* 遮罩：修复点击穿透 */}
       <div
         className={cn(
-          'fixed inset-0 bg-black/50 transition-opacity duration-300 z-[100]',
-          isAnimate ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          'fixed inset-0 bg-black/50 transition-opacity duration-300 ease-in-out',
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
         onClick={onClose}
       />
 
+      {/* 侧栏主体：210px 宽度，硬件加速，掉帧优化 */}
       <aside
         className={cn(
-          'fixed top-0 left-0 bottom-0 w-[210px] bg-background z-[101] flex flex-col',
-          'transform transition-transform duration-300 ease-out shadow-2xl',
-          isAnimate ? 'translate-x-0' : '-translate-x-full'
+          'fixed top-0 left-0 bottom-0 z-[101] flex flex-col bg-background shadow-2xl',
+          'w-[210px] min-w-[210px] max-w-[210px]',
+          'transform-gpu transition-transform duration-300 ease-in-out will-change-transform',
+          isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
-        onTransitionEnd={() => !isOpen && setShouldRender(false)}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between p-3 border-b border-divider">
+        <div className="flex items-center justify-between p-3 border-b border-divider h-[57px] flex-shrink-0">
           <Link href="/" className="flex items-center gap-2" onClick={onClose}>
             <Image
               src="/favicon.webp"
@@ -201,8 +207,9 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
               width={24}
               height={24}
               className="rounded-lg"
+              priority
             />
-            <span className="font-bold text-[13px] text-primary">
+            <span className="font-bold text-[13px] text-primary truncate leading-none">
               {kunMoyuMoe.creator.name}
             </span>
           </Link>
@@ -217,7 +224,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-2 scrollbar-hide">
+        <div className="flex-1 overflow-y-auto py-2 overscroll-contain scrollbar-hide">
           <NSFWNotice nsfwStatus={nsfwEnable} />
 
           {navSections.map((section, index) => {
@@ -225,17 +232,16 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
 
             return (
               <React.Fragment key={section.title}>
-                {/* 隔离横线 */}
+                {/* 隔离横线：逻辑与 PC 端 Sidebar.tsx 完全同步 */}
                 {index > 0 && !isAdSection && (
-                  <div className="mx-4 my-1.5 border-t border-divider/60" />
+                  <div className="mx-4 my-2.5 border-t border-divider/60 flex-shrink-0" />
                 )}
 
                 <div
                   className={cn(
                     'mb-2 px-1',
-                    // 推荐内容板块：缩小了内边距(p-1.5)和间距(mb-3)，使其更紧凑
                     isAdSection &&
-                      'mx-1.5 mb-3 p-1.5 bg-default-50 dark:bg-default-100/10 border border-primary/30 rounded-xl shadow-inner backdrop-blur-sm'
+                      'mx-1.5 mb-4 p-1.5 bg-default-50 dark:bg-default-100/10 border border-primary/30 rounded-xl shadow-inner'
                   )}
                 >
                   <h2
@@ -254,9 +260,9 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                           href={item.href}
                           onClick={onClose}
                           className={cn(
-                            'flex items-start p-1.5 mx-1 rounded-lg transition-colors',
+                            'flex items-start p-1.5 mx-1 rounded-lg transition-all active:scale-[0.98]',
                             pathname === item.href
-                              ? 'bg-primary/10 text-primary font-bold'
+                              ? 'bg-primary/10 text-primary font-bold shadow-sm'
                               : 'active:bg-default-100 text-foreground'
                           )}
                         >
@@ -277,7 +283,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
                             </span>
                             <span
                               className={cn(
-                                'text-[10px] mt-0.5 leading-snug break-words font-normal',
+                                'text-[10px] mt-1 leading-snug break-words font-normal',
                                 pathname === item.href
                                   ? 'text-primary/80'
                                   : 'text-default-500'
@@ -296,7 +302,7 @@ const MobileSidebarComponent = ({ isOpen, onClose }: MobileSidebarProps) => {
           })}
         </div>
       </aside>
-    </>
+    </div>
   )
 }
 
