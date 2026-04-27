@@ -86,6 +86,12 @@ const navSections = [
         icon: Gamepad2
       },
       {
+        name: '模拟器及使用教程',
+        description: 'Galgame 模拟器及使用教程',
+        href: '/tutorial',
+        icon: BookUser
+      },
+      {
         name: '补丁和存档',
         description: '游戏补丁与存档',
         href: '/resource',
