@@ -64,13 +64,13 @@ const navSections = [
         name: '⚡️翻墙Vpn推荐',
         description:
           '翻墙Vpn推荐，加速下载！觉得下载资源慢？觉得加载页面不丝滑？',
-        href: 'https://eueua.cc/#/register?code=V437MLYw',
+        href: 'https://www.tspeedcat.top/#/register?code=iKNXDX41',
         icon: HeartIcon,
         popover: {
           title: 'VPN',
           description: '⚡️翻墙Vpn推荐',
           image:
-            'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E6%96%B9.jpg'
+            'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E5%B9%BF%E5%91%8A%E5%9B%BE1180x720.jpg'
         }
       }
     ]

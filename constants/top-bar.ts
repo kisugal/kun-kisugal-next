@@ -44,7 +44,7 @@ export const kunMobileNavItem: KunNavItem[] = [
   },
   {
     name: '⚡️翻墙Vpn推荐',
-    href: 'https://eueua.cc/#/register?code=V437MLYw',
+    href: 'https://www.tspeedcat.top/#/register?code=iKNXDX41',
     rel: 'nofollow'
   }
 ]
