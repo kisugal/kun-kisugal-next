@@ -20,7 +20,7 @@ export default function RootLayout({
         {/* <meta name="google-site-verification" content="U_BmJbgXvmhmO7Zf5_6b0Aiy60_Nh3sTycpHDp5loYw" /> */}
         <script
           defer
-          src="https://umami.kisugal.icu/script.js"
+          src="https://umami.acgll.com/script.js"
           data-website-id="64cac2dd-0bca-4041-907d-18eef228439c"
         ></script>
         {/* <script defer src="https://was.arisumika.top/script.js" data-website-id="a7f17bf9-67ae-4dc9-b273-5bc1144d6039"></script> */}
