@@ -12,6 +12,7 @@ export interface KunTreeNode {
   name: string
   label: string
   path: string
+  description: string
   children?: KunTreeNode[]
   type: 'file' | 'directory'
 }
