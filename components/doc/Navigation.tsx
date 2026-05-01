@@ -17,7 +17,7 @@ export const KunBottomNavigation = ({ prev, next }: NavigationProps) => {
         <Button
           variant="light"
           as={Link}
-          href={`/doc/${prev.slug}`}
+          href={`/tutorial/${prev.slug}`}
           startContent={<ChevronLeft className="size-4" />}
         >
           {prev.title}
@@ -28,7 +28,7 @@ export const KunBottomNavigation = ({ prev, next }: NavigationProps) => {
       {next ? (
         <Button
           as={Link}
-          href={`/doc/${next.slug}`}
+          href={`/tutorial/${next.slug}`}
           variant="light"
           endContent={<ChevronRight className="size-4" />}
         >

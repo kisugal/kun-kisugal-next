@@ -1,7 +1,21 @@
-'use client'
-
-import { Image } from '@heroui/react'
+import Image from 'next/image'
 import Link from 'next/link'
+import Bandizip from '@/public/Bandizip.png'
+import Kkirikiri from '@/public/Kkirikiri.webp'
+import ONScripter from '@/public/ONScripter.webp'
+import tyranor from '@/public/tyranor.webp'
+import Psp from '@/public/PSP.png'
+import Nds from '@/public/NDS.png'
+import JoiPlay from '@/public/JoiPlay.webp'
+import MiNE from '@/public/ONScripter-MiNE.jpg'
+import Rar from '@/public/RAR.png'
+import NanaZip from '@/public/NanaZip.png'
+import ZArchiver from '@/public/ZArchiver Pro.png'
+import SevenZip from '@/public/7-Zip.png'
+import AopAop from '@/public/AopAop.webp'
+import { getAllPosts } from '~/lib/mdx/getPosts'
+import { Metadata } from 'next'
+import { kunMetadata } from './metadata'
 
 const emulators = [
   {
@@ -9,30 +23,35 @@ const emulators = [
     lilst: [
       {
         name: 'KiriKiri',
-        icon: 'Kkirikiri.webp',
+        icon: Kkirikiri,
         href: 'https://c.acgll.com/@s/msdn9ItU'
       },
       {
         name: 'ONScripter',
-        icon: 'ONScripter.webp',
+        icon: ONScripter,
         href: 'https://c.acgll.com/@s/yxH4WjLN'
       },
       {
         name: 'Tyrano',
-        icon: 'tyranor.webp',
+        icon: tyranor,
         href: 'https://c.acgll.com/@s/jtbxxdXB'
       },
-      { name: 'PSP', icon: 'PSP.png', href: 'https://c.acgll.com/@s/Fj0F80IE' },
-      { name: 'NDS', icon: 'NDS.png', href: 'https://c.acgll.com/@s/xnVz8zUn' },
+      { name: 'PSP', icon: Psp, href: 'https://c.acgll.com/@s/Fj0F80IE' },
+      { name: 'NDS', icon: Nds, href: 'https://c.acgll.com/@s/xnVz8zUn' },
       {
         name: 'JoiPlay',
-        icon: 'JoiPlay.webp',
+        icon: JoiPlay,
         href: 'https://c.acgll.com/@s/ABD4a0QQ'
       },
       {
         name: 'MiNE',
-        icon: 'ONScripter-MiNE.jpg',
+        icon: MiNE,
         href: 'https://c.acgll.com/@s/exB2DorH'
+      },
+      {
+        name: 'AopAop',
+        icon: AopAop,
+        href: 'https://c.acgll.com/@s/muocmwaT'
       }
     ]
   },
@@ -41,12 +60,12 @@ const emulators = [
     lilst: [
       {
         name: 'RAR',
-        icon: '/RAR.png',
+        icon: Rar,
         href: 'https://c.acgll.com/@s/XXP0Haq3'
       },
       {
         name: 'ZArchiver Pro',
-        icon: '/ZArchiver Pro.png',
+        icon: ZArchiver,
         href: 'https://c.acgll.com/@s/OnbroFGc'
       }
     ]
@@ -56,32 +75,28 @@ const emulators = [
     lilst: [
       {
         name: 'RAR',
-        icon: '/RAR.png',
+        icon: Rar,
         href: 'https://c.acgll.com/@s/rt0AhhTS'
       },
       {
         name: 'Bandizip',
-        icon: '/Bandizip.png',
+        icon: Bandizip,
         href: 'https://c.acgll.com/@s/DcoG5DUC'
       },
-      { name: '7-Zip', icon: '/7-Zip.png', href: 'https://www.7-zip.org/' },
+      { name: '7-Zip', icon: SevenZip, href: 'https://www.7-zip.org/' },
       {
         name: 'NanaZip',
-        icon: '/NanaZip.png',
+        icon: NanaZip,
         href: 'https://apps.microsoft.com/detail/9n8g7tscl18r'
       }
     ]
   }
 ]
 
-// const tutorials = [
-//   { title: '如何安装模拟器', desc: '入门 · 5分钟', href: '#' },
-//   { title: '游戏导入教程', desc: '新手必看', href: '#' },
-//   { title: '报错解决', desc: '常见问题', href: '#' },
-//   { title: '补丁安装指南', desc: '进阶教程', href: '#' }
-// ]
+export const metadata: Metadata = kunMetadata
 
 export default function TutorialPage() {
+  const posts = getAllPosts()
   return (
     <div className="w-full flex justify-center">
       {/* 居中容器 */}
@@ -120,9 +135,10 @@ export default function TutorialPage() {
                     "
                         >
                           <Image
+                            unoptimized
                             src={Icon}
                             alt={emu.name}
-                            className="w-8 h-8 text-pink-400"
+                            className="w-8 h-8 text-pink-400 rounded-sm"
                           />
                         </div>
 
@@ -145,25 +161,26 @@ export default function TutorialPage() {
         {/* ===== 教程 ===== */}
         <div>
           <h2 className="text-lg font-semibold mb-6">教程</h2>
-          <div>施工……</div>
 
-          {/*<div className="grid grid-cols-2 gap-5">
-            {tutorials.map((item) => (
-              <Link key={item.title} href={item.href}>
+          <div className="grid grid-cols-2 gap-5">
+            {posts.map((item) => (
+              <Link key={item.title} href={`/tutorial/${item.path}`}>
                 <div
                   className="
-                  p-4 rounded-xl border border-gray-200
-                  bg-white
-                  hover:shadow-md transition
-                  cursor-pointer
-                "
+                    p-4 rounded-xl border border-gray-200
+                    bg-white
+                    hover:shadow-md transition
+                    cursor-pointer
+                  "
                 >
                   <div className="font-medium mb-1">{item.title}</div>
-                  <div className="text-sm text-gray-500">{item.desc}</div>
+                  <div className="text-sm text-gray-500">
+                    {item.description}
+                  </div>
                 </div>
               </Link>
             ))}
-          </div>*/}
+          </div>
         </div>
       </div>
     </div>

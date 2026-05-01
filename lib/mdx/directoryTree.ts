@@ -20,6 +20,7 @@ export const getDirectoryTree = (): KunTreeNode => {
       return {
         name: baseName.replace(/\.mdx$/, ''),
         label: data.title,
+        description: data.description,
         path: path
           .relative(POSTS_PATH, currentPath)
           .replace(/\.mdx$/, '')
