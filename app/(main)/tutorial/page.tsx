@@ -13,7 +13,7 @@ const emulators = [
         href: 'https://c.acgll.com/@s/msdn9ItU'
       },
       {
-        name: 'ONS',
+        name: 'ONScripter',
         icon: 'ONScripter.webp',
         href: 'https://c.acgll.com/@s/yxH4WjLN'
       },
@@ -28,6 +28,11 @@ const emulators = [
         name: 'JoiPlay',
         icon: 'JoiPlay.webp',
         href: 'https://c.acgll.com/@s/ABD4a0QQ'
+      },
+      {
+        name: 'MiNE',
+        icon: 'ONScripter-MiNE.jpg',
+        href: 'https://c.acgll.com/@s/exB2DorH'
       }
     ]
   },
