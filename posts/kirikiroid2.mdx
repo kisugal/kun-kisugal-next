@@ -1,0 +1,123 @@
+---
+title: kirikiroid2 模拟器使用教程
+description: '使用 kirikiroid2 模拟器游玩 kirikiroid 游戏的教程'
+date: 2026-01-20
+authorUid: 1
+authorName: 'KisuGal'
+pin: false
+banner: '/kisuacg.png'
+---
+
+**kirikiroid2模拟器官方版**是一款深受游戏爱好者欢迎的游戏模拟器，同时又叫做**吉里吉里2模拟器**。使用它能够帮助在移动端直接运行基于 Kirikiri2 和 KirikiriZ 引擎开发的 PC 游戏，并支持多种游戏格式，包括 NES、SNES、GBA 等，几乎涵盖经典游戏类型。
+F
+它运行速度快、画面清晰、音效逼真，兼容性和稳定性较强，在不同档位安卓设备上均可运行较为流畅。同时体积较小、无广告，使用门槛较低。
+
+---
+
+## kirikiroid2最新版支持的插件列表
+
+- addFont
+- Alpha
+- MoviecsvParser
+- dirlist
+- DrawDeviceD3D / DrawDeviceD3DZ
+- emotePlayer
+- expat
+- ExtKAGParser
+- extNagano[beta]
+- extrans
+- fftgraph[null]
+- fstat
+- getabout
+- 更多…
+
+---
+
+## kirikiroid2怎么使用
+
+### 1. 安装软件
+
+可通过 GitHub 下载最新版安装包，但下载速度较慢，需要借助加速工具。
+
+---
+
+### 2. 准备补丁
+
+部分游戏需要补丁才能运行，否则可能无法启动。
+
+常见补丁内容：
+
+- xp3filter.tjs
+- krz_xp3conv.exe
+
+若存在 krz_xp3conv.exe：
+
+- 双击运行
+- 出现“按任意键继续”即表示解密完成
+
+---
+
+### 3. 下载游戏
+
+将补丁文件放入游戏目录中，常见结构如下：
+
+- 游戏文件夹
+  - xp3 文件
+  - plugin 文件夹（dll）
+  - 其他资源
+
+---
+
+### 4. 运行游戏
+
+操作步骤：
+
+1. 将游戏文件夹复制到手机存储
+2. 打开 Kirikiroid2
+3. 使用文件管理器定位游戏目录
+4. 点击 `data.xp3`
+5. 关闭初始提示窗口
+6. 等待脚本加载完成即可进入游戏
+
+---
+
+## kirikiroid2全CG存档教程
+
+### 方法1：覆盖存档
+
+步骤：
+
+1. 找到全CG存档文件
+2. 复制其中内容
+3. 进入 `savedata` 文件夹
+4. 覆盖原文件
+5. 重新进入游戏即可生效
+
+---
+
+### 方法2：无 savedata 情况
+
+部分游戏存档位于系统目录（例如 C 盘路径），需手动查找并替换对应存档文件。
+
+---
+
+## kirikiroid2脚本异常解决办法
+
+### 问题1：弹出提示
+
+- 解决：重新下载游戏或更换模拟器版本
+- 原因：文件损坏或下载不完整
+
+---
+
+### 问题2：程序不兼容
+
+- 解决：下载 `patch.tjs` 并放入游戏目录
+- 原因：脚本兼容性问题
+
+---
+
+### 问题3：不明弹框
+
+- 解决：删除 `savedata` 文件夹
+- 原因：存档冲突或异常数据
