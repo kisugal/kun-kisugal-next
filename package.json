@@ -21,7 +21,7 @@
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit",
     "prisma:push": "prisma db push",
-    "prisma:generate": "pnpx prisma generate",
+    "prisma:generate": "pnpm prisma generate",
     "start": "pm2 start ecosystem.config.cjs",
     "stop": "pm2 delete kun-touchgal-next",
     "deploy:install": "esno scripts/deployInstall.ts",
