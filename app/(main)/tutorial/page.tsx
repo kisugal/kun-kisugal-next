@@ -1,21 +1,80 @@
 'use client'
 
+import { Image } from '@heroui/react'
 import Link from 'next/link'
-import { Gamepad2, Cherry, Diamond, SquareDashed } from 'lucide-react'
 
 const emulators = [
-  { name: 'KiriKiri', icon: Cherry, href: '#' },
-  { name: 'ONS', icon: Gamepad2, href: '#' },
-  { name: "Ren'Py", icon: Diamond, href: '#' },
-  { name: 'Tyrano', icon: SquareDashed, href: '#' }
+  {
+    title: '模拟器',
+    lilst: [
+      {
+        name: 'KiriKiri',
+        icon: 'Kkirikiri.webp',
+        href: 'https://c.acgll.com/@s/msdn9ItU'
+      },
+      {
+        name: 'ONS',
+        icon: 'ONScripter.webp',
+        href: 'https://c.acgll.com/@s/yxH4WjLN'
+      },
+      {
+        name: 'Tyrano',
+        icon: 'tyranor.webp',
+        href: 'https://c.acgll.com/@s/jtbxxdXB'
+      },
+      { name: 'PSP', icon: 'PSP.png', href: 'https://c.acgll.com/@s/Fj0F80IE' },
+      { name: 'NDS', icon: 'NDS.png', href: 'https://c.acgll.com/@s/xnVz8zUn' },
+      {
+        name: 'JoiPlay',
+        icon: 'JoiPlay.webp',
+        href: 'https://c.acgll.com/@s/ABD4a0QQ'
+      }
+    ]
+  },
+  {
+    title: '手机解压缩软件',
+    lilst: [
+      {
+        name: 'RAR',
+        icon: '/RAR.png',
+        href: 'https://c.acgll.com/@s/XXP0Haq3'
+      },
+      {
+        name: 'ZArchiver Pro',
+        icon: '/ZArchiver Pro.png',
+        href: 'https://c.acgll.com/@s/OnbroFGc'
+      }
+    ]
+  },
+  {
+    title: '电脑解压缩软件',
+    lilst: [
+      {
+        name: 'RAR',
+        icon: '/RAR.png',
+        href: 'https://c.acgll.com/@s/rt0AhhTS'
+      },
+      {
+        name: 'Bandizip',
+        icon: '/Bandizip.png',
+        href: 'https://c.acgll.com/@s/DcoG5DUC'
+      },
+      { name: '7-Zip', icon: '/7-Zip.png', href: 'https://www.7-zip.org/' },
+      {
+        name: 'NanaZip',
+        icon: '/NanaZip.png',
+        href: 'https://apps.microsoft.com/detail/9n8g7tscl18r'
+      }
+    ]
+  }
 ]
 
-const tutorials = [
-  { title: '如何安装模拟器', desc: '入门 · 5分钟', href: '#' },
-  { title: '游戏导入教程', desc: '新手必看', href: '#' },
-  { title: '报错解决', desc: '常见问题', href: '#' },
-  { title: '补丁安装指南', desc: '进阶教程', href: '#' }
-]
+// const tutorials = [
+//   { title: '如何安装模拟器', desc: '入门 · 5分钟', href: '#' },
+//   { title: '游戏导入教程', desc: '新手必看', href: '#' },
+//   { title: '报错解决', desc: '常见问题', href: '#' },
+//   { title: '补丁安装指南', desc: '进阶教程', href: '#' }
+// ]
 
 export default function TutorialPage() {
   return (
@@ -31,19 +90,21 @@ export default function TutorialPage() {
         </div>
 
         {/* ===== 模拟器 ===== */}
-        <div>
-          <h2 className="text-lg font-semibold mb-6">模拟器</h2>
+        <div className="space-y-6">
+          {emulators.map((emuGroup) => (
+            <div key={emuGroup.title}>
+              <h2 className="text-lg font-semibold mb-6">{emuGroup.title}</h2>
 
-          <div className="flex gap-10 flex-wrap">
-            {emulators.map((emu) => {
-              const Icon = emu.icon
+              <div className="flex gap-10 flex-wrap">
+                {emuGroup.lilst.map((emu) => {
+                  const Icon = emu.icon
 
-              return (
-                <Link key={emu.name} href={emu.href}>
-                  <div className="flex flex-col items-center gap-3 group cursor-pointer">
-                    {/* 图标（放大版） */}
-                    <div
-                      className="
+                  return (
+                    <Link key={emu.name} href={emu.href} target="_blank">
+                      <div className="flex flex-col items-center gap-3 group cursor-pointer">
+                        {/* 图标（放大版） */}
+                        <div
+                          className="
                       w-20 h-20 rounded-2xl
                       bg-white border border-gray-200
                       shadow-sm
@@ -52,19 +113,25 @@ export default function TutorialPage() {
                       group-hover:shadow-md
                       group-hover:-translate-y-1
                     "
-                    >
-                      <Icon className="w-8 h-8 text-pink-400" />
-                    </div>
+                        >
+                          <Image
+                            src={Icon}
+                            alt={emu.name}
+                            className="w-8 h-8 text-pink-400"
+                          />
+                        </div>
 
-                    {/* 名字 */}
-                    <span className="text-sm text-gray-600 group-hover:text-pink-500 transition">
-                      {emu.name}
-                    </span>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
+                        {/* 名字 */}
+                        <span className="text-sm text-gray-600 group-hover:text-pink-500 transition">
+                          {emu.name}
+                        </span>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* ===== 分隔线 ===== */}
@@ -73,9 +140,9 @@ export default function TutorialPage() {
         {/* ===== 教程 ===== */}
         <div>
           <h2 className="text-lg font-semibold mb-6">教程</h2>
+          <div>施工……</div>
 
-          {/* 双栏 */}
-          <div className="grid grid-cols-2 gap-5">
+          {/*<div className="grid grid-cols-2 gap-5">
             {tutorials.map((item) => (
               <Link key={item.title} href={item.href}>
                 <div
@@ -91,7 +158,7 @@ export default function TutorialPage() {
                 </div>
               </Link>
             ))}
-          </div>
+          </div>*/}
         </div>
       </div>
     </div>
