@@ -22,34 +22,34 @@ const emulators = [
     title: '模拟器',
     lilst: [
       {
-        name: 'KiriKiri',
+        name: 'KRKR2模拟器',
         icon: Kkirikiri,
         href: 'https://c.acgll.com/@s/msdn9ItU'
       },
       {
-        name: 'ONScripter',
+        name: 'ONScripter模拟器',
         icon: ONScripter,
         href: 'https://c.acgll.com/@s/yxH4WjLN'
       },
       {
-        name: 'Tyrano',
+        name: 'Tyranor模拟器',
         icon: tyranor,
         href: 'https://c.acgll.com/@s/jtbxxdXB'
       },
-      { name: 'PSP', icon: Psp, href: 'https://c.acgll.com/@s/Fj0F80IE' },
-      { name: 'NDS', icon: Nds, href: 'https://c.acgll.com/@s/xnVz8zUn' },
+      { name: 'PSP模拟器', icon: Psp, href: 'https://c.acgll.com/@s/Fj0F80IE' },
+      { name: 'NDS模拟器', icon: Nds, href: 'https://c.acgll.com/@s/xnVz8zUn' },
       {
-        name: 'JoiPlay',
+        name: 'JoiPlay模拟器',
         icon: JoiPlay,
         href: 'https://c.acgll.com/@s/ABD4a0QQ'
       },
       {
-        name: 'MiNE',
+        name: 'MiNE模拟器',
         icon: MiNE,
         href: 'https://c.acgll.com/@s/exB2DorH'
       },
       {
-        name: 'AopAop',
+        name: 'AopAop模拟器',
         icon: AopAop,
         href: 'https://c.acgll.com/@s/muocmwaT'
       }
