@@ -80,6 +80,13 @@ const navSections = [
     title: '推荐内容',
     items: [
       {
+        name: 'DZMM',
+        description:
+          '高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。',
+        href: 'https://www.duskpine.top?rf=e32c5b70',
+        icon: HeartIcon
+      },
+      {
         name: 'Ai女友💋',
         description:
           '🌟在线畅玩。顶尖色情，即刻生图😍多样角色场景18禁性癖待你开发！💋',
