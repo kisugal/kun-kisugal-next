@@ -127,17 +127,6 @@ const navSections = [
       },
       { name: '话题列表', description: '最新话题', href: '/topic', icon: Hash }
     ]
-  },
-  {
-    title: '其他',
-    items: [
-      {
-        name: '友情链接',
-        description: '可爱的好朋友们！',
-        href: '/friend-link',
-        icon: HeartMinus
-      }
-    ]
   }
 ]
 
