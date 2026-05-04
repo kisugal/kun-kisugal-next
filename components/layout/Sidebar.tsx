@@ -37,14 +37,28 @@ const navSections = [
     title: '推荐内容',
     items: [
       {
-        name: 'Ai女友💋',
+        name: 'DZMM',
+        description:
+          '高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。',
+        href: 'https://www.duskpine.top?rf=e32c5b70',
+        icon: HeartIcon,
+        popover: {
+          title: 'DZMM',
+          description:
+            '高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。',
+          image:
+            'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg'
+        }
+      },
+      {
+        name: 'Ai风月💋',
         description:
           '🌟在线畅玩。顶尖色情，即刻生图😍多样角色场景18禁性癖待你开发！💋',
         href: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
         icon: HeartIcon,
         popover: {
-          title: 'Ai女友',
-          description: 'Ai女友💋',
+          title: 'Ai风月',
+          description: 'Ai风月💋',
           image: 'https://r2.sakinori.top/%E9%A3%8E%E6%9C%88AI/320x500GIF4.gif'
         }
       },

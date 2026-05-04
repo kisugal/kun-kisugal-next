@@ -98,6 +98,14 @@ export const KunTopBarUser = () => {
           {!user.name && (
             <NavbarContent justify="end">
               <NavbarItem className="hidden lg:flex">
+                <Link
+                  href="https://www.duskpine.top?rf=e32c5b70"
+                  target="_blank"
+                >
+                  AI 女友
+                </Link>
+              </NavbarItem>
+              <NavbarItem className="hidden lg:flex">
                 <Link href="/login">登录</Link>
               </NavbarItem>
               <NavbarItem>

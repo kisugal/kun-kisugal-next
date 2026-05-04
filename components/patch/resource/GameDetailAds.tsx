@@ -14,6 +14,14 @@ interface AdItem {
 // 游戏详情页独立的广告数据配置
 const GAME_DETAIL_ADS_DATA: AdItem[] = [
   {
+    id: 'game-detail-ad10', //DZMM
+    title: '',
+    description: '',
+    image:
+      'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg', // 游戏详情页专用广告图片
+    link: 'https://www.duskpine.top?rf=e32c5b70' // 游戏详情页专用广告链接
+  },
+  {
     id: 'game-detail-ad1', //风月AI
     title: '',
     description: '',

@@ -13,7 +13,15 @@ interface AdItem {
 // 独立配置的广告数据
 const REDIRECT_ADS_DATA: AdItem[] = [
   {
-    id: 'redirect-ad1', // 风月AI
+    id: 'redirect-ad1', // DZMM
+    title: '',
+    description: '',
+    image:
+      'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg',
+    link: 'https://www.duskpine.top?rf=e32c5b70'
+  },
+  {
+    id: 'redirect-ad2', // 风月AI
     title: '',
     description: '',
     image:
