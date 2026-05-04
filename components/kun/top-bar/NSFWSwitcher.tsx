@@ -1,148 +1,80 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useTransition, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger
-} from '@heroui/dropdown'
 import { Button } from '@heroui/button'
-import { Tooltip } from '@heroui/tooltip'
 import { Ban, CircleSlash, ShieldCheck } from 'lucide-react'
 import { useSettingStore } from '~/store/settingStore'
-import type { Selection } from '@heroui/react'
 
-const nsfwToneMap: Record<
-  string,
-  {
-    label: string
-    buttonClassName: string
-    iconClassName: string
-    textClassName: string
-  }
-> = {
-  sfw: {
-    label: '全年龄',
-    buttonClassName:
-      'text-success-600 hover:text-success-700 data-[hover=true]:bg-success-50 dark:data-[hover=true]:bg-success-950/30',
-    iconClassName: 'size-5 text-success-600',
-    textClassName: 'font-semibold tracking-wide text-success-600'
-  },
-  nsfw: {
-    label: '仅 R18',
-    buttonClassName:
-      'text-danger-600 hover:text-danger-700 data-[hover=true]:bg-danger-50 dark:data-[hover=true]:bg-danger-950/30',
-    iconClassName: 'size-5 text-danger-600',
-    textClassName: 'font-semibold tracking-wide text-danger-600'
-  },
-  all: {
-    label: 'ALL',
-    buttonClassName:
-      'text-warning-600 hover:text-warning-700 data-[hover=true]:bg-warning-50 dark:data-[hover=true]:bg-warning-950/30',
-    iconClassName: 'size-5 text-warning-600',
-    textClassName: 'font-semibold tracking-wide text-warning-600'
-  }
+enum NSFWMode {
+  sfw = 'sfw',
+  nsfw = 'nsfw',
+  all = 'all'
 }
 
-const renderModeIcon = (mode: string, className: string) => {
-  if (mode === 'sfw') {
-    return <ShieldCheck className={className} />
-  }
-  if (mode === 'nsfw') {
-    return <Ban className={className} />
-  }
-
-  return <CircleSlash className={className} />
+enum NSFWLabel {
+  sfw = '全年龄',
+  nsfw = '仅 R18',
+  all = '全部'
 }
 
-const nsfwTooltipMap: Record<string, string> = {
-  sfw: '网站内容显示：仅显示 SFW',
-  nsfw: '网站内容显示：仅显示 NSFW',
-  all: '网站内容显示：显示全部内容'
+const renderModeIcon = (mode: NSFWMode) => {
+  if (mode === NSFWMode.sfw) {
+    return <ShieldCheck className="size-5" />
+  }
+  if (mode === NSFWMode.nsfw) {
+    return <Ban className="size-5" />
+  }
+  return <CircleSlash className="size-5" />
 }
 
 export const NSFWSwitcher = () => {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
+
   const settings = useSettingStore((state) => state.data)
   const setData = useSettingStore((state) => state.setData)
 
-  const currentMode = settings.kunNsfwEnable || 'sfw'
-  const currentTone = nsfwToneMap[currentMode] || nsfwToneMap.all
-  const tooltipLabel = nsfwTooltipMap[currentMode] || nsfwTooltipMap.all
+  const [currentMode, setCurrentMode] = useState<NSFWMode>(NSFWMode.sfw)
 
-  const handleSelectionChange = (value: Selection) => {
-    if (value === 'all') {
-      return
+  useEffect(() => {
+    if (settings?.kunNsfwEnable) {
+      setCurrentMode(settings.kunNsfwEnable as NSFWMode)
     }
+  }, [settings])
 
-    const nextValue = Array.from(value)[0]?.toString() ?? 'sfw'
-    if (nextValue === currentMode) {
-      return
-    }
+  const handleChange = (value: NSFWMode) => {
+    if (value === currentMode) return
 
-    setData({ ...settings, kunNsfwEnable: nextValue })
+    setCurrentMode(value)
+    setData({ ...settings, kunNsfwEnable: value })
 
     startTransition(() => {
       router.refresh()
     })
   }
 
-  return (
-    <Dropdown placement="bottom-end" className="min-w-[260px]">
-      <Tooltip disableAnimation showArrow closeDelay={0} content={tooltipLabel}>
-        <div className="flex">
-          <DropdownTrigger>
-            <Button
-              variant="light"
-              aria-label="网站内容显示"
-              isLoading={isPending}
-              className={`h-10 w-10 min-w-0 px-0 lg:w-auto lg:px-3 ${currentTone.buttonClassName}`}
-            >
-              {renderModeIcon(currentMode, currentTone.iconClassName)}
-              <span
-                className={`hidden text-sm lg:inline ${currentTone.textClassName}`}
-              >
-                {currentTone.label}
-              </span>
-            </Button>
-          </DropdownTrigger>
-        </div>
-      </Tooltip>
+  const renderItem = (value: NSFWMode) => (
+    <div className="justify-center">
+      <div className="flex justify-center">
+        <Button
+          className="w-15 h-15"
+          variant={currentMode === value ? 'solid' : 'light'}
+          isLoading={isPending && currentMode === value}
+          startContent={renderModeIcon(value)}
+          onPress={() => handleChange(value)}
+          isIconOnly
+        />
+      </div>
+      <p className="text-sm text-center mt-2">{NSFWLabel[value]}</p>
+    </div>
+  )
 
-      <DropdownMenu
-        disallowEmptySelection
-        selectedKeys={new Set([currentMode])}
-        selectionMode="single"
-        onSelectionChange={handleSelectionChange}
-      >
-        <DropdownItem
-          startContent={renderModeIcon('sfw', nsfwToneMap.sfw.iconClassName)}
-          textValue="sfw"
-          key="sfw"
-          className="text-success-700"
-        >
-          仅显示 SFW (内容安全) 的文章
-        </DropdownItem>
-        <DropdownItem
-          startContent={renderModeIcon('nsfw', nsfwToneMap.nsfw.iconClassName)}
-          textValue="nsfw"
-          key="nsfw"
-          className="text-danger-700"
-        >
-          仅显示 NSFW (可能含有 R18) 的文章
-        </DropdownItem>
-        <DropdownItem
-          startContent={renderModeIcon('all', nsfwToneMap.all.iconClassName)}
-          textValue="all"
-          key="all"
-          className="text-warning-700"
-        >
-          同时显示 SFW 和 NSFW 的文章
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+  return (
+    <div className="flex gap-2">
+      {renderItem(NSFWMode.sfw)}
+      {renderItem(NSFWMode.nsfw)}
+      {renderItem(NSFWMode.all)}
+    </div>
   )
 }

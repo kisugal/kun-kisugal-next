@@ -19,6 +19,8 @@ import { RandomGalgameButton } from '~/components/home/carousel/RandomGalgameBut
 import { NSFWSwitcher } from './NSFWSwitcher'
 import type { UserState } from '~/store/userStore'
 import type { Message } from '~/types/api/message'
+import { Image } from '@heroui/react'
+import SettingsDrop from '../settingsDrop'
 
 export const KunTopBarUser = () => {
   const router = useRouter()
@@ -102,7 +104,11 @@ export const KunTopBarUser = () => {
                   href="https://www.duskpine.top?rf=e32c5b70"
                   target="_blank"
                 >
-                  AI 女友
+                  <Image
+                    src="/moyumoe1-button.avif"
+                    alt="DZMM"
+                    className="h-9 opacity-80"
+                  ></Image>
                 </Link>
               </NavbarItem>
               <NavbarItem className="hidden lg:flex">
@@ -138,9 +144,7 @@ export const KunTopBarUser = () => {
             <RandomGalgameButton isIconOnly variant="light" />
           </Tooltip> */}
 
-          <ThemeSwitcher />
-
-          <NSFWSwitcher />
+          <SettingsDrop />
 
           {user.name && (
             <>

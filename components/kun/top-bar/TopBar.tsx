@@ -1,11 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import {
-  Navbar,
-  NavbarContent,
-  NavbarItem,
-} from '@heroui/navbar'
+import { Navbar, NavbarContent, NavbarItem } from '@heroui/navbar'
 import Link from 'next/link'
 import { Button } from '@heroui/button'
 import { Menu } from 'lucide-react'
@@ -14,6 +10,7 @@ import { KunTopBarUser } from './User'
 import { usePathname } from 'next/navigation'
 import { kunNavItem } from '~/constants/top-bar'
 import { MobileSidebar } from './MobileSidebar'
+import { Image } from '@heroui/react'
 
 export const KunTopBar = () => {
   const pathname = usePathname()
@@ -25,10 +22,7 @@ export const KunTopBar = () => {
 
   return (
     <>
-      <Navbar
-        maxWidth="full"
-        classNames={{ wrapper: 'px-3 sm:px-6' }}
-      >
+      <Navbar maxWidth="full" classNames={{ wrapper: 'px-3 sm:px-6' }}>
         {/* 左侧内容区 (Logo + 导航链接) */}
         <NavbarContent justify="start">
           <Button
@@ -53,6 +47,15 @@ export const KunTopBar = () => {
                 </Link>
               </NavbarItem>
             ))}
+          </div>
+          <div className="lg:hidden">
+            <Link href="https://www.duskpine.top?rf=e32c5b70" target="_blank">
+              <Image
+                src="/moyumoe1-button.avif"
+                alt="DZMM"
+                className="h-7 opacity-80"
+              ></Image>
+            </Link>
           </div>
         </NavbarContent>
 
