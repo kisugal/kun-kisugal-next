@@ -52,7 +52,7 @@ export const KunTopBar = () => {
             <Link href="https://www.duskpine.top?rf=e32c5b70" target="_blank">
               <Image
                 src="/moyumoe1-button.avif"
-                alt="DZMM"
+                alt="❤️AI涩涩"
                 className="h-7 opacity-80"
               ></Image>
             </Link>

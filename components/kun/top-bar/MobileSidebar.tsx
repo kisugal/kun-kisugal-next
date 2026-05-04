@@ -80,7 +80,7 @@ const navSections = [
     title: '推荐内容',
     items: [
       {
-        name: 'DZMM',
+        name: 'AI涩涩❤️',
         description:
           '高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。',
         href: 'https://www.duskpine.top?rf=e32c5b70',
