@@ -103,7 +103,7 @@ const navSections = [
         name: '翻墙Vpn推荐',
         description:
           '翻墙Vpn推荐，加速下载！觉得下载资源慢？觉得加载页面不丝滑？',
-        href: 'https://www.tspeedcat.top/#/register?code=iKNXDX41',
+        href: 'https://www.tspeedcat.top/#/register?code=FttmLPkV',
         icon: HeartIcon
       }
     ]
