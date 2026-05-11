@@ -9,7 +9,10 @@ export const metadata: Metadata = {
     default: kunMoyuMoe.title,
     template: kunMoyuMoe.template
   },
+
+  // ✅ SEO保留，但不会显示在页面
   description: kunMoyuMoe.description,
+
   keywords: kunMoyuMoe.keywords,
   authors: kunMoyuMoe.author,
   robots: {
@@ -27,10 +30,10 @@ export default async function Kun() {
 
   return (
     <div className="container mx-auto my-4 space-y-6">
-      {/* 只保留标题（不显示任何介绍文字） */}
+      {/* ❗只保留H1，不显示任何介绍文字 */}
       <h1 className="text-2xl font-bold">{kunMoyuMoe.title}</h1>
 
-      {/* 内容区 */}
+      {/* 内容 */}
       {list.length > 0 ? (
         <div className="space-y-4">
           {list.map((item: any, index: number) => (
