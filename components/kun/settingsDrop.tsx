@@ -19,7 +19,7 @@ const SettingsDrop = () => {
   return (
     <>
       <Button variant="light" onPress={onOpen} isIconOnly>
-        <Settings className="w-6 h-6" />
+        <Settings className=" w-6 h-6 text-default-500" />
       </Button>
 
       <Modal

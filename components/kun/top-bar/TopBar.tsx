@@ -49,11 +49,11 @@ export const KunTopBar = () => {
             ))}
           </div>
           <div className="lg:hidden">
-            <Link href="https://www.duskpine.top?rf=e32c5b70" target="_blank">
+            <Link href="https://www.ainexa.top?rf=e32c5b70" target="_blank">
               <Image
                 src="/moyumoe1-button.avif"
                 alt="❤️AI涩涩"
-                className="h-7 opacity-80"
+                className="h-9 opacity-80"
               ></Image>
             </Link>
           </div>
