@@ -27,13 +27,10 @@ export default async function Kun() {
 
   return (
     <div className="container mx-auto my-4 space-y-6">
-      {/* SEO核心H1 */}
+      {/* 只保留标题（不显示任何介绍文字） */}
       <h1 className="text-2xl font-bold">{kunMoyuMoe.title}</h1>
 
-      {/* 页面描述 */}
-      <p className="text-sm text-gray-500">{kunMoyuMoe.description}</p>
-
-      {/* SSR必须有内容 */}
+      {/* 内容区 */}
       {list.length > 0 ? (
         <div className="space-y-4">
           {list.map((item: any, index: number) => (
@@ -46,9 +43,7 @@ export default async function Kun() {
           ))}
         </div>
       ) : (
-        <div className="text-gray-400">
-          <TopicListLoading />
-        </div>
+        <TopicListLoading />
       )}
     </div>
   )
