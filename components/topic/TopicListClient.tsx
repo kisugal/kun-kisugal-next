@@ -288,7 +288,7 @@ export const TopicListClient = ({
 
 				<div className="flex-1 min-w-0 space-y-3">
 					{/* 标签页导航 */}
-					<TopicSearchInput />
+					{/* <TopicSearchInput /> */}
 					<Tabs
 						selectedKey={activeTab}
 						onSelectionChange={handleTabChange}
