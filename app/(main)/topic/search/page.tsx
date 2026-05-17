@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TopicSearchListClient } from "~/components/topic/TopicSearchListClient";
+import { TopicSearchListPage } from "~/components/topic/TopicListPage";
 import { kunMoyuMoe } from "~/config/moyu-moe";
 
 export const metadata: Metadata = {
@@ -8,8 +8,6 @@ export const metadata: Metadata = {
 };
 export default async function TopicSearchPage() {
 	return (
-		<>
-			<TopicSearchListClient />
-		</>
+		<TopicSearchListPage />
 	);
 }
