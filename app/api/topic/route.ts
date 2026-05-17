@@ -33,7 +33,6 @@ export const GET = async (req: NextRequest) => {
     } else if (type === 'image') {
       where.content = { contains: '![' }
     }
-    console.log(where)
     const orderBy: any = {}
     orderBy[sortField] = sortOrder
 
