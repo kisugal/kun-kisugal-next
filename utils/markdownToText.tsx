@@ -1,3 +1,25 @@
+/**
+ * 从 Markdown 内容中提取所有图片 URL
+ */
+export const extractImagesFromMarkdown = (markdown: string): string[] => {
+  const images: string[] = []
+  const seen = new Set<string>()
+  // ![alt](url) 语法本身就是图片声明，始终提取
+  // [text](url) 普通链接则靠扩展名判断是否为图片
+  const imageExt = /\.(jpg|jpeg|png|gif|webp|svg|bmp|avif|gif)(\?.*)?$/i
+  const regex = /!?\[([^\]]*)\]\(([^)\s]+)/g
+  let match: RegExpExecArray | null
+  while ((match = regex.exec(markdown)) !== null) {
+    const url = match[2]
+    const isImageSyntax = match[0].startsWith('!')
+    if (!seen.has(url) && (isImageSyntax || imageExt.test(url))) {
+      seen.add(url)
+      images.push(url)
+    }
+  }
+  return images
+}
+
 export const markdownToText = (markdown: string) => {
   return markdown
     // 移除代码块
