@@ -60,7 +60,7 @@ export const TopicCard = ({ topic, className }: Props) => {
               }
               alt={topic.user.name}
               size="sm"
-              className="flex-shrink-0"
+              className="flex-shrink-0 opacity-100"
               name={topic.user.name.charAt(0).toUpperCase()}
               showFallback
             />
@@ -103,69 +103,72 @@ export const TopicCard = ({ topic, className }: Props) => {
         <p className="text-sm text-foreground/70 line-clamp-3 leading-relaxed">
           {markdownToText(topic.content)}
         </p>
-<ScrollShadow className="max-w-[700px] max-h-[300px]" orientation="horizontal">
-        <div>
-          {/* 图片缩略图横向展示 */}
-          {images.length > 0 && (
-            <div className="flex gap-1.5 mt-3 mb-4">
-              {displayImages.map((imgUrl, index) => (
-                <div
-                  key={imgUrl}
-                  className="relative flex-shrink-0 w-[100px] h-[72px] rounded-lg overflow-hidden bg-muted"
-                >
-                  <Image
-                    src={imgUrl}
-                    alt={`图片 ${index + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="100px"
-                    unoptimized
-                  />
-                </div>
-              ))}
-              {/* 溢出图片：显示半张 + 后半张模糊 */}
-              {hasOverflow && overflowImage && (
-                <div className="relative flex-shrink-0 w-[100px] h-[72px] rounded-lg overflow-hidden bg-muted">
-                  {/* 前半张清晰 */}
-                  <div className="absolute top-0 left-0 bottom-0 w-1/2 overflow-hidden">
-                    <div className="relative w-[100px] h-[72px]">
-                      <Image
-                        src={overflowImage}
-                        alt="图片 6"
-                        fill
-                        className="object-cover"
-                        sizes="100px"
-                        unoptimized
-                      />
+        <ScrollShadow
+          className="max-w-[700px] max-h-[300px]"
+          orientation="horizontal"
+        >
+          <div>
+            {/* 图片缩略图横向展示 */}
+            {images.length > 0 && (
+              <div className="flex gap-1.5 mt-3 mb-4">
+                {displayImages.map((imgUrl, index) => (
+                  <div
+                    key={imgUrl}
+                    className="relative flex-shrink-0 w-[100px] h-[72px] rounded-lg overflow-hidden bg-muted"
+                  >
+                    <Image
+                      src={imgUrl}
+                      alt={`图片 ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="100px"
+                      unoptimized
+                    />
+                  </div>
+                ))}
+                {/* 溢出图片：显示半张 + 后半张模糊 */}
+                {hasOverflow && overflowImage && (
+                  <div className="relative flex-shrink-0 w-[100px] h-[72px] rounded-lg overflow-hidden bg-muted">
+                    {/* 前半张清晰 */}
+                    <div className="absolute top-0 left-0 bottom-0 w-1/2 overflow-hidden">
+                      <div className="relative w-[100px] h-[72px]">
+                        <Image
+                          src={overflowImage}
+                          alt="图片 6"
+                          fill
+                          className="object-cover"
+                          sizes="100px"
+                          unoptimized
+                        />
+                      </div>
+                    </div>
+                    {/* 后半张模糊 */}
+                    <div className="absolute top-0 right-0 bottom-0 w-1/2 overflow-hidden">
+                      <div className="relative w-[100px] h-[72px]">
+                        <Image
+                          src={overflowImage}
+                          alt="图片 6"
+                          fill
+                          className="object-cover blur-sm"
+                          sizes="100px"
+                          unoptimized
+                        />
+                      </div>
+                      {/* 模糊遮罩 */}
+                      <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]" />
+                    </div>
+                    {/* 数量提示 */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                      <span className="text-white text-xs font-medium">
+                        +{images.length - MAX_IMAGES}
+                      </span>
                     </div>
                   </div>
-                  {/* 后半张模糊 */}
-                  <div className="absolute top-0 right-0 bottom-0 w-1/2 overflow-hidden">
-                    <div className="relative w-[100px] h-[72px]">
-                      <Image
-                        src={overflowImage}
-                        alt="图片 6"
-                        fill
-                        className="object-cover blur-sm"
-                        sizes="100px"
-                        unoptimized
-                      />
-                    </div>
-                    {/* 模糊遮罩 */}
-                    <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]" />
-                  </div>
-                  {/* 数量提示 */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <span className="text-white text-xs font-medium">
-                      +{images.length - MAX_IMAGES}
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-</ScrollShadow>
+                )}
+              </div>
+            )}
+          </div>
+        </ScrollShadow>
         {/* </CardBody> */}
 
         {/* <CardFooter className="p-0 pt-3 border-t border-divider/50"> */}
