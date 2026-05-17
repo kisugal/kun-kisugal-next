@@ -68,7 +68,7 @@ export const GalgameCard = ({ patch }: Props) => {
           {patch.name}
         </h2>
 
-        <KunCardStats patch={patch} isMobile />
+        {/* <KunCardStats patch={patch} isMobile /> */}
         <CardFooter className="pt-0">
           <KunPatchAttribute types={patch.type} size="sm" />
         </CardFooter>

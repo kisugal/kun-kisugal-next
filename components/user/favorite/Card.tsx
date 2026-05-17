@@ -76,7 +76,7 @@ export const UserGalgameCard = ({
               {galgame.name}
             </Link>
 
-            <KunCardStats patch={galgame} isMobile={true} />
+            {/* <KunCardStats patch={galgame} isMobile={true} /> */}
 
             <div className="flex justify-end">
               <Button

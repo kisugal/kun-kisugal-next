@@ -36,7 +36,7 @@ export const SearchCard = ({ patch }: Props) => {
               {patch.name}
             </h2>
 
-            <KunCardStats patch={patch} isMobile={true} />
+            {/* <KunCardStats patch={patch} isMobile={true} /> */}
 
             <KunPatchAttribute types={patch.type} size="sm" />
           </div>
