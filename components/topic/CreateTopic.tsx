@@ -45,6 +45,19 @@ export const CreateTopic = () => {
     category?: string
   }>({})
 
+  const filteredCategory = category.filter((item) => {
+    // 只有 role 3、4 可以看到官方公告
+    if (
+      item.key === 'OFFICIAL_ANNOUNCEMENT' &&
+      user.role !== 3 &&
+      user.role !== 4
+    ) {
+      return false
+    }
+
+    return true
+  })
+
   const handleSubmit = async () => {
     // 检查用户登录状态
     if (!user) {
@@ -167,7 +180,7 @@ export const CreateTopic = () => {
                 <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
                   <Autocomplete
                     className="max-w-xs"
-                    defaultItems={category}
+                    defaultItems={filteredCategory}
                     label="选择话题分类"
                     selectedKey={data.category}
                     onSelectionChange={(key) => {

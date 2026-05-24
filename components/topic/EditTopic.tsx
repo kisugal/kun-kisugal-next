@@ -10,13 +10,13 @@ import {
   Autocomplete,
   AutocompleteItem
 } from '@heroui/react'
-import { useRouter } from 'next/navigation'
 import { KunDualEditorProvider } from '~/components/kun/milkdown/DualEditorProvider'
 import { markdownToText } from '~/utils/markdownToText'
 import { kunFetchPut } from '~/utils/kunFetch'
 import { useCreateTopicStore } from '~/store/topicStore'
 import type { Topic } from '~/types/api/topic'
 import { category } from './CreateTopic'
+import { useUserStore } from '~/store/userStore'
 
 interface EditTopicProps {
   topic: Topic
@@ -25,21 +25,32 @@ interface EditTopicProps {
 }
 
 export const EditTopic = ({ topic, onCancel, onSuccess }: EditTopicProps) => {
-  const router = useRouter()
-  const { data, setData, resetData } = useCreateTopicStore()
+  const { user } = useUserStore((state) => state)
+  const { data, setData } = useCreateTopicStore()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<{
     title?: string
     content?: string
   }>({})
+  const filteredCategory = category.filter((item) => {
+    // 只有 role 3、4 可以看到官方公告
+    if (
+      item.key === 'OFFICIAL_ANNOUNCEMENT' &&
+      user.role !== 3 &&
+      user.role !== 4
+    ) {
+      return false
+    }
 
+    return true
+  })
   // 初始化编辑器内容
   useEffect(() => {
     // 设置编辑器的初始内容为当前话题的内容
     setData({
       title: topic.title,
       content: topic.content,
-      category: topic.category?.code || ''
+      category: topic.category
     })
   }, [topic.title, topic.content, topic.category, setData])
 
@@ -133,7 +144,7 @@ export const EditTopic = ({ topic, onCancel, onSuccess }: EditTopicProps) => {
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
             <Autocomplete
               className="max-w-xs"
-              defaultItems={category}
+              defaultItems={filteredCategory}
               label="选择话题分类"
               selectedKey={data.category}
               onSelectionChange={(key) => {

@@ -263,18 +263,18 @@ export const TopicDetail = ({
                 {topic.isLiked ? '取消点赞' : '点赞'}
               </Button>
 
-              {/* 话题作者编辑按钮 */}
-              {user && user.uid === topic.user.id && (
-                <Button
-                  color="primary"
-                  variant="bordered"
-                  startContent={<Edit className="w-4 h-4" />}
-                  onPress={() => setIsEditing(true)}
-                  size="sm"
-                >
-                  编辑
-                </Button>
-              )}
+                {/* 话题作者编辑按钮 */}
+                {user && (user.uid === topic.user.id || user.role === 4) && (
+                  <Button
+                    color="primary"
+                    variant="bordered"
+                    startContent={<Edit className="w-4 h-4" />}
+                    onPress={() => setIsEditing(true)}
+                    size="sm"
+                  >
+                    编辑
+                  </Button>
+                )}
 
               {/* 管理员置顶按钮 */}
               {user && user.role >= 3 && (

@@ -15,7 +15,7 @@ export interface Topic {
   created: Date
   updated: Date
   isLiked?: boolean // 当前用户是否已点赞
-  category?: String
+  category: string
 }
 
 export interface TopicCard {
