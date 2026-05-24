@@ -301,6 +301,8 @@ model topic {
   topic_comments topic_comment[]
   topic_likes    topic_like[]
   topicCategory  String          @default("DISCUSSION") @db.VarChar(107)
+
+  @@index([topicCategory])
 }
 
 model topic_like {

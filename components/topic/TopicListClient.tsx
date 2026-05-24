@@ -16,7 +16,7 @@ import { Leaf, Plus } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import toast from 'react-hot-toast'
 import { KunPagination } from '~/components/kun/Pagination'
@@ -174,48 +174,38 @@ export const TopicListClient = ({
     })
   }
 
-  const searchParams = useSearchParams()
-  const searchQuery = searchParams.get('search')
-
-  const fetchSearchResults = async (
-    query: string,
-    page: number = 1,
-    sort: string = 'created',
-    order: string = 'desc'
-  ) => {
-    startTransition(async () => {
-      try {
-        const url = `/api/topic/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}&sortField=${sort}&sortOrder=${order}`
-        const response = await kunFetchGet<TopicListResponse>(url)
-        setTopics(response.topics)
-        setTotal(response.total)
-        setCurrentPage(response.page)
-      } catch (error) {
-        console.error('搜索话题失败:', error)
-      }
-    })
-  }
+  // const fetchSearchResults = async (
+  //   query: string,
+  //   page: number = 1,
+  //   sort: string = 'created',
+  //   order: string = 'desc'
+  // ) => {
+  //   startTransition(async () => {
+  //     try {
+  //       const url = `/api/topic/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}&sortField=${sort}&sortOrder=${order}`
+  //       const response = await kunFetchGet<TopicListResponse>(url)
+  //       setTopics(response.topics)
+  //       setTotal(response.total)
+  //       setCurrentPage(response.page)
+  //     } catch (error) {
+  //       console.error('搜索话题失败:', error)
+  //     }
+  //   })
+  // }
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
-    if (searchQuery && searchQuery.trim()) {
-      fetchSearchResults(searchQuery.trim(), page, sortField, sortOrder)
-    } else {
-      saveState(page, sortField, sortOrder, activeTab)
-      fetchTopics(page, sortField, sortOrder, activeTab)
-    }
+    saveState(page, sortField, sortOrder, activeTab)
+    fetchTopics(page, sortField, sortOrder, activeTab)
   }
 
   const handleSortChange = (field: string, order: string) => {
     setSortField(field)
     setSortOrder(order)
     setCurrentPage(1)
-    if (searchQuery && searchQuery.trim()) {
-      fetchSearchResults(searchQuery.trim(), 1, field, order)
-    } else {
-      saveState(1, field, order, activeTab)
-      fetchTopics(1, field, order, activeTab)
-    }
+
+    saveState(1, field, order, activeTab)
+    fetchTopics(1, field, order, activeTab)
   }
 
   const handleTabChange = (key: string | number) => {
@@ -227,13 +217,8 @@ export const TopicListClient = ({
   }
 
   useEffect(() => {
-    // 最优先：如果 URL 中有 search 查询参数，执行搜索
-    if (searchQuery && searchQuery.trim()) {
-      setActiveTab('OFFICIAL_ANNOUNCEMENT')
-      fetchSearchResults(searchQuery.trim(), 1, sortField, sortOrder)
-      setIsInitialized(true)
-      return
-    }
+    setActiveTab('OFFICIAL_ANNOUNCEMENT')
+    setIsInitialized(true)
 
     // 从 sessionStorage 恢复状态
     const savedState = loadState()
@@ -255,7 +240,7 @@ export const TopicListClient = ({
     }
 
     setIsInitialized(true)
-  }, [searchQuery])
+  }, [])
 
   const totalPages = Math.ceil(total / limit)
 
