@@ -1,7 +1,19 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardHeader, CardBody, Button, Avatar, Chip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/react'
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Button,
+  Avatar,
+  Chip,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from '@heroui/react'
 import { formatDistanceToNow } from '~/utils/formatDistanceToNow'
 import type { Topic } from '~/types/api/topic'
 import { Heart, Eye, Pin, PinOff, Edit, Trash2 } from 'lucide-react'
@@ -12,6 +24,7 @@ import { EditTopic } from './EditTopic'
 import { useUserStore } from '~/store/userStore'
 import toast from 'react-hot-toast'
 import type { TopicComment } from '~/types/api/topic-comment'
+import { category } from './CreateTopic'
 
 interface Props {
   topic: Topic
@@ -50,7 +63,7 @@ export const TopicDetail = ({
       const response = await fetch('/api/topic/like', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           topicId: topic.id
@@ -63,7 +76,7 @@ export const TopicDetail = ({
 
       const result = await response.json()
 
-      setTopic(prev => ({
+      setTopic((prev) => ({
         ...prev,
         isLiked: result.liked,
         like_count: result.liked ? prev.like_count + 1 : prev.like_count - 1
@@ -84,7 +97,7 @@ export const TopicDetail = ({
       const response = await fetch('/api/admin/topic', {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           id: topic.id,
@@ -96,7 +109,7 @@ export const TopicDetail = ({
         throw new Error(`置顶操作失败: ${response.status}`)
       }
 
-      setTopic(prev => ({
+      setTopic((prev) => ({
         ...prev,
         is_pinned: !prev.is_pinned
       }))
@@ -124,7 +137,7 @@ export const TopicDetail = ({
       const response = await fetch(`/api/topic/${topic.id}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         }
       })
 
@@ -183,7 +196,11 @@ export const TopicDetail = ({
             <div className="flex items-center gap-4 mt-2 text-sm text-foreground/60">
               <div className="flex items-center gap-2">
                 <Avatar
-                  src={topic.user.avatar && topic.user.avatar.trim() !== '' ? topic.user.avatar : undefined}
+                  src={
+                    topic.user.avatar && topic.user.avatar.trim() !== ''
+                      ? topic.user.avatar
+                      : undefined
+                  }
                   name={topic.user.name}
                   size="sm"
                   showFallback
@@ -209,7 +226,13 @@ export const TopicDetail = ({
               className="whitespace-pre-wrap"
             />
           )}
-
+          {topic.category && (
+            <div className="flex items-center gap-2 mt-3">
+              <Chip>
+                # {category.find((c) => c.key === topic.category)?.label}
+              </Chip>
+            </div>
+          )}
           <div className="flex items-center justify-between mt-6 pt-4 border-t border-divider">
             <div className="flex items-center gap-4 text-sm text-foreground/60">
               <div className="flex items-center gap-1">
@@ -217,17 +240,21 @@ export const TopicDetail = ({
                 <span>{topic.view_count}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Heart className={`w-4 h-4 ${topic.isLiked ? 'fill-red-500 text-red-500' : ''}`} />
+                <Heart
+                  className={`w-4 h-4 ${topic.isLiked ? 'fill-red-500 text-red-500' : ''}`}
+                />
                 <span>{topic.like_count}</span>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <Button
-                color={topic.isLiked ? "danger" : "default"}
-                variant={topic.isLiked ? "flat" : "bordered"}
+                color={topic.isLiked ? 'danger' : 'default'}
+                variant={topic.isLiked ? 'flat' : 'bordered'}
                 startContent={
-                  <Heart className={`w-4 h-4 ${topic.isLiked ? 'fill-current' : ''}`} />
+                  <Heart
+                    className={`w-4 h-4 ${topic.isLiked ? 'fill-current' : ''}`}
+                  />
                 }
                 onPress={handleLike}
                 isLoading={isLiking}
@@ -252,12 +279,14 @@ export const TopicDetail = ({
               {/* 管理员置顶按钮 */}
               {user && user.role >= 3 && (
                 <Button
-                  color={topic.is_pinned ? "warning" : "default"}
-                  variant={topic.is_pinned ? "flat" : "bordered"}
+                  color={topic.is_pinned ? 'warning' : 'default'}
+                  variant={topic.is_pinned ? 'flat' : 'bordered'}
                   startContent={
-                    topic.is_pinned ?
-                      <PinOff className="w-4 h-4" /> :
+                    topic.is_pinned ? (
+                      <PinOff className="w-4 h-4" />
+                    ) : (
                       <Pin className="w-4 h-4" />
+                    )
                   }
                   onPress={handlePin}
                   isLoading={isPinning}
@@ -303,7 +332,9 @@ export const TopicDetail = ({
           </ModalHeader>
           <ModalBody>
             <p>您确定要删除话题「{topic.title}」吗？</p>
-            <p className="text-sm text-foreground/60">此操作不可撤销，话题删除后将无法恢复。</p>
+            <p className="text-sm text-foreground/60">
+              此操作不可撤销，话题删除后将无法恢复。
+            </p>
           </ModalBody>
           <ModalFooter>
             <Button

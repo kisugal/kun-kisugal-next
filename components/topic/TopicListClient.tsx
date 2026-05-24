@@ -24,7 +24,7 @@ import { useUserStore } from '~/store/userStore'
 import type { TopicCard } from '~/types/api/topic'
 import { kunFetchGet } from '~/utils/kunFetch'
 import { TopicList } from './TopicList'
-import { TopicSearchInput } from '../search/TopicSearchInput'
+// import { TopicSearchInput } from '../search/TopicSearchInput'
 
 // 动态加载右侧边栏，不阻塞首屏
 const RightSidebar = dynamic(
@@ -55,7 +55,7 @@ interface TopicListResponse {
   limit: number
 }
 
-type TabType = 'following' | 'all' | 'official' | 'image'
+type TabType = 'OFFICIAL_ANNOUNCEMENT' | 'DISCUSSION' | 'THIRD_PARTY_RESOURCE'
 
 const sortOptions = [
   { key: 'created', label: '最新发布' },
@@ -119,7 +119,7 @@ export const TopicListClient = ({
   const [currentPage, setCurrentPage] = useState(1)
   const [sortField, setSortField] = useState('created')
   const [sortOrder, setSortOrder] = useState('desc')
-  const [activeTab, setActiveTab] = useState<TabType>('all')
+  const [activeTab, setActiveTab] = useState<TabType>('OFFICIAL_ANNOUNCEMENT')
   const [isInitialized, setIsInitialized] = useState(false)
   const limit = 10
 
@@ -158,20 +158,11 @@ export const TopicListClient = ({
     page: number = 1,
     sort: string = 'created',
     order: string = 'desc',
-    tab: TabType = 'all'
+    tab: TabType = 'OFFICIAL_ANNOUNCEMENT'
   ) => {
     startTransition(async () => {
       try {
-        let url = `/api/topic?page=${page}&limit=${limit}&sortField=${sort}&sortOrder=${order}`
-
-        // 根据标签页添加不同的过滤条件
-        if (tab === 'following') {
-          url += '&type=following'
-        } else if (tab === 'image') {
-          url += '&type=image'
-        } else if (tab === 'official') {
-          url += '&username=KisuGal官方'
-        }
+        let url = `/api/topic?page=${page}&limit=${limit}&sortField=${sort}&sortOrder=${order}&type=${tab}`
 
         const response = await kunFetchGet<TopicListResponse>(url)
         setTopics(response.topics)
@@ -238,7 +229,7 @@ export const TopicListClient = ({
   useEffect(() => {
     // 最优先：如果 URL 中有 search 查询参数，执行搜索
     if (searchQuery && searchQuery.trim()) {
-      setActiveTab('all')
+      setActiveTab('OFFICIAL_ANNOUNCEMENT')
       fetchSearchResults(searchQuery.trim(), 1, sortField, sortOrder)
       setIsInitialized(true)
       return
@@ -260,7 +251,7 @@ export const TopicListClient = ({
       )
     } else {
       // 没有保存的状态，加载默认数据
-      fetchTopics(1, 'created', 'desc', 'all')
+      fetchTopics(1, 'created', 'desc', 'OFFICIAL_ANNOUNCEMENT')
     }
 
     setIsInitialized(true)
@@ -301,10 +292,9 @@ export const TopicListClient = ({
               base: 'flex'
             }}
           >
-            <Tab key="following" title="关注" />
-            <Tab key="all" title="全部" />
-            <Tab key="official" title="官方" />
-            <Tab key="image" title="图片" />
+            <Tab key="OFFICIAL_ANNOUNCEMENT" title="官方公告" />
+            <Tab key="THIRD_PARTY_RESOURCE" title="第三方资源" />
+            <Tab key="DISCUSSION" title="讨论" />
           </Tabs>
           {/* </CardBody>
           </Card> */}

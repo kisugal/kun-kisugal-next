@@ -16,6 +16,7 @@ import {
 } from '@/utils/markdownToText'
 import type { TopicCard as TopicCardType } from '@/types/api/topic'
 import { ScrollShadow } from '@heroui/react'
+import { category } from './CreateTopic'
 
 interface Props {
   topic: TopicCardType
@@ -169,6 +170,13 @@ export const TopicCard = ({ topic, className }: Props) => {
             )}
           </div>
         </ScrollShadow>
+        {topic.topicCategory && (
+          <div className="flex items-center gap-2 mt-3">
+            <Chip>
+              {category.find((c) => c.key === topic.topicCategory)?.label}
+            </Chip>
+          </div>
+        )}
         {/* </CardBody> */}
 
         {/* <CardFooter className="p-0 pt-3 border-t border-divider/50"> */}

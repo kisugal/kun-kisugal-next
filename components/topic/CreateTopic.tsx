@@ -1,7 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardBody, CardHeader, Input, Button } from '@heroui/react'
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  Button,
+  Autocomplete,
+  AutocompleteItem
+} from '@heroui/react'
 import { useRouter } from 'next/navigation'
 import { useCreateTopicStore } from '~/store/topicStore'
 import { KunDualEditorProvider } from '~/components/kun/milkdown/DualEditorProvider'
@@ -11,6 +19,21 @@ import { useUserStore } from '~/store/userStore'
 import toast from 'react-hot-toast'
 import { MessageCircle } from 'lucide-react'
 
+export const category = [
+  {
+    key: 'OFFICIAL_ANNOUNCEMENT',
+    label: '官方公告'
+  },
+  {
+    key: 'THIRD_PARTY_RESOURCE',
+    label: '第三方资源'
+  },
+  {
+    key: 'DISCUSSION',
+    label: '讨论'
+  }
+]
+
 export const CreateTopic = () => {
   const router = useRouter()
   const { user } = useUserStore((state) => state)
@@ -19,6 +42,7 @@ export const CreateTopic = () => {
   const [errors, setErrors] = useState<{
     title?: string
     content?: string
+    category?: string
   }>({})
 
   const handleSubmit = async () => {
@@ -30,33 +54,41 @@ export const CreateTopic = () => {
 
     // 验证表单
     const newErrors: typeof errors = {}
-    
+
     if (!data.title.trim()) {
       newErrors.title = '请输入话题标题'
     } else if (data.title.length > 200) {
       newErrors.title = '标题不能超过200个字符'
     }
-    
+
     if (!data.content.trim()) {
       newErrors.content = '请输入话题内容'
     } else if (markdownToText(data.content).length < 10) {
       newErrors.content = '内容至少需要10个字符'
     }
-    
+
+    if (!data.category) {
+      newErrors.category = '请选择话题分类'
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
-    
+
     setIsSubmitting(true)
     setErrors({})
-    
+
     try {
-      const result = await kunFetchPost<{ topic: { id: number } }>('/api/topic', {
-        title: data.title.trim(),
-        content: data.content.trim()
-      })
-      
+      const result = await kunFetchPost<{ topic: { id: number } }>(
+        '/api/topic',
+        {
+          title: data.title.trim(),
+          content: data.content.trim(),
+          category: data.category.trim()
+        }
+      )
+
       // 创建成功
       resetData()
       router.push(`/topic/${result.topic.id}`)
@@ -85,7 +117,9 @@ export const CreateTopic = () => {
               <div className="text-gray-500">
                 <MessageCircle className="w-12 h-12 mx-auto mb-3 text-gray-300" />
                 <p className="text-lg">请先登录后创建话题</p>
-                <p className="text-sm">登录后即可发布话题，与社区成员分享讨论</p>
+                <p className="text-sm">
+                  登录后即可发布话题，与社区成员分享讨论
+                </p>
               </div>
               <Button
                 color="primary"
@@ -101,62 +135,84 @@ export const CreateTopic = () => {
           )}
           {user && (
             <>
-          <div className="space-y-2">
-            <h2 className="text-xl">话题标题 (必须)</h2>
-            <Input
-              isRequired
-              variant="underlined"
-              labelPlacement="outside"
-              placeholder="输入话题标题，简洁明了地描述你要讨论的内容"
-              value={data.title}
-              onChange={(e) => setData({ ...data, title: e.target.value })}
-              isInvalid={!!errors.title}
-              errorMessage={errors.title}
-              maxLength={200}
-            />
-            <p className="text-small text-default-500">
-              字数: {data.title.length}/200
-            </p>
-          </div>
+              <div className="space-y-2">
+                <h2 className="text-xl">话题标题 (必须)</h2>
+                <Input
+                  isRequired
+                  variant="underlined"
+                  labelPlacement="outside"
+                  placeholder="输入话题标题，简洁明了地描述你要讨论的内容"
+                  value={data.title}
+                  onChange={(e) => setData({ ...data, title: e.target.value })}
+                  isInvalid={!!errors.title}
+                  errorMessage={errors.title}
+                  maxLength={200}
+                />
+                <p className="text-small text-default-500">
+                  字数: {data.title.length}/200
+                </p>
+              </div>
 
-          <div className="space-y-2">
-            <h2 className="text-xl">话题内容 (必须)</h2>
-            <p className="text-small text-default-500">
-              详细描述你的想法，支持 Markdown 格式
-            </p>
-            {errors.content && (
-              <p className="text-xs text-danger-500">{errors.content}</p>
-            )}
+              <div className="space-y-2">
+                <h2 className="text-xl">话题内容 (必须)</h2>
+                <p className="text-small text-default-500">
+                  详细描述你的想法，支持 Markdown 格式
+                </p>
+                {errors.content && (
+                  <p className="text-xs text-danger-500">{errors.content}</p>
+                )}
 
-            <KunDualEditorProvider storeName="topicCreate" />
+                <KunDualEditorProvider storeName="topicCreate" />
 
-            <p className="text-small text-default-500">
-              字数: {markdownToText(data.content).length}
-            </p>
-          </div>
+                <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                  <Autocomplete
+                    className="max-w-xs"
+                    defaultItems={category}
+                    label="选择话题分类"
+                    selectedKey={data.category}
+                    onSelectionChange={(key) => {
+                      setData({
+                        ...data,
+                        category: String(key)
+                      })
+                    }}
+                    placeholder="选择话题分类"
+                  >
+                    {(item) => (
+                      <AutocompleteItem key={item.key}>
+                        {item.label}
+                      </AutocompleteItem>
+                    )}
+                  </Autocomplete>
+                </div>
 
-          <div className="flex gap-4 pt-4">
-            <Button
-              color="primary"
-              size="lg"
-              onPress={handleSubmit}
-              isLoading={isSubmitting}
-              isDisabled={!data.title.trim() || !data.content.trim()}
-            >
-              {isSubmitting ? '创建中...' : '创建话题'}
-            </Button>
-            <Button
-              variant="light"
-              size="lg"
-              onPress={() => {
-                resetData()
-                router.back()
-              }}
-              isDisabled={isSubmitting}
-            >
-              取消
-            </Button>
-          </div>
+                <p className="text-small text-default-500">
+                  字数: {markdownToText(data.content).length}
+                </p>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <Button
+                  color="primary"
+                  size="lg"
+                  onPress={handleSubmit}
+                  isLoading={isSubmitting}
+                  isDisabled={!data.title.trim() || !data.content.trim()}
+                >
+                  {isSubmitting ? '创建中...' : '创建话题'}
+                </Button>
+                <Button
+                  variant="light"
+                  size="lg"
+                  onPress={() => {
+                    resetData()
+                    router.back()
+                  }}
+                  isDisabled={isSubmitting}
+                >
+                  取消
+                </Button>
+              </div>
             </>
           )}
         </CardBody>

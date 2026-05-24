@@ -16,22 +16,22 @@ interface Props {
 }
 
 export default async function TopicPage({ searchParams }: Props) {
-  const queryState = parseTopicQueryState(await searchParams)
-  const response = await kunGetTopicListActions({
-    sortField: queryState.sortField,
-    sortOrder: queryState.sortOrder,
-    page: queryState.page,
-    limit: queryState.limit
-  })
-  if (typeof response === 'string') {
-    return <ErrorComponent error={response} />
-  }
+  // const queryState = parseTopicQueryState(await searchParams)
+  // const response = await kunGetTopicListActions({
+  //   sortField: queryState.sortField,
+  //   sortOrder: queryState.sortOrder,
+  //   page: queryState.page,
+  //   limit: queryState.limit
+  // })
+  // if (typeof response === 'string') {
+  //   return <ErrorComponent error={response} />
+  // }
 
   return (
     <TopicListPage
-      initialTopics={response.topics}
-      initialTotal={response.total}
-      initialQueryState={queryState}
+    // initialTopics={response.topics}
+    // initialTotal={response.total}
+    // initialQueryState={queryState}
     />
   )
 }

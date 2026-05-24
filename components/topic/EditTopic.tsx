@@ -1,13 +1,22 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardBody, CardHeader, Input, Button } from '@heroui/react'
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  Button,
+  Autocomplete,
+  AutocompleteItem
+} from '@heroui/react'
 import { useRouter } from 'next/navigation'
 import { KunDualEditorProvider } from '~/components/kun/milkdown/DualEditorProvider'
 import { markdownToText } from '~/utils/markdownToText'
 import { kunFetchPut } from '~/utils/kunFetch'
 import { useCreateTopicStore } from '~/store/topicStore'
 import type { Topic } from '~/types/api/topic'
+import { category } from './CreateTopic'
 
 interface EditTopicProps {
   topic: Topic
@@ -29,40 +38,45 @@ export const EditTopic = ({ topic, onCancel, onSuccess }: EditTopicProps) => {
     // 设置编辑器的初始内容为当前话题的内容
     setData({
       title: topic.title,
-      content: topic.content
+      content: topic.content,
+      category: topic.category?.code || ''
     })
-  }, [topic.title, topic.content, setData])
+  }, [topic.title, topic.content, topic.category, setData])
 
   const handleSubmit = async () => {
     // 验证表单
     const newErrors: typeof errors = {}
-    
+
     if (!data.title.trim()) {
       newErrors.title = '请输入话题标题'
     } else if (data.title.length > 200) {
       newErrors.title = '标题不能超过200个字符'
     }
-    
+
     if (!data.content.trim()) {
       newErrors.content = '请输入话题内容'
     } else if (markdownToText(data.content).length < 10) {
       newErrors.content = '内容至少需要10个字符'
     }
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
-    
+
     setIsSubmitting(true)
     setErrors({})
-    
+
     try {
-      const result = await kunFetchPut<{ topic: Topic }>(`/api/topic/${topic.id}`, {
-        title: data.title.trim(),
-        content: data.content.trim()
-      })
-      
+      const result = await kunFetchPut<{ topic: Topic }>(
+        `/api/topic/${topic.id}`,
+        {
+          title: data.title.trim(),
+          content: data.content.trim(),
+          category: data.category
+        }
+      )
+
       // 编辑成功
       onSuccess(result.topic)
     } catch (error) {
@@ -73,17 +87,13 @@ export const EditTopic = ({ topic, onCancel, onSuccess }: EditTopicProps) => {
     }
   }
 
-
-
   return (
     <form className="w-full max-w-5xl py-4 mx-auto">
       <Card className="w-full">
         <CardHeader className="flex gap-3">
           <div className="flex flex-col">
             <h1 className="text-2xl">编辑话题</h1>
-            <p className="text-small text-default-500">
-              修改你的话题内容
-            </p>
+            <p className="text-small text-default-500">修改你的话题内容</p>
           </div>
         </CardHeader>
         <CardBody className="mt-4 space-y-8">
@@ -120,7 +130,25 @@ export const EditTopic = ({ topic, onCancel, onSuccess }: EditTopicProps) => {
               字数: {markdownToText(data.content).length}
             </p>
           </div>
-
+          <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+            <Autocomplete
+              className="max-w-xs"
+              defaultItems={category}
+              label="选择话题分类"
+              selectedKey={data.category}
+              onSelectionChange={(key) => {
+                setData({
+                  ...data,
+                  category: String(key)
+                })
+              }}
+              placeholder="选择话题分类"
+            >
+              {(item) => (
+                <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>
+              )}
+            </Autocomplete>
+          </div>
           <div className="flex gap-4 pt-4">
             <Button
               color="primary"

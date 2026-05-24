@@ -140,5 +140,6 @@
   "eslint.enable": true,
   "eslint.format.enable": true,
   "editor.formatOnSave": true,
-  "prettier.requireConfig": true
+  "prettier.requireConfig": true,
+  "prisma.pinToPrisma6": true
 }
