@@ -70,7 +70,7 @@ const orderOptions = [
 
 const glgc = [
   {
-    title: 'AI女友 ❤️',
+    title: 'DZMM AI伴侣 ❤️',
     imageurl:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg',
     url: 'https://www.ainexa.top?rf=e32c5b70',
