@@ -62,10 +62,13 @@ export const CommentEdit = ({ initialComment }: Props) => {
       return
     }
     setUpdating(true)
-    const res = await kunFetchPut<KunResponse<AdminComment>>('/api/admin/comment', {
-      commentId: initialComment.id,
-      content: editContent.trim()
-    })
+    const res = await kunFetchPut<KunResponse<AdminComment>>(
+      '/api/admin/comment',
+      {
+        commentId: initialComment.id,
+        content: editContent.trim()
+      }
+    )
     if (typeof res === 'string') {
       toast.error(res)
     } else {
