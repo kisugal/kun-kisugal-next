@@ -15,6 +15,7 @@ export interface Topic {
   created: Date
   updated: Date
   isLiked?: boolean // 当前用户是否已点赞
+  category: string
 }
 
 export interface TopicCard {
@@ -30,6 +31,7 @@ export interface TopicCard {
     name: string
     avatar: string
   }
+  topicCategory: string
   created: string
   updated: string
 }

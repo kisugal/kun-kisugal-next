@@ -56,7 +56,8 @@ export const getTopic = async (
     user: topic.user,
     created: topic.created,
     updated: topic.updated,
-    isLiked: userId ? topic.topic_likes.length > 0 : false
+    isLiked: userId ? topic.topic_likes.length > 0 : false,
+    category: topic.topicCategory
   }
 
   return result

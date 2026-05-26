@@ -28,7 +28,10 @@ export const GET = async (
     return NextResponse.json(topic)
   } catch (error) {
     console.error('Error in GET /api/topic/[id]:', error)
-    return NextResponse.json({ error: '获取话题详情时发生错误' }, { status: 500 })
+    return NextResponse.json(
+      { error: '获取话题详情时发生错误' },
+      { status: 500 }
+    )
   }
 }
 
@@ -53,6 +56,7 @@ export const PUT = async (
     // 获取请求体数据
     const body = await req.json()
     const validatedData = updateTopicSchema.parse({ ...body, id })
+    console.log(validatedData)
 
     // 检查话题是否存在
     const existingTopic = await prisma.topic.findUnique({
@@ -85,6 +89,10 @@ export const PUT = async (
 
     if (validatedData.content !== undefined) {
       updateData.content = validatedData.content
+    }
+
+    if (validatedData.category !== undefined) {
+      updateData.topicCategory = validatedData.category
     }
 
     // 更新话题
@@ -162,7 +170,10 @@ export const DELETE = async (
     })
 
     if (!user || user.role < 2) {
-      return NextResponse.json({ error: '权限不足，只有管理员可以删除话题' }, { status: 403 })
+      return NextResponse.json(
+        { error: '权限不足，只有管理员可以删除话题' },
+        { status: 403 }
+      )
     }
 
     // 检查话题是否存在
@@ -175,7 +186,10 @@ export const DELETE = async (
     })
 
     if (!existingTopic) {
-      return NextResponse.json({ error: '话题不存在或已被删除' }, { status: 404 })
+      return NextResponse.json(
+        { error: '话题不存在或已被删除' },
+        { status: 404 }
+      )
     }
 
     // 软删除话题（将status设为1）

@@ -3,6 +3,7 @@ import { create } from 'zustand'
 export interface CreateTopicData {
   title: string
   content: string
+  category: string
 }
 
 interface CreateTopicStore {
@@ -14,7 +15,8 @@ interface CreateTopicStore {
 
 const initialData: CreateTopicData = {
   title: '',
-  content: ''
+  content: '',
+  category: ''
 }
 
 export const useCreateTopicStore = create<CreateTopicStore>()((set, get) => ({

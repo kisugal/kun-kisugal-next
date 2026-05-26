@@ -12,27 +12,18 @@ export const GET = async (req: NextRequest) => {
     const limit = parseInt(searchParams.get('limit') || '10')
     const sortField = searchParams.get('sortField') || 'created'
     const sortOrder = searchParams.get('sortOrder') || 'desc'
-    const username = searchParams.get('username')
     const type = searchParams.get('type')
-
 
     // 构建查询条件
     const skip = (page - 1) * limit
     let where: any = {
-      status: 0  // 只显示未删除的话题
+      status: 0 // 只显示未删除的话题
     }
 
-    if (username) {
-      const user = await prisma.user.findUnique({
-        where: { name: username },
-        select: { id: true }
-      })
-      if (user) {
-        where.user_id = user.id
-      }
-    } else if (type === 'image') {
-      where.content = { contains: '![' }
+    if (type) {
+      where.topicCategory = type.trim()
     }
+
     const orderBy: any = {}
     orderBy[sortField] = sortOrder
 
@@ -43,7 +34,7 @@ export const GET = async (req: NextRequest) => {
         skip,
         take: limit,
         orderBy: [
-          { is_pinned: 'desc' },  // 置顶话题优先
+          { is_pinned: 'desc' }, // 置顶话题优先
           orderBy
         ],
         select: {
@@ -55,6 +46,7 @@ export const GET = async (req: NextRequest) => {
           view_count: true,
           like_count: true,
           is_pinned: true,
+          topicCategory: true,
           user: {
             select: {
               id: true,
@@ -73,7 +65,7 @@ export const GET = async (req: NextRequest) => {
     ])
 
     // 格式化数据
-    const formattedTopics = topics.map(topic => ({
+    const formattedTopics = topics.map((topic) => ({
       ...topic,
       comment_count: topic._count.topic_comments,
       _count: undefined
@@ -107,12 +99,13 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json()
   const validatedData = createTopicSchema.parse(body)
-  const { title, content } = validatedData
+  const { title, content, category } = validatedData
 
   const topic = await prisma.topic.create({
     data: {
       title,
       content,
+      topicCategory: category,
       user_id: payload.uid
     },
     include: {
@@ -126,22 +119,26 @@ export async function POST(request: NextRequest) {
     }
   })
 
-  return Response.json({
-    message: 'Topic created successfully',
-    topic: {
-      id: topic.id,
-      title: topic.title,
-      content: topic.content,
-      is_pinned: topic.is_pinned,
-      view_count: topic.view_count,
-      like_count: topic.like_count,
-      user: {
-        id: topic.user.id,
-        name: topic.user.name,
-        avatar: topic.user.avatar
-      },
-      created: topic.created.toISOString(),
-      updated: topic.updated.toISOString()
-    }
-  }, { status: 201 })
+  return Response.json(
+    {
+      message: 'Topic created successfully',
+      topic: {
+        id: topic.id,
+        title: topic.title,
+        content: topic.content,
+        category: topic.topicCategory,
+        is_pinned: topic.is_pinned,
+        view_count: topic.view_count,
+        like_count: topic.like_count,
+        user: {
+          id: topic.user.id,
+          name: topic.user.name,
+          avatar: topic.user.avatar
+        },
+        created: topic.created.toISOString(),
+        updated: topic.updated.toISOString()
+      }
+    },
+    { status: 201 }
+  )
 }

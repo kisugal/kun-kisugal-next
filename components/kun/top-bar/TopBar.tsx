@@ -51,7 +51,7 @@ export const KunTopBar = () => {
           <div className="lg:hidden">
             <Link href="https://www.ainexa.top?rf=e32c5b70" target="_blank">
               <Image
-                src="/moyumoe1-button.avif"
+                src="/moyumoe1-button.webp"
                 alt="❤️AI涩涩"
                 className="h-9 opacity-80"
               ></Image>
