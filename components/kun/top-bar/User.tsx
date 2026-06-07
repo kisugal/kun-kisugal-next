@@ -99,7 +99,7 @@ export const KunTopBarUser = () => {
         <>
           <NavbarContent justify="end">
             <NavbarItem className="hidden lg:flex">
-              <Link href="https://www.duskpine.top?rf=e32c5b70" target="_blank">
+              <Link href="https://www.ainvmei.com/?rf=e32c5b70" target="_blank">
                 <Image
                   src="/moyumoe1-button.webp"
                   alt="DZMM"
