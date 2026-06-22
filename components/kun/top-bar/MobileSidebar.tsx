@@ -83,7 +83,7 @@ const navSections = [
         name: 'Ai女友💋',
         description:
           '🌟在线畅玩。顶尖色情，即刻生图😍多样角色场景18禁性癖待你开发！💋',
-        href: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
+        href: 'https://afengy.app?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
         icon: HeartIcon
       },
       {

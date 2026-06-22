@@ -39,7 +39,7 @@ export const kunMobileNavItem: KunNavItem[] = [
   },
   {
     name: 'Ai女友💋',
-    href: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
+    href: 'https://afengy.app?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
     rel: 'nofollow'
   },
   {
