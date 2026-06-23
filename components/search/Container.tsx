@@ -180,7 +180,7 @@ export const SearchPage = () => {
         setSelectedMonths={setSelectedMonths}
       />
 
-      {query && <SearchGlgc />}
+      {query.length === 0 && !loading && patches.length === 0 && <SearchGlgc />}
 
       {loading ? (
         <KunLoading hint="正在搜索中..." />
