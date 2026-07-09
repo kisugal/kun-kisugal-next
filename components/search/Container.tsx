@@ -17,6 +17,7 @@ import { FilterBar } from '~/components/galgame/FilterBar'
 import { useSettingStore } from '~/store/settingStore'
 import type { SearchSuggestionType } from '~/types/api/search'
 import type { SortField, SortOrder } from '~/components/galgame/_sort'
+import { SearchGlgc } from './glgc'
 
 const MAX_HISTORY_ITEMS = 10
 
@@ -178,6 +179,8 @@ export const SearchPage = () => {
         selectedMonths={selectedMonths}
         setSelectedMonths={setSelectedMonths}
       />
+
+      {query.length === 0 && !loading && patches.length === 0 && <SearchGlgc />}
 
       {loading ? (
         <KunLoading hint="正在搜索中..." />

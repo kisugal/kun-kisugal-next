@@ -70,10 +70,16 @@ const orderOptions = [
 
 const glgc = [
   {
-    title: 'AI女友 ❤️',
+    title: '精选黄油',
+    imageurl: 'https://upload.cc/i1/2026/07/09/C2WrOU.png',
+    url: 'https://l1.hljxyhbkj.com/dh1012',
+    content: '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望'
+  },
+  {
+    title: 'DZMM AI伴侣 ❤️',
     imageurl:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg',
-    url: 'https://www.ainexa.top?rf=e32c5b70',
+    url: 'https://www.ainvmei.com/?rf=e32c5b70',
     content:
       '高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。'
   },
@@ -87,8 +93,8 @@ const glgc = [
   {
     title: '精品飞机杯',
     imageurl:
-      'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/49464505B8D77779CC2807573F7F287C.jpg',
-    url: 'https://e.tb.cn/h.iv7rE7l9dsxvPYC?tk=X5aK5P47bUz',
+      'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/686B6C6A29B3FF47E39861DE80DABFF3.jpg',
+    url: 'https://gateway.alihealth.taobao.com/act/T8gVSF$zZ6d?JKid=wtcps_01%7EZ%7EqtS5gwQgQOb3nC14bLnuD9W%7E4aaC-xJKcPo%7EEhpYW0LPJOS%7Ezcjmt261onAay3Pc4Ka1HPQ4cd%7E-RaJdr0uyL4oTqGLsT-HcUQPzLlB1ee1yNuGZ8EycTf2Ro7Nr2LJh%7EU0GRkbrZMkkO2Huz-w%3D%3D_01_4a653ba46a3c4f0d819ab763b3e33e7d&quickLaunch=true&forbidRefineType=goOut',
     content: null
   }
 ]

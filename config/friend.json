@@ -31,12 +31,6 @@
       "link": "https://www.acgbox.link/"
     },
     {
-      "name": "蛋窝资源库",
-      "avatar": "https://danwo.top/favicon.ico",
-      "label": "一个永久免费的 ACG 资源站",
-      "link": "https://danwo.top/"
-    },
-    {
       "name": "绮梦ACG",
       "avatar": "https://game.acgs.one/_next/image?url=%2Ffavicon.ico&w=64&q=75",
       "label": "绮梦ACG是一个专注于ACG资源分享的社区，提供丰富的ACG资源下载和交流平台，致力于为ACG爱好者打造一个温馨的家园。",
@@ -65,6 +59,12 @@
       "avatar": "https://minio.huanyou.zip/music/playlists/2026/4/287ad2bb-ffc9-4620-adf5-2f127ddcaf35.webp",
       "label": "GAL动漫原声带以及ASMR的综合收录站",
       "link": "https://huanyou.zip/"
+    },
+    {
+      "name": "ACGNBox",
+      "avatar": "https://galgamebox.org/uploads/mmexporte99504acf6fa53da31e9-9frded.webp",
+      "label": "ACG导航站",
+      "link": "https://galgamebox.org/"
     }
   ]
 }

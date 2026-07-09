@@ -21,7 +21,7 @@ const ADS_DATA: AdItem[] = [
     title: '',
     description: '',
     image: 'https://r2.sakinori.top/%E9%A3%8E%E6%9C%88AI/1200x200-02.gif',
-    link: 'https://dearestie.xyz?ref_id=88f10d5a-aa3a-47a1-b850-94927bf7ba2f'
+    link: 'https://afengy.app?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67'
   },
   {
     id: 'ad2', //eueuVPN
@@ -60,6 +60,11 @@ export const HomeAds = () => {
 
       {/* 广告内容 */}
       <div className="grid grid-cols-2 gap-4">
+      <div
+        className={`grid gap-4 ${
+          visibleAds.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'
+        }`}
+      >
         {visibleAds.map((ad) => (
           <Card
             key={ad.id}

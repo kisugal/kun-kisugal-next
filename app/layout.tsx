@@ -7,6 +7,7 @@ import { KunBackToTop } from '~/components/kun/BackToTop'
 import { AppShell } from '~/components/layout/AppShell'
 import { LazySnow } from '~/components/ui/LazySnow'
 import { ENABLE_SNOW } from '~/config/featureFlags'
+import Script from 'next/script'
 
 export default function RootLayout({
   children
@@ -22,6 +23,17 @@ export default function RootLayout({
           src="https://umami.acgll.com/script.js"
           data-website-id="64cac2dd-0bca-4041-907d-18eef228439c"
         ></script>
+        <Script id="baidu-analytics" strategy="afterInteractive">
+          {`
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1568171ab857a620856243c793d65f76";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  `}
+        </Script>
         {/* <script defer src="https://was.arisumika.top/script.js" data-website-id="a7f17bf9-67ae-4dc9-b273-5bc1144d6039"></script> */}
       </head>
       <body className={cn('min-h-screen bg-background antialiased')}>

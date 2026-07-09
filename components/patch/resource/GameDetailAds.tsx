@@ -14,27 +14,34 @@ interface AdItem {
 // 游戏详情页独立的广告数据配置
 const GAME_DETAIL_ADS_DATA: AdItem[] = [
   {
-    id: 'game-detail-ad10', //DZMM
-    title: '',
-    description: '',
-    image:
-      'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg', // 游戏详情页专用广告图片
-    link: 'https://www.duskpine.top?rf=e32c5b70' // 游戏详情页专用广告链接
-  },
-  {
-    id: 'game-detail-ad1', //风月AI
-    title: '',
-    description: '',
-    image: 'https://r2.sakinori.top/%E9%A3%8E%E6%9C%88AI/1200x200-03.gif', // 游戏详情页专用广告图片
-    link: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67' // 游戏详情页专用广告链接
-  },
-  {
     id: 'game-detail-ad2', //VPN
     title: '',
     description: '',
     image:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260422115227_3895_10.jpg', // 游戏详情页专用广告图片
     link: 'https://www.tspeedcat.top/#/register?code=iKNXDX41' // 游戏详情页专用广告链接
+  },
+  {
+    id: 'game-detail-ad3', //精选黄油
+    title: '',
+    description: '',
+    image: 'https://upload.cc/i1/2026/07/09/C2WrOU.png', // 游戏详情页专用广告图片
+    link: 'https://l1.hljxyhbkj.com/dh1012' // 游戏详情页专用广告链接
+  },
+  {
+    id: 'game-detail-ad10', //DZMM
+    title: '',
+    description: '',
+    image:
+      'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg', // 游戏详情页专用广告图片
+    link: 'https://www.ainvmei.com/?rf=e32c5b70' // 游戏详情页专用广告链接
+  },
+  {
+    id: 'game-detail-ad1', //风月AI
+    title: '',
+    description: '',
+    image: 'https://r2.sakinori.top/%E9%A3%8E%E6%9C%88AI/1200x200-03.gif', // 游戏详情页专用广告图片
+    link: 'https://afengy.app?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67' // 游戏详情页专用广告链接
   }
 ]
 

@@ -37,10 +37,22 @@ const navSections = [
     title: '推荐内容',
     items: [
       {
+        name: 'Ai女友💋',
+        description:
+          '🌟在线畅玩。顶尖色情，即刻生图😍多样角色场景18禁性癖待你开发！💋',
+        href: 'https://afengy.app?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
+        icon: HeartIcon,
+        popover: {
+          title: 'Ai风月',
+          description: 'Ai风月💋',
+          image: 'https://r2.sakinori.top/%E9%A3%8E%E6%9C%88AI/320x500GIF4.gif'
+        }
+      },
+      {
         name: 'AI伴侣❤️',
         description:
           '😊高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。❤️',
-        href: 'https://www.ainexa.top?rf=e32c5b70',
+        href: 'https://www.ainvmei.com/?rf=e32c5b70',
         icon: HeartIcon,
         popover: {
           title: '❤️DZMM AI伴侣',
@@ -51,27 +63,28 @@ const navSections = [
         }
       },
       {
-        name: 'Ai女友💋',
+        name: '精选黄油',
         description:
-          '🌟在线畅玩。顶尖色情，即刻生图😍多样角色场景18禁性癖待你开发！💋',
-        href: 'https://genrati.xyz?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
+          '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',
+        href: 'https://l1.hljxyhbkj.com/dh1012',
         icon: HeartIcon,
         popover: {
-          title: 'Ai风月',
-          description: 'Ai风月💋',
-          image: 'https://r2.sakinori.top/%E9%A3%8E%E6%9C%88AI/320x500GIF4.gif'
+          title: '精选黄油',
+          description:
+            '高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。',
+          image: 'https://upload.cc/i1/2026/07/09/C2WrOU.png'
         }
       },
       {
         name: '精品飞机杯',
         description: 'AYU-4396 没落女仆のメイド教育😍',
-        href: 'https://e.tb.cn/h.iv7rE7l9dsxvPYC?tk=X5aK5P47bUz',
+        href: 'https://gateway.alihealth.taobao.com/act/T8gVSF$zZ6d?JKid=wtcps_01%7EZ%7EqtS5gwQgQOb3nC14bLnuD9W%7E4aaC-xJKcPo%7EEhpYW0LPJOS%7Ezcjmt261onAay3Pc4Ka1HPQ4cd%7E-RaJdr0uyL4oTqGLsT-HcUQPzLlB1ee1yNuGZ8EycTf2Ro7Nr2LJh%7EU0GRkbrZMkkO2Huz-w%3D%3D_01_4a653ba46a3c4f0d819ab763b3e33e7d&quickLaunch=true&forbidRefineType=goOut',
         icon: HeartIcon,
         popover: {
           title: '彼之良淘宝官方旗舰店',
           description: '飞机杯',
           image:
-            'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/49464505B8D77779CC2807573F7F287C.jpg'
+            'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/686B6C6A29B3FF47E39861DE80DABFF3.jpg'
         }
       },
       {

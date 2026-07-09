@@ -1,3 +1,16 @@
+allowBuilds:
+  '@heroui/shared-utils': set this to true or false
+  '@parcel/watcher': set this to true or false
+  '@prisma/client': set this to true or false
+  '@prisma/engines': set this to true or false
+  '@tailwindcss/oxide': set this to true or false
+  aws-sdk: set this to true or false
+  core-js: set this to true or false
+  esbuild: set this to true or false
+  prisma: set this to true or false
+  puppeteer: set this to true or false
+  sharp: set this to true or false
+  unrs-resolver: set this to true or false
 ignoredBuiltDependencies:
   - puppeteer
 onlyBuiltDependencies:

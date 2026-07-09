@@ -66,7 +66,7 @@ const emulators = [
       {
         name: 'ZArchiver Pro',
         icon: ZArchiver,
-        href: 'https://c.acgll.com/@s/OnbroFGc'
+        href: 'https://c.acgll.com/@s/0mdJoGhd'
       }
     ]
   },
