@@ -5,9 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardBody, CardFooter } from '@heroui/card'
 import { Chip } from '@heroui/chip'
-import { Eye, Heart, ImageIcon, MessageSquare, Pin } from 'lucide-react'
+import { ImageIcon, Pin } from 'lucide-react'
 import { cn } from '@/utils/cn'
-import { formatNumber } from '@/utils/formatNumber'
 import { formatDistanceToNow } from '@/utils/formatDistanceToNow'
 import {
   extractImagesFromMarkdown,
@@ -179,28 +178,7 @@ export const TopicCard = ({ topic, className }: Props) => {
         {/* </CardBody> */}
 
         {/* <CardFooter className="p-0 pt-3 border-t border-divider/50"> */}
-        {/* 统计信息 */}
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-4 text-sm text-foreground/60">
-            <div className="flex items-center gap-1">
-              <Eye className="size-4" />
-              <span>{formatNumber(topic.view_count)}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Heart className="size-4" />
-              <span>{formatNumber(topic.like_count)}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <MessageSquare className="size-4" />
-              <span>{topic.comment_count}</span>
-            </div>
-          </div>
-
-          {/* 更新时间 */}
-          <span className="text-xs text-foreground/50">
-            更新于 {formatDistanceToNow(new Date(topic.updated))}
-          </span>
-        </div>
+        {/* 统计信息 - 已隐藏浏览量、红心、留言、更新时间 */}
         {/* </CardFooter> */}
       </Link>
     </div>
