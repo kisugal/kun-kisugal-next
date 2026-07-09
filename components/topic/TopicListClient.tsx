@@ -285,69 +285,113 @@ export const TopicListClient = ({
             <Tab key="DISCUSSION" title="讨论" />
           </Tabs>
 
-          {/* 双栏广告区域 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {glgc.map((item) => (
-              <Card key={item.title} shadow="sm" className="overflow-hidden">
-                <CardBody className="p-3">
-                  <Link
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
+          {/* 广告区域：保留收缩 + 双栏 */}
+          <Accordion isCompact>
+            <AccordionItem
+              key="glgc"
+              aria-label="广告推荐"
+              startContent={<Leaf className="w-5 h-5 text-yellow-500" />}
+              title="精选推荐"
+              classNames={{
+                trigger: 'justify-start',
+                title: 'text-left flex-1'
+              }}
+            >
+              <div
+                className="
+                  grid
+                  grid-cols-1
+                  sm:grid-cols-2
+                  gap-4
+                "
+              >
+                {glgc.map((item) => (
+                  <Card
+                    key={item.title}
+                    shadow="sm"
+                    className="overflow-hidden"
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Leaf className="w-5 h-5 text-yellow-500 shrink-0" />
-
-                      <span className="font-medium text-sm truncate">
-                        {item.title}
-                      </span>
-                    </div>
-
-                    {item.content && (
-                      <div
-                        className="
-                          opacity-80
-                          text-xs
-                          mb-3
-                          line-clamp-2
-                        "
+                    <CardBody className="p-3">
+                      <Link
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
                       >
-                        {item.content}
-                      </div>
-                    )}
+                        <div
+                          className="
+                            flex
+                            items-center
+                            gap-2
+                            mb-2
+                          "
+                        >
+                          <Leaf
+                            className="
+                              w-4
+                              h-4
+                              text-yellow-500
+                              shrink-0
+                            "
+                          />
 
-                    <div
-                      className="
-                        relative
-                        w-full
-                        aspect-[4/3]
-                        overflow-hidden
-                        rounded-lg
-                      "
-                    >
-                      <Image
-                        src={item.imageurl}
-                        fill
-                        sizes="
-                          (max-width:640px) 100vw,
-                          50vw
-                        "
-                        alt={item.title}
-                        className="
-                          object-cover
-                          opacity-80
-                        "
-                      />
-                    </div>
-                  </Link>
-                </CardBody>
-              </Card>
-            ))}
-          </div>
+                          <span
+                            className="
+                              font-medium
+                              text-sm
+                              truncate
+                            "
+                          >
+                            {item.title}
+                          </span>
+                        </div>
+
+                        {item.content && (
+                          <div
+                            className="
+                              opacity-80
+                              text-xs
+                              mb-3
+                              line-clamp-2
+                            "
+                          >
+                            {item.content}
+                          </div>
+                        )}
+
+                        <div
+                          className="
+                            relative
+                            w-full
+                            aspect-[4/3]
+                            overflow-hidden
+                            rounded-lg
+                          "
+                        >
+                          <Image
+                            src={item.imageurl}
+                            fill
+                            sizes="
+                              (max-width:640px) 100vw,
+                              50vw
+                            "
+                            alt={item.title}
+                            className="
+                              object-cover
+                              rounded-lg
+                              opacity-80
+                            "
+                          />
+                        </div>
+                      </Link>
+                    </CardBody>
+                  </Card>
+                ))}
+              </div>
+            </AccordionItem>
+          </Accordion>
 
           {/* 排序筛选 */}
-
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <span className="text-sm text-foreground/70">排序方式:</span>
@@ -391,7 +435,14 @@ export const TopicListClient = ({
           {/* 内容区域 */}
 
           {isPending && topics.length === 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              className="
+                grid
+                grid-cols-1
+                md:grid-cols-2
+                gap-4
+              "
+            >
               {[1, 2, 3, 4].map((i) => (
                 <div className="space-y-3" key={i}>
                   <div className="flex items-center gap-3">
@@ -403,7 +454,12 @@ export const TopicListClient = ({
                       "
                     />
 
-                    <div className="flex-1 space-y-2">
+                    <div
+                      className="
+                        flex-1
+                        space-y-2
+                      "
+                    >
                       <Skeleton
                         className="
                           h-4
@@ -459,7 +515,6 @@ export const TopicListClient = ({
         </div>
 
         {/* 右侧边栏 */}
-
         <RightSidebar />
       </div>
 
