@@ -59,10 +59,7 @@ export const HomeAds = () => {
       </Button>
 
       {/* 广告内容 */}
-      <div className={`grid gap-4 ${visibleAds.length === 1
-        ? 'grid-cols-1'
-        : 'grid-cols-1 md:grid-cols-2'
-        }`}>
+      <div className="grid grid-cols-2 gap-4">
         {visibleAds.map((ad) => (
           <Card
             key={ad.id}

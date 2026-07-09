@@ -78,7 +78,7 @@ const glgc = [
       '高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。'
   },
   {
-    title: '翻墙Vpn推荐⚡️',
+    title: '翻墙Vpn推荐',
     imageurl:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/%E5%B9%BF%E5%91%8A%E5%9B%BE1180x720.jpg',
     url: 'https://www.tspeedcat.top/#/register?code=FttmLPkV',
@@ -294,38 +294,38 @@ export const TopicListClient = ({
           {/* </CardHeader> */}
           {/* <CardBody className="pt-0"> */}
 
-          <Accordion isCompact>
+          <div className="grid grid-cols-2 gap-4">
             {glgc.map((item) => {
               return (
-                <AccordionItem
-                  key={item.title}
-                  aria-label="Accordion 1"
-                  startContent={<Leaf className="w-5 h-5 text-yellow-500" />}
-                  title={item.title}
-                  classNames={{
-                    trigger: 'justify-start', // 控制整个 header 左对齐
-                    title: 'text-left flex-1' // 标题文本左对齐 + 占满空间
-                  }}
-                >
-                  <Link href={item.url} target="_blank">
-                    {item.content && (
-                      <div className="opacity-80 text-sm mb-2">
-                        {item.content}
-                      </div>
-                    )}
-                    <Image
-                      src={item.imageurl}
-                      // fill
-                      width={400}
-                      height={500}
-                      alt={item.title}
-                      className="rounded-lg opacity-80"
-                    />
-                  </Link>
-                </AccordionItem>
+                <Accordion isCompact key={item.title}>
+                  <AccordionItem
+                    aria-label="Accordion 1"
+                    startContent={<Leaf className="w-5 h-5 text-yellow-500" />}
+                    title={item.title}
+                    classNames={{
+                      trigger: 'justify-start',
+                      title: 'text-left flex-1'
+                    }}
+                  >
+                    <Link href={item.url} target="_blank">
+                      {item.content && (
+                        <div className="opacity-80 text-sm mb-2">
+                          {item.content}
+                        </div>
+                      )}
+                      <Image
+                        src={item.imageurl}
+                        width={400}
+                        height={500}
+                        alt={item.title}
+                        className="rounded-lg opacity-80"
+                      />
+                    </Link>
+                  </AccordionItem>
+                </Accordion>
               )
             })}
-          </Accordion>
+          </div>
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <span className="text-sm text-foreground/70">排序方式:</span>
@@ -363,8 +363,8 @@ export const TopicListClient = ({
 
           {/* 内容区域 */}
           {isPending && topics.length === 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[1, 2, 3, 4].map((i) => (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 // <Card key={i}>
                 <div className="space-y-3" key={i}>
                   <div className="flex items-center gap-3">
