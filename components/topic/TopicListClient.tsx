@@ -70,6 +70,12 @@ const orderOptions = [
 
 const glgc = [
   {
+    title: '精选黄油',
+    imageurl: 'https://upload.cc/i1/2026/07/09/C2WrOU.png',
+    url: 'https://l1.hljxyhbkj.com/dh1012',
+    content: '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望'
+  },
+  {
     title: 'DZMM AI伴侣 ❤️',
     imageurl:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg',
