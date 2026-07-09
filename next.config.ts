@@ -43,6 +43,12 @@ const nextConfig: NextConfig = {
         hostname: 'd.acgll.com',
         port: '',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'upload.cc',
+        port: '',
+        pathname: '/**'
       }
     ]
   },

@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardBody, CardFooter } from '@heroui/card'
-import { Avatar } from '@heroui/avatar'
 import { Chip } from '@heroui/chip'
 import { Eye, Heart, ImageIcon, MessageSquare, Pin } from 'lucide-react'
 import { cn } from '@/utils/cn'
@@ -15,7 +14,7 @@ import {
   markdownToText
 } from '@/utils/markdownToText'
 import type { TopicCard as TopicCardType } from '@/types/api/topic'
-import { ScrollShadow } from '@heroui/react'
+import { Avatar, ScrollShadow } from '@heroui/react'
 import { category } from './CreateTopic'
 
 interface Props {
