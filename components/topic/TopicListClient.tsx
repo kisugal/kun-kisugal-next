@@ -555,566 +555,163 @@ export const TopicListClient = ({
 
 
     }
-      return (
-    <div className="container mx-auto my-4">
+    return (
+  <div className="container mx-auto my-4">
+    <div className="flex gap-6">
 
-      <div className="flex gap-6">
+      {/* 主内容区域 */}
+      <div className="flex-1 min-w-0 space-y-3">
+
+        {/* 标签页导航 */}
+        <Tabs
+          selectedKey={activeTab}
+          onSelectionChange={handleTabChange}
+          variant="underlined"
+          classNames={{
+            tabList:
+              'w-full flex rounded-none p-0 border-b border-divider',
+            cursor:
+              'w-full bg-primary',
+            tab:
+              'flex-1 px-6 h-12 flex justify-center',
+            tabContent:
+              'group-data-[selected=true]:text-primary text-center',
+            base:
+              'flex'
+          }}
+        >
+          <Tab
+            key="OFFICIAL_ANNOUNCEMENT"
+            title="官方公告"
+          />
+
+          <Tab
+            key="THIRD_PARTY_RESOURCE"
+            title="第三方资源"
+          />
+
+          <Tab
+            key="DISCUSSION"
+            title="讨论"
+          />
+
+        </Tabs>
 
 
-        {/* 主内容区域 */}
-        <div className="flex-1 min-w-0 space-y-3">
+        {/* 广告区域：Accordion + 双栏 */}
+        <Accordion isCompact>
 
-
-          {/* 标签页 */}
-          <Tabs
-            selectedKey={activeTab}
-            onSelectionChange={handleTabChange}
-            variant="underlined"
+          <AccordionItem
+            key="glgc"
+            aria-label="广告推荐"
+            startContent={
+              <Leaf className="w-5 h-5 text-yellow-500" />
+            }
+            title="精选推荐"
             classNames={{
-              tabList:
-                'w-full flex rounded-none p-0 border-b border-divider',
-
-              cursor:
-                'w-full bg-primary',
-
-              tab:
-                'flex-1 px-6 h-12 flex justify-center',
-
-              tabContent:
-                'group-data-[selected=true]:text-primary text-center',
-
-              base:
-                'flex'
+              trigger:
+                'justify-start',
+              title:
+                'text-left flex-1'
             }}
           >
 
-            <Tab
-              key="OFFICIAL_ANNOUNCEMENT"
-              title="官方公告"
-            />
-
-            <Tab
-              key="THIRD_PARTY_RESOURCE"
-              title="第三方资源"
-            />
-
-            <Tab
-              key="DISCUSSION"
-              title="讨论"
-            />
-
-
-          </Tabs>
-
-
-
-
-          {/* 广告区域 */}
-          <Accordion isCompact>
-
-            <AccordionItem
-
-              key="glgc"
-
-              aria-label="广告推荐"
-
-              startContent={
-                <Leaf
-                  className="w-5 h-5 text-yellow-500"
-                />
-              }
-
-              title="精选推荐"
-
-              classNames={{
-                trigger:
-                  'justify-start',
-
-                title:
-                  'text-left flex-1'
-              }}
-
-            >
-
-
-              <div
-                className="
-                  grid
-                  grid-cols-1
-                  sm:grid-cols-2
-                  gap-4
-                "
-              >
-
-
-                {glgc.map(
-                  (item) => (
-
-                    <Card
-                      key={item.title}
-                      shadow="sm"
-                      className="overflow-hidden"
-                    >
-
-                      <CardBody
-                        className="p-3"
-                      >
-
-
-                        <Link
-
-                          href={item.url}
-
-                          target="_blank"
-
-                          rel="noopener noreferrer"
-
-                        >
-
-
-                          <div
-                            className="
-                              flex
-                              items-center
-                              gap-2
-                              mb-2
-                            "
-                          >
-
-                            <Leaf
-                              className="
-                                w-4
-                                h-4
-                                text-yellow-500
-                              "
-                            />
-
-
-                            <span
-                              className="
-                                text-sm
-                                font-medium
-                                truncate
-                              "
-                            >
-
-                              {item.title}
-
-                            </span>
-
-
-                          </div>
-
-
-
-                          {item.content && (
-
-                            <div
-                              className="
-                                text-xs
-                                opacity-80
-                                mb-3
-                                line-clamp-2
-                              "
-                            >
-
-                              {item.content}
-
-                            </div>
-
-                          )}
-
-
-
-                          <img
-
-                            src={item.imageurl}
-
-                            alt={item.title}
-
-                            loading="lazy"
-
-                            className="
-                              w-full
-                              h-auto
-                              rounded-lg
-                              opacity-80
-                            "
-
-                          />
-
-
-
-                        </Link>
-
-
-                      </CardBody>
-
-
-                    </Card>
-
-
-                  )
-                )}
-
-
-              </div>
-
-
-
-            </AccordionItem>
-
-
-          </Accordion>
-
-
-
-
-
-
-          {/* 排序 */}
-
-          <div
-            className="
-              flex
-              flex-wrap
-              gap-4
-            "
-          >
-
-
             <div
               className="
-                flex
-                items-center
-                gap-2
+                grid
+                grid-cols-1
+                md:grid-cols-2
+                gap-4
               "
             >
 
-              <span
-                className="
-                  text-sm
-                  text-foreground/70
-                "
-              >
-
-                排序方式:
-
-              </span>
-
-
-
-              <Select
-
-                size="sm"
-
-                selectedKeys={[
-                  sortField
-                ]}
-
-                onSelectionChange={
-                  (keys) => {
-
-                    const field =
-                      Array.from(keys)[0]
-                        as string
-
-
-                    handleSortChange(
-                      field,
-                      sortOrder
-                    )
-
-                  }
-                }
-
-                className="w-32"
-
-              >
-
-                {sortOptions.map(
-                  (option) => (
-
-                    <SelectItem
-                      key={option.key}
-                    >
-
-                      {option.label}
-
-                    </SelectItem>
-
-                  )
-                )}
-
-              </Select>
-
-
-            </div>
-
-
-
-
-
-            <div
-              className="
-                flex
-                items-center
-                gap-2
-              "
-            >
-
-              <span
-                className="
-                  text-sm
-                  text-foreground/70
-                "
-              >
-
-                排序:
-
-              </span>
-
-
-
-
-              <Select
-
-                size="sm"
-
-                selectedKeys={[
-                  sortOrder
-                ]}
-
-                onSelectionChange={
-                  (keys) => {
-
-                    const order =
-                      Array.from(keys)[0]
-                        as string
-
-
-                    handleSortChange(
-                      sortField,
-                      order
-                    )
-
-
-                  }
-                }
-
-                className="w-20"
-
-              >
-
-                {orderOptions.map(
-                  (option) => (
-
-                    <SelectItem
-                      key={option.key}
-                    >
-
-                      {option.label}
-
-                    </SelectItem>
-
-                  )
-                )}
-
-
-              </Select>
-
-
-            </div>
-
-
-
-          </div>
-
-
-
-
-
-
-
-          {/* 内容区域 */}
-
-          {
-            isPending &&
-            topics.length === 0
-              ?
-
-              (
-
-                <div
-                  className="
-                    grid
-                    grid-cols-1
-                    md:grid-cols-2
-                    gap-4
-                  "
+              {glgc.map((item) => (
+
+                <Card
+                  key={item.title}
+                  shadow="sm"
+                  className="overflow-hidden"
                 >
 
-                  {
-                    [1,2,3,4].map(
-                      (i) => (
+                  <CardBody
+                    className="p-3"
+                  >
+
+                    <Link
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+
+                      <div
+                        className="
+                          flex
+                          items-center
+                          gap-2
+                          mb-2
+                        "
+                      >
+
+                        <Leaf
+                          className="
+                            w-4
+                            h-4
+                            text-yellow-500
+                          "
+                        />
+
+                        <span
+                          className="
+                            text-sm
+                            font-medium
+                            truncate
+                          "
+                        >
+                          {item.title}
+                        </span>
+
+                      </div>
+
+
+                      {item.content && (
 
                         <div
-                          key={i}
-                          className="space-y-3"
+                          className="
+                            opacity-80
+                            text-xs
+                            mb-3
+                            line-clamp-2
+                          "
                         >
-
-                          <Skeleton
-                            className="
-                              w-10
-                              h-10
-                              rounded-full
-                            "
-                          />
-
-                          <Skeleton
-                            className="
-                              h-6
-                              w-3/4
-                              rounded-lg
-                            "
-                          />
-
-                          <Skeleton
-                            className="
-                              h-20
-                              w-full
-                              rounded-lg
-                            "
-                          />
-
+                          {item.content}
                         </div>
 
+                      )}
 
-                      )
-                    )
-                  }
 
+                      <img
+                        src={item.imageurl}
+                        alt={item.title}
+                        loading="lazy"
+                        className="
+                          w-full
+                          h-auto
+                          rounded-lg
+                          opacity-80
+                        "
+                      />
 
-                </div>
+                    </Link>
 
+                  </CardBody>
 
-              )
+                </Card>
 
-              :
+              ))}
 
-              (
+            </div>
 
-                <TopicList
 
-                  topics={topics}
+          </AccordionItem>
 
-                  columns={2}
-
-                />
-
-              )
-
-
-          }
-
-
-
-
-
-
-
-          {/* 分页 */}
-
-          {
-            totalPages > 1 && (
-
-              <div
-                className="
-                  flex
-                  justify-center
-                "
-              >
-
-                <KunPagination
-
-                  total={totalPages}
-
-                  page={currentPage}
-
-                  onPageChange={
-                    handlePageChange
-                  }
-
-                  isLoading={
-                    isPending
-                  }
-
-                />
-
-
-              </div>
-
-
-            )
-          }
-
-
-
-
-        </div>
-
-
-
-
-
-        {/* 右侧栏 */}
-
-        <RightSidebar />
-
-
-
-      </div>
-
-
-
-
-
-      {/* 发布按钮 */}
-
-      <Button
-
-        color="primary"
-
-        size="lg"
-
-        isIconOnly
-
-        variant="shadow"
-
-        className="
-          fixed
-          bottom-6
-          right-6
-          z-50
-          rounded-full
-          shadow-lg
-        "
-
-        onPress={
-          () => fabu()
-        }
-
-      >
-
-        <Plus
-          className="size-5"
-        />
-
-
-      </Button>
-
-
-
-    </div>
-  )
-}
+        </Accordion>
