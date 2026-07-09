@@ -1,8 +1,6 @@
 'use client'
 
 import {
-  Accordion,
-  AccordionItem,
   Button,
   Card,
   CardBody,
@@ -24,7 +22,6 @@ import { useUserStore } from '~/store/userStore'
 import type { TopicCard } from '~/types/api/topic'
 import { kunFetchGet } from '~/utils/kunFetch'
 import { TopicList } from './TopicList'
-// import { TopicSearchInput } from '../search/TopicSearchInput'
 
 // 动态加载右侧边栏，不阻塞首屏
 const RightSidebar = dynamic(
@@ -68,6 +65,7 @@ const orderOptions = [
   { key: 'asc', label: '升序' }
 ]
 
+// 广告列表
 const glgc = [
   {
     title: '精选黄油',
@@ -112,7 +110,6 @@ interface SavedState {
   sortOrder: string
   tab: TabType
 }
-
 export const TopicListClient = ({
   initialTopics = [],
   initialTotal = 0
@@ -127,6 +124,7 @@ export const TopicListClient = ({
   const [sortOrder, setSortOrder] = useState('desc')
   const [activeTab, setActiveTab] = useState<TabType>('OFFICIAL_ANNOUNCEMENT')
   const [isInitialized, setIsInitialized] = useState(false)
+
   const limit = 10
 
   // 保存状态到 sessionStorage
@@ -139,16 +137,18 @@ export const TopicListClient = ({
           sortOrder: order,
           tab
         }
+
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state))
       }
     },
     []
   )
 
-  // 从 sessionStorage 读取状态
+  // 读取状态
   const loadState = useCallback((): SavedState | null => {
     if (typeof window !== 'undefined') {
       const saved = sessionStorage.getItem(STORAGE_KEY)
+
       if (saved) {
         try {
           return JSON.parse(saved)
@@ -157,6 +157,7 @@ export const TopicListClient = ({
         }
       }
     }
+
     return null
   }, [])
 
@@ -168,9 +169,15 @@ export const TopicListClient = ({
   ) => {
     startTransition(async () => {
       try {
-        let url = `/api/topic?page=${page}&limit=${limit}&sortField=${sort}&sortOrder=${order}&type=${tab}`
+        const url =
+          `/api/topic?page=${page}` +
+          `&limit=${limit}` +
+          `&sortField=${sort}` +
+          `&sortOrder=${order}` +
+          `&type=${tab}`
 
         const response = await kunFetchGet<TopicListResponse>(url)
+
         setTopics(response.topics)
         setTotal(response.total)
         setCurrentPage(response.page)
@@ -180,28 +187,11 @@ export const TopicListClient = ({
     })
   }
 
-  // const fetchSearchResults = async (
-  //   query: string,
-  //   page: number = 1,
-  //   sort: string = 'created',
-  //   order: string = 'desc'
-  // ) => {
-  //   startTransition(async () => {
-  //     try {
-  //       const url = `/api/topic/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}&sortField=${sort}&sortOrder=${order}`
-  //       const response = await kunFetchGet<TopicListResponse>(url)
-  //       setTopics(response.topics)
-  //       setTotal(response.total)
-  //       setCurrentPage(response.page)
-  //     } catch (error) {
-  //       console.error('搜索话题失败:', error)
-  //     }
-  //   })
-  // }
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
+
     saveState(page, sortField, sortOrder, activeTab)
+
     fetchTopics(page, sortField, sortOrder, activeTab)
   }
 
@@ -211,29 +201,35 @@ export const TopicListClient = ({
     setCurrentPage(1)
 
     saveState(1, field, order, activeTab)
+
     fetchTopics(1, field, order, activeTab)
   }
 
   const handleTabChange = (key: string | number) => {
     const tab = key as TabType
+
     setActiveTab(tab)
     setCurrentPage(1)
+
     saveState(1, sortField, sortOrder, tab)
+
     fetchTopics(1, sortField, sortOrder, tab)
   }
 
   useEffect(() => {
     setActiveTab('OFFICIAL_ANNOUNCEMENT')
-    setIsInitialized(true)
 
-    // 从 sessionStorage 恢复状态
     const savedState = loadState()
 
     if (savedState) {
       setCurrentPage(savedState.page)
+
       setSortField(savedState.sortField)
+
       setSortOrder(savedState.sortOrder)
+
       setActiveTab(savedState.tab)
+
       fetchTopics(
         savedState.page,
         savedState.sortField,
@@ -241,7 +237,6 @@ export const TopicListClient = ({
         savedState.tab
       )
     } else {
-      // 没有保存的状态，加载默认数据
       fetchTopics(1, 'created', 'desc', 'OFFICIAL_ANNOUNCEMENT')
     }
 
@@ -251,26 +246,26 @@ export const TopicListClient = ({
   const totalPages = Math.ceil(total / limit)
 
   const { user } = useUserStore((state) => state)
+
   const fabu = async () => {
     if (user.uid === 0) {
       toast.error('请先登录后再创建话题')
+
       setTimeout(() => {
         router.push('/login')
       }, 1500)
+
       return
     } else {
       router.push('/topic/create')
     }
   }
-
   return (
     <div className="container mx-auto my-4">
       <div className="flex gap-6">
         {/* 主内容区域 */}
-
         <div className="flex-1 min-w-0 space-y-3">
           {/* 标签页导航 */}
-          {/* <TopicSearchInput /> */}
           <Tabs
             selectedKey={activeTab}
             onSelectionChange={handleTabChange}
@@ -284,62 +279,85 @@ export const TopicListClient = ({
             }}
           >
             <Tab key="OFFICIAL_ANNOUNCEMENT" title="官方公告" />
+
             <Tab key="THIRD_PARTY_RESOURCE" title="第三方资源" />
+
             <Tab key="DISCUSSION" title="讨论" />
           </Tabs>
-          {/* </CardBody>
-          </Card> */}
 
-          {/* 筛选和排序 */}
-          {/* <Card>
-            <CardHeader className="pb-3"> */}
-          {/* <div className="flex items-center mb-0 gap-2"> */}
-          {/* <Filter className="size-4" />
-            <span className="font-medium">筛选和排序</span> */}
-          {/* </div> */}
-          {/* </CardHeader> */}
-          {/* <CardBody className="pt-0"> */}
+          {/* 双栏广告区域 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {glgc.map((item) => (
+              <Card key={item.title} shadow="sm" className="overflow-hidden">
+                <CardBody className="p-3">
+                  <Link
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Leaf className="w-5 h-5 text-yellow-500 shrink-0" />
 
-          <Accordion isCompact>
-            {glgc.map((item) => {
-              return (
-                <AccordionItem
-                  key={item.title}
-                  aria-label="Accordion 1"
-                  startContent={<Leaf className="w-5 h-5 text-yellow-500" />}
-                  title={item.title}
-                  classNames={{
-                    trigger: 'justify-start', // 控制整个 header 左对齐
-                    title: 'text-left flex-1' // 标题文本左对齐 + 占满空间
-                  }}
-                >
-                  <Link href={item.url} target="_blank">
+                      <span className="font-medium text-sm truncate">
+                        {item.title}
+                      </span>
+                    </div>
+
                     {item.content && (
-                      <div className="opacity-80 text-sm mb-2">
+                      <div
+                        className="
+                          opacity-80
+                          text-xs
+                          mb-3
+                          line-clamp-2
+                        "
+                      >
                         {item.content}
                       </div>
                     )}
-                    <Image
-                      src={item.imageurl}
-                      // fill
-                      width={400}
-                      height={500}
-                      alt={item.title}
-                      className="rounded-lg opacity-80"
-                    />
+
+                    <div
+                      className="
+                        relative
+                        w-full
+                        aspect-[4/3]
+                        overflow-hidden
+                        rounded-lg
+                      "
+                    >
+                      <Image
+                        src={item.imageurl}
+                        fill
+                        sizes="
+                          (max-width:640px) 100vw,
+                          50vw
+                        "
+                        alt={item.title}
+                        className="
+                          object-cover
+                          opacity-80
+                        "
+                      />
+                    </div>
                   </Link>
-                </AccordionItem>
-              )
-            })}
-          </Accordion>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+
+          {/* 排序筛选 */}
+
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <span className="text-sm text-foreground/70">排序方式:</span>
+
               <Select
                 size="sm"
                 selectedKeys={[sortField]}
                 onSelectionChange={(keys) => {
                   const field = Array.from(keys)[0] as string
+
                   handleSortChange(field, sortOrder)
                 }}
                 className="w-32"
@@ -349,13 +367,16 @@ export const TopicListClient = ({
                 ))}
               </Select>
             </div>
+
             <div className="flex items-center gap-2">
               <span className="text-sm text-foreground/70">排序:</span>
+
               <Select
                 size="sm"
                 selectedKeys={[sortOrder]}
                 onSelectionChange={(keys) => {
                   const order = Array.from(keys)[0] as string
+
                   handleSortChange(sortField, order)
                 }}
                 className="w-20"
@@ -368,30 +389,63 @@ export const TopicListClient = ({
           </div>
 
           {/* 内容区域 */}
+
           {isPending && topics.length === 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[1, 2, 3, 4].map((i) => (
-                // <Card key={i}>
                 <div className="space-y-3" key={i}>
                   <div className="flex items-center gap-3">
-                    <Skeleton className="w-10 h-10 rounded-full" />
+                    <Skeleton
+                      className="
+                        w-10
+                        h-10
+                        rounded-full
+                      "
+                    />
+
                     <div className="flex-1 space-y-2">
-                      <Skeleton className="h-4 w-24 rounded-lg" />
-                      <Skeleton className="h-3 w-32 rounded-lg" />
+                      <Skeleton
+                        className="
+                          h-4
+                          w-24
+                          rounded-lg
+                        "
+                      />
+
+                      <Skeleton
+                        className="
+                          h-3
+                          w-32
+                          rounded-lg
+                        "
+                      />
                     </div>
                   </div>
-                  <Skeleton className="h-6 w-3/4 rounded-lg" />
-                  <Skeleton className="h-20 w-full rounded-lg" />
+
+                  <Skeleton
+                    className="
+                      h-6
+                      w-3/4
+                      rounded-lg
+                    "
+                  />
+
+                  <Skeleton
+                    className="
+                      h-20
+                      w-full
+                      rounded-lg
+                    "
+                  />
                 </div>
-                // </Card>
               ))}
             </div>
           ) : (
-            // 话题列表
             <TopicList topics={topics} columns={2} />
           )}
 
           {/* 分页 */}
+
           {totalPages > 1 && (
             <div className="flex justify-center">
               <KunPagination
@@ -405,14 +459,25 @@ export const TopicListClient = ({
         </div>
 
         {/* 右侧边栏 */}
+
         <RightSidebar />
       </div>
+
+      {/* 发布按钮 */}
+
       <Button
         color="primary"
         size="lg"
         isIconOnly
         variant="shadow"
-        className="fixed bottom-6 right-6 z-50 rounded-full shadow-lg"
+        className="
+          fixed
+          bottom-6
+          right-6
+          z-50
+          rounded-full
+          shadow-lg
+        "
         onPress={() => fabu()}
       >
         <Plus className="size-5" />
