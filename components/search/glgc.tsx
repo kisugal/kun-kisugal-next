@@ -29,7 +29,7 @@ export const SearchGlgc = () => {
         >
           <Image
             alt="精选黄油🌟 福利游戏合集"
-            src="https://upload.cc/i1/2026/07/09/C2WrOU.png"
+            src="https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/huangyou.jpg.png"
             className="w-full h-auto max-w-[600px] rounded-lg"
             style={{ objectFit: 'contain' }}
           />

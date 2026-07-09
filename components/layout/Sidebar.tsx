@@ -72,7 +72,8 @@ const navSections = [
           title: '精选黄油🌟',
           description:
             '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',
-          image: 'https://upload.cc/i1/2026/07/09/C2WrOU.png'
+          image:
+            'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/huangyou.jpg.png'
         }
       },
       {
