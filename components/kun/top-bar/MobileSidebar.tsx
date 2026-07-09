@@ -80,7 +80,7 @@ const navSections = [
     title: '推荐内容',
     items: [
       {
-        name: '精选黄油',
+        name: '精选黄油🌟',
         description:
           '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',
         href: 'https://l1.hljxyhbkj.com/dh1012',

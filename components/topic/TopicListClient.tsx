@@ -70,7 +70,7 @@ const orderOptions = [
 
 const glgc = [
   {
-    title: '精选黄油',
+    title: '精选黄油🌟',
     imageurl: 'https://upload.cc/i1/2026/07/09/C2WrOU.png',
     url: 'https://l1.hljxyhbkj.com/dh1012',
     content: '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望'

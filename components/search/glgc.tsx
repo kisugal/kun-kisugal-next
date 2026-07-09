@@ -28,7 +28,7 @@ export const SearchGlgc = () => {
           className="w-full flex justify-center"
         >
           <Image
-            alt="精选黄油 福利游戏合集"
+            alt="精选黄油🌟 福利游戏合集"
             src="https://upload.cc/i1/2026/07/09/C2WrOU.png"
             className="w-full h-auto max-w-[600px] rounded-lg"
             style={{ objectFit: 'contain' }}

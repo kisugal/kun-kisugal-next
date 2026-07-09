@@ -63,13 +63,13 @@ const navSections = [
         }
       },
       {
-        name: '精选黄油',
+        name: '精选黄油🌟',
         description:
           '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',
         href: 'https://l1.hljxyhbkj.com/dh1012',
         icon: HeartIcon,
         popover: {
-          title: '精选黄油',
+          title: '精选黄油🌟',
           description:
             '高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。',
           image: 'https://upload.cc/i1/2026/07/09/C2WrOU.png'
