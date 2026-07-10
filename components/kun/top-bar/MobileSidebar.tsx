@@ -80,17 +80,24 @@ const navSections = [
     title: '推荐内容',
     items: [
       {
-        name: '精选黄油🌟',
-        description:
-          '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',
-        href: 'https://l1.hljxyhbkj.com/dh1012',
-        icon: HeartIcon
-      },
-      {
         name: 'Ai女友💋',
         description:
           '🌟在线畅玩。顶尖色情，即刻生图😍多样角色场景18禁性癖待你开发！💋',
         href: 'https://afengy.app?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
+        icon: HeartIcon
+      },
+      {
+        name: '联网色游🍓',
+        description:
+          '涩涩版taptap，黄油里的Steam，身临其境的打♂尻手游都在“木瓜玩”！',
+        href: 'https://t.fgtrea.com/?pid=339',
+        icon: HeartIcon
+      },
+      {
+        name: '精选黄油🌟',
+        description:
+          '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',
+        href: 'https://l5.zrkp365.com/dh1012',
         icon: HeartIcon
       },
       {
