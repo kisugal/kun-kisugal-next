@@ -21,12 +21,12 @@ const featured = [
   {
     name: '禁漫破解',
     href: 'https://l5.zrkp365.com/9dh1012',
-    image: 'https://upload.cc/i1/2026/07/11/dND19l.gif'
+    image: 'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/dND19l.gif'
   },
   {
     name: '海量视频',
     href: 'https://l5.zrkp365.com/jkdh1012',
-    image: 'https://upload.cc/i1/2026/07/11/v0RjQk.gif'
+    image: 'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/v0RjQk.gif'
   }
 ]
 
