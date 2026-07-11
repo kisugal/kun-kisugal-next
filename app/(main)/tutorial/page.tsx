@@ -17,6 +17,19 @@ import { getAllPosts } from '~/lib/mdx/getPosts'
 import { Metadata } from 'next'
 import { kunMetadata } from './metadata'
 
+const featured = [
+  {
+    name: '禁漫破解',
+    href: 'https://l5.zrkp365.com/9dh1012',
+    image: 'https://upload.cc/i1/2026/07/11/dND19l.gif'
+  },
+  {
+    name: '海量视频',
+    href: 'https://l5.zrkp365.com/jkdh1012',
+    image: 'https://upload.cc/i1/2026/07/11/v0RjQk.gif'
+  }
+]
+
 const emulators = [
   {
     title: '模拟器',
@@ -36,8 +49,16 @@ const emulators = [
         icon: tyranor,
         href: 'https://c.acgll.com/@s/jtbxxdXB'
       },
-      { name: 'PSP模拟器', icon: Psp, href: 'https://c.acgll.com/@s/Fj0F80IE' },
-      { name: 'NDS模拟器', icon: Nds, href: 'https://c.acgll.com/@s/xnVz8zUn' },
+      {
+        name: 'PSP模拟器',
+        icon: Psp,
+        href: 'https://c.acgll.com/@s/Fj0F80IE'
+      },
+      {
+        name: 'NDS模拟器',
+        icon: Nds,
+        href: 'https://c.acgll.com/@s/xnVz8zUn'
+      },
       {
         name: 'JoiPlay模拟器',
         icon: JoiPlay,
@@ -83,7 +104,11 @@ const emulators = [
         icon: Bandizip,
         href: 'https://c.acgll.com/@s/DcoG5DUC'
       },
-      { name: '7-Zip', icon: SevenZip, href: 'https://www.7-zip.org/' },
+      {
+        name: '7-Zip',
+        icon: SevenZip,
+        href: 'https://www.7-zip.org/'
+      },
       {
         name: 'NanaZip',
         icon: NanaZip,
@@ -97,10 +122,49 @@ export const metadata: Metadata = kunMetadata
 
 export default function TutorialPage() {
   const posts = getAllPosts()
+
   return (
     <div className="w-full flex justify-center">
       {/* 居中容器 */}
       <div className="w-full max-w-5xl">
+        {/* ===== 精选推荐 ===== */}
+        <div className="mb-10">
+          <h2 className="text-lg font-semibold mb-6">精选推荐</h2>
+
+          <div className="flex gap-10 flex-wrap">
+            {featured.map((item) => (
+              <Link key={item.name} href={item.href} target="_blank">
+                <div className="flex flex-col items-center gap-3 group cursor-pointer">
+                  {/* 图标 */}
+                  <div
+                    className="
+              w-20 h-20 rounded-2xl
+              bg-white border border-gray-200
+              shadow-sm
+              flex items-center justify-center
+              overflow-hidden
+              transition-all
+              group-hover:shadow-md
+              group-hover:-translate-y-1
+            "
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* 名称 */}
+                  <span className="text-sm text-gray-600 group-hover:text-pink-500 transition">
+                    {item.name}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* 标题 */}
         <div className="mb-10">
           <h1 className="text-2xl font-bold">教程 & 模拟器</h1>
@@ -122,27 +186,25 @@ export default function TutorialPage() {
                   return (
                     <Link key={emu.name} href={emu.href} target="_blank">
                       <div className="flex flex-col items-center gap-3 group cursor-pointer">
-                        {/* 图标（放大版） */}
                         <div
                           className="
-                      w-20 h-20 rounded-2xl
-                      bg-white border border-gray-200
-                      shadow-sm
-                      flex items-center justify-center
-                      transition-all
-                      group-hover:shadow-md
-                      group-hover:-translate-y-1
-                    "
+                            w-20 h-20 rounded-2xl
+                            bg-white border border-gray-200
+                            shadow-sm
+                            flex items-center justify-center
+                            transition-all
+                            group-hover:shadow-md
+                            group-hover:-translate-y-1
+                          "
                         >
                           <Image
                             unoptimized
                             src={Icon}
                             alt={emu.name}
-                            className="w-8 h-8 text-pink-400 rounded-sm"
+                            className="w-8 h-8 rounded-sm"
                           />
                         </div>
 
-                        {/* 名字 */}
                         <span className="text-sm text-gray-600 group-hover:text-pink-500 transition">
                           {emu.name}
                         </span>
@@ -174,6 +236,7 @@ export default function TutorialPage() {
                   "
                 >
                   <div className="font-medium mb-1">{item.title}</div>
+
                   <div className="text-sm text-gray-500">
                     {item.description}
                   </div>
