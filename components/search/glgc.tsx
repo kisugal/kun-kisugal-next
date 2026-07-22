@@ -22,7 +22,7 @@ export const SearchGlgc = () => {
 
         {/* 广告二 */}
         <Link
-          href="https://l5.zrkp365.com/dh1012"
+          href="https://l7.zrkp365.com/dh1012"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full flex justify-center"
@@ -50,7 +50,7 @@ export const SearchGlgc = () => {
         </Link>
         {/* 广告四 */}
         <Link
-          href="https://l5.zrkp365.com/9dh1012"
+          href="https://l7.zrkp365.com/9dh1012"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full flex justify-center"
@@ -64,7 +64,7 @@ export const SearchGlgc = () => {
         </Link>
         {/* 广告五 */}
         <Link
-          href="https://l5.zrkp365.com/jkdh1012"
+          href="https://l7.zrkp365.com/jkdh1012"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full flex justify-center"

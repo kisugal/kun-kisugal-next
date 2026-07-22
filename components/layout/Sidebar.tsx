@@ -80,7 +80,7 @@ const navSections = [
         name: '精选黄油🌟',
         description:
           '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',
-        href: 'https://l5.zrkp365.com/dh1012',
+        href: 'https://l7.zrkp365.com/dh1012',
         icon: HeartIcon,
         popover: {
           title: '精选黄油🌟',

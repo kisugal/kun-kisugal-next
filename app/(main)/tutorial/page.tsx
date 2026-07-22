@@ -20,12 +20,12 @@ import { kunMetadata } from './metadata'
 const featured = [
   {
     name: '禁漫破解',
-    href: 'https://l5.zrkp365.com/9dh1012',
+    href: 'https://l7.zrkp365.com/9dh1012',
     image: 'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/dND19l.gif'
   },
   {
     name: '海量视频',
-    href: 'https://l5.zrkp365.com/jkdh1012',
+    href: 'https://l7.zrkp365.com/jkdh1012',
     image: 'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/v0RjQk.gif'
   }
 ]
