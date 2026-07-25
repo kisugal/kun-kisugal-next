@@ -73,7 +73,7 @@ const glgc = [
     title: '精选黄油🌟',
     imageurl:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/huangyou.jpg.png',
-    url: 'https://l7.zrkp365.com/dh1012',
+    url: 'https://l5.zwtcbp.com/dh1012',
     content: '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望'
   },
   {

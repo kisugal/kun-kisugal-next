@@ -34,7 +34,7 @@ const GAME_DETAIL_ADS_DATA: AdItem[] = [
     title: '',
     description: '',
     image: 'https://upload.cc/i1/2026/07/09/C2WrOU.png', // 游戏详情页专用广告图片
-    link: 'https://l7.zrkp365.com/dh1012' // 游戏详情页专用广告链接
+    link: 'https://l5.zwtcbp.com/dh1012' // 游戏详情页专用广告链接
   },
   {
     id: 'game-detail-ad10', //DZMM
