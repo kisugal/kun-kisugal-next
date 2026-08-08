@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+
 import Bandizip from '@/public/Bandizip.png'
 import Kkirikiri from '@/public/Kkirikiri.webp'
 import ONScripter from '@/public/ONScripter.webp'
@@ -13,14 +14,38 @@ import NanaZip from '@/public/NanaZip.png'
 import ZArchiver from '@/public/ZArchiver Pro.png'
 import SevenZip from '@/public/7-Zip.png'
 import AopAop from '@/public/AopAop.webp'
+
 import { getAllPosts } from '~/lib/mdx/getPosts'
 import { Metadata } from 'next'
 import { kunMetadata } from './metadata'
 
+const featured = [
+  {
+    name: 'KRKR2模拟器',
+    image: Kkirikiri,
+    href: 'https://c.acgll.com/@s/msdn9ItU'
+  },
+  {
+    name: 'ONScripter模拟器',
+    image: ONScripter,
+    href: 'https://c.acgll.com/@s/yxH4WjLN'
+  },
+  {
+    name: 'Tyranor模拟器',
+    image: tyranor,
+    href: 'https://c.acgll.com/@s/jtbxxdXB'
+  },
+  {
+    name: 'JoiPlay模拟器',
+    image: JoiPlay,
+    href: 'https://c.acgll.com/@s/ABD4a0QQ'
+  }
+]
+
 const emulators = [
   {
     title: '模拟器',
-    lilst: [
+    list: [
       {
         name: 'KRKR2模拟器',
         icon: Kkirikiri,
@@ -63,9 +88,10 @@ const emulators = [
       }
     ]
   },
+
   {
     title: '手机解压缩软件',
-    lilst: [
+    list: [
       {
         name: 'RAR',
         icon: Rar,
@@ -78,9 +104,10 @@ const emulators = [
       }
     ]
   },
+
   {
     title: '电脑解压缩软件',
-    lilst: [
+    list: [
       {
         name: 'RAR',
         icon: Rar,
@@ -111,126 +138,127 @@ export default function TutorialPage() {
   const posts = getAllPosts()
 
   return (
-    <div className="w-full flex justify-center">
-      {/* 居中容器 */}
-      <div className="w-full max-w-5xl">
-        {/* ===== 精选推荐 ===== */}
-        <div className="mb-10">
-          <h2 className="text-lg font-semibold mb-6">精选推荐</h2>
+    <div className="max-w-6xl mx-auto px-5 py-10">
+      {/* 精选推荐 */}
 
-          <div className="flex gap-10 flex-wrap">
-            {featured.map((item) => (
-              <Link key={item.name} href={item.href} target="_blank">
-                <div className="flex flex-col items-center gap-3 group cursor-pointer">
-                  {/* 图标 */}
-                  <div
-                    className="
-              w-20 h-20 rounded-2xl
-              bg-white border border-gray-200
-              shadow-sm
-              flex items-center justify-center
-              overflow-hidden
-              transition-all
-              group-hover:shadow-md
-              group-hover:-translate-y-1
-            "
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+      <div className="mb-12">
+        <h2 className="text-lg font-semibold mb-6">精选推荐</h2>
 
-                  {/* 名称 */}
-                  <span className="text-sm text-gray-600 group-hover:text-pink-500 transition">
-                    {item.name}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* 标题 */}
-        <div className="mb-10">
-          <h1 className="text-2xl font-bold">教程 & 模拟器</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            为你提供实用的游戏工具与详细教程
-          </p>
-        </div>
-
-        {/* ===== 模拟器 ===== */}
-        <div className="space-y-6">
-          {emulators.map((emuGroup) => (
-            <div key={emuGroup.title}>
-              <h2 className="text-lg font-semibold mb-6">{emuGroup.title}</h2>
-
-              <div className="flex gap-10 flex-wrap">
-                {emuGroup.lilst.map((emu) => {
-                  const Icon = emu.icon
-
-                  return (
-                    <Link key={emu.name} href={emu.href} target="_blank">
-                      <div className="flex flex-col items-center gap-3 group cursor-pointer">
-                        <div
-                          className="
-                            w-20 h-20 rounded-2xl
-                            bg-white border border-gray-200
-                            shadow-sm
-                            flex items-center justify-center
-                            transition-all
-                            group-hover:shadow-md
-                            group-hover:-translate-y-1
-                          "
-                        >
-                          <Image
-                            unoptimized
-                            src={Icon}
-                            alt={emu.name}
-                            className="w-8 h-8 rounded-sm"
-                          />
-                        </div>
-
-                        <span className="text-sm text-gray-600 group-hover:text-pink-500 transition">
-                          {emu.name}
-                        </span>
-                      </div>
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* ===== 分隔线 ===== */}
-        <div className="my-10 border-t border-gray-200" />
-
-        {/* ===== 教程 ===== */}
-        <div>
-          <h2 className="text-lg font-semibold mb-6">教程</h2>
-
-          <div className="grid grid-cols-2 gap-5">
-            {posts.map((item) => (
-              <Link key={item.title} href={`/tutorial/${item.path}`}>
+        <div className="flex gap-10 flex-wrap">
+          {featured.map((item) => (
+            <Link key={item.name} href={item.href} target="_blank">
+              <div className="flex flex-col items-center gap-3 group">
                 <div
                   className="
-                    p-4 rounded-xl border border-gray-200
-                    bg-white
-                    hover:shadow-md transition
-                    cursor-pointer
+                  w-20 h-20 rounded-2xl
+                  bg-white border
+                  shadow-sm
+                  flex items-center justify-center
+                  overflow-hidden
+                  transition
+                  group-hover:-translate-y-1
                   "
                 >
-                  <div className="font-medium mb-1">{item.title}</div>
-
-                  <div className="text-sm text-gray-500">
-                    {item.description}
-                  </div>
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              </Link>
-            ))}
+
+                <span
+                  className="
+                text-sm text-gray-600
+                group-hover:text-pink-500
+                "
+                >
+                  {item.name}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <h1 className="text-2xl font-bold">教程 & 模拟器</h1>
+
+        <p className="text-gray-500 text-sm mt-1">
+          为你提供实用的游戏工具与详细教程
+        </p>
+      </div>
+
+      <div className="space-y-8">
+        {emulators.map((group) => (
+          <div key={group.title}>
+            <h2 className="text-lg font-semibold mb-6">{group.title}</h2>
+
+            <div className="flex gap-10 flex-wrap">
+              {group.list.map((item) => {
+                const Icon = item.icon
+
+                return (
+                  <Link key={item.name} href={item.href} target="_blank">
+                    <div
+                      className="
+                        flex flex-col items-center gap-3
+                        group
+                        "
+                    >
+                      <div
+                        className="
+                          w-20 h-20 rounded-2xl
+                          bg-white border
+                          shadow-sm
+                          flex items-center justify-center
+                          "
+                      >
+                        <Image
+                          src={Icon}
+                          alt={item.name}
+                          className="w-10 h-10 rounded"
+                        />
+                      </div>
+
+                      <span
+                        className="
+                          text-sm text-gray-600
+                          group-hover:text-pink-500
+                          "
+                      >
+                        {item.name}
+                      </span>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
+        ))}
+      </div>
+
+      <div className="my-10 border-t" />
+
+      <div>
+        <h2 className="text-lg font-semibold mb-6">教程</h2>
+
+        <div className="grid grid-cols-2 gap-5">
+          {posts.map((item) => (
+            <Link key={item.title} href={`/tutorial/${item.path}`}>
+              <div
+                className="
+                p-4 rounded-xl
+                border
+                bg-white
+                hover:shadow-md
+                "
+              >
+                <div className="font-medium mb-1">{item.title}</div>
+
+                <div className="text-sm text-gray-500">{item.description}</div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
