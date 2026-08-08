@@ -34,7 +34,7 @@ const GAME_DETAIL_ADS_DATA: AdItem[] = [
     title: '',
     description: '',
     image: 'https://upload.cc/i1/2026/07/09/C2WrOU.png', // 游戏详情页专用广告图片
-    link: 'https://l5.zwtcbp.com/dh1012' // 游戏详情页专用广告链接
+    link: 'https://l8.zwtcbp.com/dh1012' // 游戏详情页专用广告链接
   },
   {
     id: 'game-detail-ad10', //DZMM
@@ -42,7 +42,7 @@ const GAME_DETAIL_ADS_DATA: AdItem[] = [
     description: '',
     image:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg', // 游戏详情页专用广告图片
-    link: 'https://www.ainvmei.com/?rf=e32c5b70' // 游戏详情页专用广告链接
+    link: 'https://www.girlloveai.com/?rf=e32c5b70' // 游戏详情页专用广告链接
   },
   {
     id: 'game-detail-ad1', //风月AI

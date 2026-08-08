@@ -52,7 +52,7 @@ const navSections = [
         name: 'AI伴侣❤️',
         description:
           '😊高自由度 AI 互动平台，支持图文模式、语音陪伴、AI 绘图与多题材角色互动。❤️',
-        href: 'https://www.ainvmei.com/?rf=e32c5b70',
+        href: 'https://www.girlloveai.com/?rf=e32c5b70',
         icon: HeartIcon,
         popover: {
           title: '❤️DZMM AI伴侣',
@@ -80,7 +80,7 @@ const navSections = [
         name: '精选黄油🌟',
         description:
           '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',
-        href: 'https://l5.zwtcbp.com/dh1012',
+        href: 'https://l8.zwtcbp.com/dh1012',
         icon: HeartIcon,
         popover: {
           title: '精选黄油🌟',

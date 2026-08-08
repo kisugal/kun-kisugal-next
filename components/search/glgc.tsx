@@ -22,7 +22,7 @@ export const SearchGlgc = () => {
 
         {/* 广告二 */}
         <Link
-          href="https://l7.zrkp365.com/dh1012"
+          href="https://l8.zwtcbp.com/dh1012"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full flex justify-center"
@@ -44,34 +44,6 @@ export const SearchGlgc = () => {
           <Image
             alt="联网色游🍓 木瓜玩"
             src="https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-07-10_20-32-31.jpg"
-            className="w-full h-auto max-w-[600px] rounded-lg"
-            style={{ objectFit: 'contain' }}
-          />
-        </Link>
-        {/* 广告四 */}
-        <Link
-          href="https://l5.zwtcbp.com/9dh1012"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full flex justify-center"
-        >
-          <Image
-            alt="独家视频💥"
-            src="https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/jF9D2I.jpg"
-            className="w-full h-auto max-w-[600px] rounded-lg"
-            style={{ objectFit: 'contain' }}
-          />
-        </Link>
-        {/* 广告五 */}
-        <Link
-          href="https://l5.zwtcbp.com/jkdh1012"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full flex justify-center"
-        >
-          <Image
-            alt="高人气精选💯"
-            src="https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/BWSkXT.jpg"
             className="w-full h-auto max-w-[600px] rounded-lg"
             style={{ objectFit: 'contain' }}
           />
