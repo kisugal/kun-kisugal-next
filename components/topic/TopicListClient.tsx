@@ -102,7 +102,7 @@ const glgc = [
     title: '精品飞机杯',
     imageurl:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/686B6C6A29B3FF47E39861DE80DABFF3.jpg',
-    url: 'https://gateway.alihealth.taobao.com/act/T8gVSF$zZ6d?JKid=wtcps_01%7EZ%7EqtS5gwQgQOb3nC14bLnuD9W%7E4aaC-xJKcPo%7EEhpYW0LPJOS%7Ezcjmt261onAay3Pc4Ka1HPQ4cd%7E-RaJdr0uyL4oTqGLsT-HcUQPzLlB1ee1yNuGZ8EycTf2Ro7Nr2LJh%7EU0GRkbrZMkkO2Huz-w%3D%3D_01_4a653ba46a3c4f0d819ab763b3e33e7d&quickLaunch=true&forbidRefineType=goOut',
+    url: 'https://pages.tmall.com/wow/a/act/tmall/dailygroup/16355/16802/wupr?wh_pid=daily-465056&disableNav=YES&status_bar_transparent=true&sellerId=2207315920303&activityId=64eabe9a898b45668f3fd31512fcff57&toolName=itemCoupon',
     content: null
   }
 ]
