@@ -34,20 +34,6 @@ export const SearchGlgc = () => {
             style={{ objectFit: 'contain' }}
           />
         </Link>
-        {/* 广告三 */}
-        <Link
-          href="https://t.fgtrea.com/?pid=339"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full flex justify-center"
-        >
-          <Image
-            alt="联网色游🍓 木瓜玩"
-            src="https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-07-10_20-32-31.jpg"
-            className="w-full h-auto max-w-[600px] rounded-lg"
-            style={{ objectFit: 'contain' }}
-          />
-        </Link>
       </div>
     </div>
   )

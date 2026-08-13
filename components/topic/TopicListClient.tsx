@@ -77,13 +77,6 @@ const glgc = [
     content: '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望'
   },
   {
-    title: '联网色游🍓',
-    imageurl:
-      'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-07-10_20-32-31.jpg',
-    url: 'https://t.fgtrea.com/?pid=339',
-    content: '涩涩版taptap，黄油里的Steam，身临其境的打♂尻手游都在“木瓜玩”！'
-  },
-  {
     title: 'DZMM AI伴侣 ❤️',
     imageurl:
       'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-05-03_23-53-08.jpg',

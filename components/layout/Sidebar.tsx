@@ -63,20 +63,6 @@ const navSections = [
         }
       },
       {
-        name: '联网色游🍓',
-        description:
-          '涩涩版taptap，黄油里的Steam，身临其境的打♂尻手游都在“木瓜玩”！',
-        href: 'https://t.fgtrea.com/?pid=339',
-        icon: HeartIcon,
-        popover: {
-          title: '联网色游🍓',
-          description:
-            '涩涩版taptap，黄油里的Steam，身临其境的打♂尻手游都在“木瓜玩”！',
-          image:
-            'https://d.acgll.com/%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/photo_2026-07-10_20-32-31.jpg'
-        }
-      },
-      {
         name: '精选黄油🌟',
         description:
           '福利游戏合集,免费福利手游 绅士必备，实用宝藏网站让你尽情释放欲望',

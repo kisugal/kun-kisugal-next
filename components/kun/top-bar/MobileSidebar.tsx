@@ -86,13 +86,7 @@ const navSections = [
         href: 'https://afengy.app?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67',
         icon: HeartIcon
       },
-      {
-        name: '联网色游🍓',
-        description:
-          '涩涩版taptap，黄油里的Steam，身临其境的打♂尻手游都在“木瓜玩”！',
-        href: 'https://t.fgtrea.com/?pid=339',
-        icon: HeartIcon
-      },
+
       {
         name: '精选黄油🌟',
         description:

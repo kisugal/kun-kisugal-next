@@ -30,12 +30,7 @@
       "label": "ACG盒子，专注 ACG的导航盒子，收录二次元相关的网站，打造一个二次元专属的网站",
       "link": "https://www.acgbox.link/"
     },
-    {
-      "name": "绮梦ACG",
-      "avatar": "https://game.acgs.one/_next/image?url=%2Ffavicon.ico&w=64&q=75",
-      "label": "绮梦ACG是一个专注于ACG资源分享的社区，提供丰富的ACG资源下载和交流平台，致力于为ACG爱好者打造一个温馨的家园。",
-      "link": "https://game.acgs.one/"
-    },
+    
     {
       "name": "0721Galgame",
       "avatar": "https://nn0721.com/usr/themes/cuckoo/assets/images/logo.png",
@@ -53,18 +48,6 @@
       "avatar": "https://www.mikugame.icu/favicon.ico",
       "label": "MikuGame是一站式的游戏论坛！为游戏玩家提供Steam游戏，同人游戏，Galgame的社区与资源分享服务！",
       "link": "https://mikugame.net/"
-    },
-    {
-      "name": "绮梦·还悠",
-      "avatar": "https://minio.huanyou.zip/music/playlists/2026/4/287ad2bb-ffc9-4620-adf5-2f127ddcaf35.webp",
-      "label": "GAL动漫原声带以及ASMR的综合收录站",
-      "link": "https://huanyou.zip/"
-    },
-    {
-      "name": "ACGNBox",
-      "avatar": "https://galgamebox.org/uploads/mmexporte99504acf6fa53da31e9-9frded.webp",
-      "label": "ACG导航站",
-      "link": "https://galgamebox.org/"
     }
   ]
 }
