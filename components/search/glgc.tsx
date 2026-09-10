@@ -7,7 +7,7 @@ export const SearchGlgc = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center justify-items-center">
         {/* 广告一 */}
         <Link
-          href="https://afengy.app/?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67"
+          href="https://afengyue.video?ref_id=006f5ccb-b0d3-471b-a674-de5e5114ed67"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full flex justify-center"
